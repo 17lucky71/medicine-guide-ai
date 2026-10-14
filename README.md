@@ -53,7 +53,7 @@
 
 ### 1) 저장소 클론 및 이동
 ```bash
-git clone [https://github.com/your-username/medicine-guide-ai.git](https://github.com/your-username/medicine-guide-ai.git)
+git clone https://github.com/your-username/medicine-guide-ai.git
 cd medicine-guide-ai
 
 ### 2) 환경변수 설정
