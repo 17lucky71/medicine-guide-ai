@@ -38,14 +38,74 @@
 | 이채리 | 약 비교·화면 | 큰 글자·가족 공유 기능, 복용 약 기초 데이터 저장 제안 |
 
 ## 3. 기술 스택
-(사용 언어, 프레임워크, AI 모델, 배포 환경)
+
+| 구분 | 기술 |
+|---|---|
+| 언어 | Python / JavaScript |
+| 프레임워크 | FastAPI / React |
+| OCR | Tesseract OCR 또는 Google Vision API |
+| AI/추천 로직 | 약물 정보 비교 로직, LLM 기반 안내 생성 |
+| DB | SQLite / PostgreSQL |
+| 배포 | Docker / Render / Vercel |
+| 기타 | OpenAI API, GitHub |
 
 ## 4. 실행 방법
-(설치·실행 순서)
+
+### 1) 저장소 클론
+```bash
+git clone https://github.com/your-username/medicine-guide-ai.git
+cd medicine-guide-ai
+
+### 2) 백엔드 실행
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+### 3) 프론트엔드 실행
+cd frontend
+npm install
+npm run dev
+
+### 4) 환경변수 설정
+OPENAI_API_KEY=your_api_key
+OCR_API_KEY=your_ocr_key
+DATABASE_URL=your_database_url
 
 ## 5. 결과
-(구현 결과, 주요 화면)
+
+### 1) 구현결과
+약봉투/처방전 사진 업로드 기능 구현
+OCR로 약 이름과 복용 정보를 추출
+사용자가 인식 결과를 직접 확인하고 수정 가능
+복용 중인 약과 새 약의 중복/주의 사항 안내
+큰 글씨 중심의 노인 친화적 화면 구성
+가족 공유 기능 또는 복약 기록 저장 기능 제공
+
+### 2) 주요화면
+메인 화면: 사진 업로드 및 약 정보 조회 시작
+OCR 결과 화면: 인식된 약 이름/복용법 확인 및 수정
+복약 비교 화면: 기존 복용 약과 새 약 비교
+주의사항 화면: 부작용, 상호작용, 복용 시 유의사항 표시
+기록 화면: 복용 약 목록과 이전 기록 확인
 
 ## 배포 URL 및 평가자 접속 방법
-- URL:
-- 테스트 계정:
+URL: https://your-deployment-url.com
+테스트 계정
+아이디: test@example.com
+비밀번호: password123
+실제 배포 주소와 계정 정보로 수정하세요.
+
+## 6. 서비스 화면 캡처
+메인 화면
+OCR 결과 확인 화면
+약 비교 결과 화면
+
+## 7. 한계점 및 향후 개선
+OCR 정확도 향상
+약 정보 데이터베이스 확장
+보호자 알림 기능 추가
+음성 안내 기능 추가
+
+##8. 주의사항
+본 서비스는 참고용이며 진료나 처방을 대체하지 않음
+이상 증상 발생 시 즉시 의료진 상담 필요
