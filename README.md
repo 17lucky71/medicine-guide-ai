@@ -61,17 +61,17 @@ OPENAI_API_KEY=your_api_key
 OCR_API_KEY=your_ocr_key
 DATABASE_URL=your_database_url
 
-### 2) 백엔드 실행
+### 3) 백엔드 실행
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 
-### 3) 프론트엔드 실행
+### 4) 프론트엔드 실행
 cd frontend
 npm install
 npm run dev
 
-### 4) 환경변수 설정
+### 5) 환경변수 설정
 OPENAI_API_KEY=your_api_key
 OCR_API_KEY=your_ocr_key
 DATABASE_URL=your_database_url
