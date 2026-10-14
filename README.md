@@ -51,10 +51,15 @@
 
 ## 4. 실행 방법
 
-### 1) 저장소 클론
+### 1) 저장소 클론 및 이동
 ```bash
-git clone https://github.com/your-username/medicine-guide-ai.git
+git clone [https://github.com/your-username/medicine-guide-ai.git](https://github.com/your-username/medicine-guide-ai.git)
 cd medicine-guide-ai
+
+### 2) 환경변수 설정
+OPENAI_API_KEY=your_api_key
+OCR_API_KEY=your_ocr_key
+DATABASE_URL=your_database_url
 
 ### 2) 백엔드 실행
 cd backend
@@ -74,6 +79,7 @@ DATABASE_URL=your_database_url
 ## 5. 결과
 
 ### 1) 구현결과
+1) 구현 결과
 약봉투/처방전 사진 업로드 기능 구현
 OCR로 약 이름과 복용 정보를 추출
 사용자가 인식 결과를 직접 확인하고 수정 가능
@@ -86,7 +92,8 @@ OCR로 약 이름과 복용 정보를 추출
 OCR 결과 화면: 인식된 약 이름/복용법 확인 및 수정
 복약 비교 화면: 기존 복용 약과 새 약 비교
 주의사항 화면: 부작용, 상호작용, 복용 시 유의사항 표시
-기록 화면: 복용 약 목록과 이전 기록 확인
+기록 화면: 복용 약 목록과 이전 기록 확인\
+
 
 ## 배포 URL 및 평가자 접속 방법
 URL: https://your-deployment-url.com
@@ -108,6 +115,7 @@ OCR 결과 확인 화면
 OCR 정확도가 이미지 품질에 따라 달라질 수 있음
 일부 약 정보는 데이터베이스에 없을 수 있음
 AI 설명이 실제 의료 판단을 완전히 대체할 수 없음
+
 향후 개선
 OCR 정확도 향상
 약 정보 데이터베이스 확장
