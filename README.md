@@ -1337,8 +1337,216 @@ git push origin feature/기능이름
 | `docs` | 문서 수정 | `docs: README 업데이트` |
 | `style` | 코드 스타일 수정 | `style: 들여쓰기 정리` |
 | `refactor` | 코드 리팩토링 | `refactor: OCR 서비스 분리` |
-| `test
+| `test` | 테스트 코드 추가 | `test: OCR 단위 테스트 추가` |
+| `chore` | 빌드 · 설정 수정 | `chore: requirements.txt 업데이트` |
 
+---
+
+## 17. 프로젝트 타임라인
+
+```
+2025.01.06  ─── 🚀 프로젝트 시작 · 주제 선정
+     │
+2025.01.07  ─── 📋 기획 · 역할 분담 · 기술 스택 확정
+     │
+2025.01.08  ─── 🔧 개발 환경 세팅 · GitHub 저장소 생성
+     │
+2025.01.09  ─── 📝 OCR 기능 1차 구현 (인식률 52%)
+     │
+2025.01.10  ─── 🖼️ 이미지 전처리 파이프라인 구축
+     │
+2025.01.11  ─── 📝 OCR 인식률 개선 완료 (87% 달성)
+     │
+2025.01.12  ─── 🤖 GPT-4o 연동 · 프롬프트 설계
+     │
+2025.01.13  ─── ⚙️ FastAPI 서버 · DB 설계 완료
+     │
+2025.01.14  ─── 🖥️ React 프론트엔드 1차 구현
+     │
+2025.01.15  ─── 🎨 노인 친화 UI 설계 · 적용
+     │
+2025.01.16  ─── 🔗 프론트엔드 · 백엔드 연동
+     │
+2025.01.17  ─── 🧪 통합 테스트 · 버그 수정
+     │
+2025.01.18  ─── 📤 가족 공유 기능 구현
+     │
+2025.01.19  ─── 📅 복용 기록 기능 구현
+     │
+2025.01.20  ─── 🧪 사용자 테스트 (60대 이상 5명)
+     │
+2025.01.21  ─── 🐛 사용자 피드백 반영 · 최종 수정
+     │
+2025.01.22  ─── 🚀 최종 배포 · 발표 준비
+     │
+2025.01.23  ─── 🎉 프로젝트 발표 · 완료
+```
+
+---
+
+## 18. 트러블슈팅
+
+### 문제 1 : Tesseract 경로 오류 (Windows)
+
+**증상**
+```
+TesseractNotFoundError: tesseract is not installed or
+it's not in your PATH.
+```
+
+**해결 방법**
+```python
+# ocr_service.py 상단에 경로 직접 지정
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd = (
+    r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+)
+```
+
+또는 `.env` 파일에 경로 설정
+```env
+TESSERACT_PATH=C:\Program Files\Tesseract-OCR\tesseract.exe
+```
+
+---
+
+### 문제 2 : CORS 오류
+
+**증상**
+```
+Access to XMLHttpRequest at 'http://localhost:8000'
+from origin 'http://localhost:3000' has been blocked by CORS policy.
+```
+
+**해결 방법**
+```python
+# main.py
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+---
+
+### 문제 3 : 이미지 업로드 용량 초과
+
+**증상**
+```
+413 Request Entity Too Large
+```
+
+**해결 방법**
+```python
+# main.py
+from fastapi import FastAPI
+from starlette.requests import Request
+
+@app.middleware("http")
+async def limit_upload_size(request: Request, call_next):
+    max_size = 10 * 1024 * 1024  # 10MB 제한
+    if request.headers.get("content-length"):
+        content_length = int(request.headers["content-length"])
+        if content_length > max_size:
+            return JSONResponse(
+                status_code=413,
+                content={"error": "파일 크기는 10MB 이하여야 합니다."}
+            )
+    return await call_next(request)
+```
+
+---
+
+### 문제 4 : OpenAI API Rate Limit 오류
+
+**증상**
+```
+openai.error.RateLimitError: Rate limit reached for
+gpt-4o in organization ...
+```
+
+**해결 방법**
+```python
+# gpt_service.py
+import time
+import openai
+from tenacity import retry, wait_exponential, stop_after_attempt
+
+@retry(
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    stop=stop_after_attempt(3)
+)
+def call_gpt_with_retry(prompt: str) -> str:
+    response = openai.ChatCompletion.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3
+    )
+    return response.choices[0].message.content
+```
+
+---
+
+### 문제 5 : SQLite 동시 접근 오류
+
+**증상**
+```
+sqlite3.OperationalError: database is locked
+```
+
+**해결 방법**
+```python
+# database.py
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine(
+    "sqlite:///./medicine.db",
+    connect_args={
+        "check_same_thread": False,  # 멀티스레드 허용
+        "timeout": 20                # 대기 시간 설정
+    }
+)
+```
+
+---
+
+## 🎉 마무리
+
+> 💊 **medicine-guide-ai** 는 어르신들이 약봉투를 보고
+> 혼자서도 쉽게 복약 안내를 받을 수 있도록
+> 만든 AI 서비스입니다.
+
+```
+이 프로젝트가 도움이 되셨다면
+⭐ Star 를 눌러주세요!
+
+버그나 개선 사항은
+🐛 Issue 로 알려주세요!
+
+함께 만들고 싶다면
+🔀 Pull Request 환영합니다!
+```
+
+---
+
+<div align="center">
+
+**💊 medicine-guide-ai**
+
+**어르신의 건강한 복약 생활을 응원합니다.**
+
+Made with ❤️ by **최영진 · 장보윤 · 이채리**
+
+[![GitHub](https://img.shields.io/badge/GitHub-17lucky71%2Fmedicine--guide--ai-181717?style=flat-square&logo=github)](https://github.com/17lucky71/medicine-guide-ai)
+
+</div>
 
 
 ---
