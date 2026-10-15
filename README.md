@@ -94,6 +94,8 @@
 
 ---
 
+---
+
 ## 3. 팀원 소개
 
 | 이름 | 역할 | 담당 기능 | GitHub |
@@ -101,6 +103,221 @@
 | 👨‍💻 최영진 | 팀장 · 백엔드 | FastAPI 서버 · OCR 연동 · 약물 비교 알고리즘 | [@youngjin](https://github.com/) |
 | 👩‍💻 장보윤 | 프론트엔드 | React UI · 노인 친화적 디자인 · 가족 공유 화면 | [@boyun](https://github.com/) |
 | 👩‍💻 이채리 | AI · 데이터 | OpenAI API 연동 · 이미지 전처리 · 데이터 수집 | [@chaeri](https://github.com/) |
+
+### 기여도
+
+#### 최영진 (백엔드)
+
+| 항목 | 내용 |
+|---|---|
+| 기여 비율 | 40% |
+| 주요 담당 | 백엔드 전체 설계 · FastAPI 서버 구축 · DB 설계 · 배포 |
+| 세부 작업 | OCR 파이프라인 구현 · API 엔드포인트 작성 · Render 배포 · 팀 일정 관리 |
+
+```python
+# 최영진이 구현한 주요 코드 예시
+# OCR 이미지 전처리 파이프라인
+
+import cv2
+import numpy as np
+
+def preprocess_image(image_path: str):
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    denoised = cv2.fastNlMeansDenoising(gray, h=10)
+    enhanced = cv2.equalizeHist(denoised)
+    _, binary = cv2.threshold(
+        enhanced, 0, 255,
+        cv2.THRESH_BINARY + cv2.THRESH_OTSU
+    )
+    return binary
+```
+
+#### 장보윤 (프론트엔드)
+
+| 항목 | 내용 |
+|---|---|
+| 기여 비율 | 35% |
+| 주요 담당 | React UI 전체 구현 · 반응형 디자인 · UX 설계 |
+| 세부 작업 | 메인화면 · 결과화면 · 복용기록 화면 · 가족공유 화면 · 노인 친화 UI 적용 |
+
+```jsx
+// 장보윤이 구현한 주요 코드 예시
+// 노인 친화 결과 카드 컴포넌트
+
+const MedicineCard = ({ medicine }) => {
+  return (
+    <div className="medicine-card">
+      <h2 className="medicine-name">
+        💊 {medicine.name}
+      </h2>
+      <p className="medicine-desc">
+        {medicine.description}
+      </p>
+      <div className="medicine-info">
+        <span>📅 {medicine.how_to_take}</span>
+        <span>⚠️ {medicine.caution}</span>
+      </div>
+    </div>
+  );
+};
+
+export default MedicineCard;
+```
+
+#### 이채리 (AI · 데이터)
+
+| 항목 | 내용 |
+|---|---|
+| 기여 비율 | 25% |
+| 주요 담당 | GPT 프롬프트 설계 · AI 응답 파싱 · 테스트 데이터 수집 |
+| 세부 작업 | 프롬프트 엔지니어링 · 약물 상호작용 로직 · 단위 테스트 작성 · 데이터 전처리 |
+
+```python
+# 이채리가 구현한 주요 코드 예시
+# GPT 프롬프트 설계
+
+def build_prompt(medicine_text: str) -> str:
+    return f"""
+당신은 친절한 약사입니다.
+아래 약봉투 텍스트를 읽고 어르신이 이해하기 쉽게 설명해주세요.
+
+[규칙]
+- 어렵고 전문적인 단어는 쉬운 말로 바꿔주세요.
+- 짧고 간결하게 설명해주세요.
+- 반드시 JSON 형식으로 답변해주세요.
+
+[약봉투 텍스트]
+{medicine_text}
+
+[출력 형식]
+{{
+  "name": "약 이름",
+  "description": "이 약은 어떤 약인지",
+  "how_to_take": "어떻게 먹는지",
+  "caution": "주의할 점",
+  "side_effects": "부작용"
+}}
+"""
+```
+
+#### 전체 기여도 요약
+
+```
+최영진 ████████████████░░░░░░░░░░░░░░░░  40%
+장보윤 ████████████░░░░░░░░░░░░░░░░░░░░  35%
+이채리 █████████░░░░░░░░░░░░░░░░░░░░░░░  25%
+```
+
+> 모든 팀원이 코드 리뷰 · 버그 수정 · 문서 작성에 함께 참여했습니다.
+
+---
+
+## 4. 기술 스택
+
+### 백엔드
+
+| 기술 | 버전 | 용도 |
+|---|---|---|
+| Python | 3.11 | 메인 언어 |
+| FastAPI | 0.104 | REST API 서버 |
+| Tesseract OCR | 5.3 | 약봉투 텍스트 인식 |
+| OpenCV | 4.8 | 이미지 전처리 |
+| SQLite | 3.0 | 복용 기록 저장 |
+| SQLAlchemy | 2.0 | ORM |
+
+### 프론트엔드
+
+| 기술 | 버전 | 용도 |
+|---|---|---|
+| React | 18.0 | UI 프레임워크 |
+| Axios | 1.6 | API 통신 |
+| React Router | 6.0 | 페이지 라우팅 |
+| CSS Modules | - | 스타일링 |
+
+### AI · 외부 API
+
+| 기술 | 버전 | 용도 |
+|---|---|---|
+| OpenAI GPT-4o | latest | 복약 안내 생성 |
+| Tesseract OCR | 5.3 | 텍스트 추출 |
+
+### 배포 · 인프라
+
+| 기술 | 용도 |
+|---|---|
+| Render | 백엔드 서버 배포 |
+| GitHub Actions | CI/CD 자동화 |
+| GitHub | 버전 관리 |
+
+---
+
+## 5. 프로젝트 구조
+
+```
+medicine-guide-ai/
+│
+├── backend/                    # 백엔드 (FastAPI)
+│   ├── main.py                 # FastAPI 앱 진입점
+│   ├── requirements.txt        # Python 패키지 목록
+│   ├── .env                    # 환경변수 (Git 제외)
+│   │
+│   ├── routers/                # API 라우터
+│   │   ├── ocr.py              # OCR 관련 API
+│   │   ├── medicine.py         # 약물 정보 API
+│   │   └── record.py           # 복용 기록 API
+│   │
+│   ├── services/               # 비즈니스 로직
+│   │   ├── ocr_service.py      # OCR 처리 서비스
+│   │   ├── gpt_service.py      # GPT 연동 서비스
+│   │   └── medicine_service.py # 약물 비교 서비스
+│   │
+│   ├── models/                 # DB 모델
+│   │   ├── medicine.py         # 약물 모델
+│   │   └── record.py           # 복용 기록 모델
+│   │
+│   └── utils/                  # 유틸리티
+│       ├── image_utils.py      # 이미지 전처리
+│       └── parser.py           # GPT 응답 파싱
+│
+├── frontend/                   # 프론트엔드 (React)
+│   ├── public/
+│   │   └── index.html
+│   │
+│   ├── src/
+│   │   ├── App.jsx             # 앱 진입점
+│   │   ├── index.jsx
+│   │   │
+│   │   ├── pages/              # 페이지 컴포넌트
+│   │   │   ├── MainPage.jsx    # 메인 화면
+│   │   │   ├── ResultPage.jsx  # 결과 화면
+│   │   │   ├── RecordPage.jsx  # 복용 기록 화면
+│   │   │   └── SharePage.jsx   # 가족 공유 화면
+│   │   │
+│   │   ├── components/         # 공통 컴포넌트
+│   │   │   ├── MedicineCard.jsx
+│   │   │   ├── UploadButton.jsx
+│   │   │   └── Header.jsx
+│   │   │
+│   │   └── styles/             # CSS 스타일
+│   │       ├── main.css
+│   │       └── components.css
+│   │
+│   └── package.json
+│
+├── tests/                      # 테스트 코드
+│   ├── test_ocr.py
+│   ├── test_gpt.py
+│   └── test_api.py
+│
+├── docs/                       # 문서
+│   ├── api_spec.md
+│   └── meeting_notes.md
+│
+├── .gitignore
+├── README.md
+└── LICENSE
+```
 
 ### 기여도
 
