@@ -1,5 +1,10 @@
 # medicine-guide-ai
 
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100-green)
+![React](https://img.shields.io/badge/React-18-61DAFB)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 노인을 위한 약 정보 안내 AI 서비스  
 (OCR 기반 복약 안내)
 
@@ -43,9 +48,9 @@
 
 | 이름 | 역할 | 기여 요약 |
 |---|---|---|
-| 최영진 | 기획·문서·배포 | 기획서 틀 작성, 회의록 정리, 저장소 생성 및 README 작성 |
-| 장보윤 | OCR 기능 | OCR 분석 후 확인·저장 기능 제안, 회의실 예약 |
-| 이채리 | 약 비교·화면 | 큰 글자·가족 공유 기능, 복용 약 기초 데이터 저장 제안 |
+| 최영진 | 기획·문서·배포 | 기획서 작성, 회의록 정리, 저장소 생성 및 README 작성, 배포 환경 구성 |
+| 장보윤 | OCR 기능 | Tesseract OCR 연동, 이미지 전처리 로직 구현, 인식 결과 수정 UI 설계 |
+| 이채리 | 약 비교·화면 | 약물 비교 로직 구현, 큰 글자 UI 구성, 가족 공유 및 복용 기록 저장 기능 구현 |
 
 ---
 
@@ -63,7 +68,28 @@
 
 ---
 
-## 5. 실행 방법
+## 5. 프로젝트 구조
+
+```
+medicine-guide-ai/
+├── backend/
+│   ├── main.py          # FastAPI 진입점
+│   ├── ocr/             # OCR 처리 모듈
+│   ├── medicine/        # 약물 비교 로직
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── pages/       # 메인, OCR결과, 비교, 기록 화면
+│   │   └── components/
+│   └── package.json
+├── .env.example         # 환경변수 예시 (실제 키 제외)
+├── .gitignore
+└── README.md
+```
+
+---
+
+## 6. 실행 방법
 
 ### 1) 저장소 클론 및 이동
 ```bash
@@ -72,13 +98,21 @@ cd medicine-guide-ai
 ```
 
 ### 2) 환경변수 설정
-프로젝트 루트에 `.env` 파일을 만들고 아래 내용을 작성합니다.
+`.env.example`을 복사해 `.env` 파일을 만들고 실제 키를 입력합니다.
+
+```bash
+cp .env.example .env
+```
 
 ```env
-OPENAI_API_KEY=your_api_key
-OCR_API_KEY=your_ocr_key
-DATABASE_URL=your_database_url
+# .env.example
+OPENAI_API_KEY=your_openai_api_key_here
+OCR_API_KEY=your_ocr_api_key_here
+DATABASE_URL=sqlite:///./medicine.db
 ```
+
+> ⚠️ `.env` 파일은 절대 GitHub에 올리지 마세요.  
+> `.gitignore`에 `.env`가 포함되어 있는지 반드시 확인하세요.
 
 ### 3) 백엔드 실행
 ```bash
@@ -98,7 +132,7 @@ npm run dev
 
 ---
 
-## 6. 결과
+## 7. 결과
 
 ### 1) 구현 결과
 - 약봉투/처방전 사진 업로드 기능 구현
@@ -106,7 +140,7 @@ npm run dev
 - 사용자가 인식 결과를 직접 확인하고 수정 가능
 - 복용 중인 약과 새 약의 중복 및 주의사항 안내
 - 큰 글씨 중심의 노인 친화적 화면 구성
-- 가족 공유 기능 또는 복약 기록 저장 기능 제공
+- 가족 공유 기능 및 복약 기록 저장 기능 제공
 
 ### 2) 주요 화면
 - **메인 화면**: 사진 업로드 및 약 정보 조회 시작
@@ -115,34 +149,20 @@ npm run dev
 - **주의사항 화면**: 부작용, 상호작용, 복용 시 유의사항 표시
 - **기록 화면**: 복용 약 목록과 이전 기록 확인
 
----
+### 3) 서비스 화면 캡처
 
-## 7. 배포 URL 및 평가자 접속 방법
-
-- **URL**: `https://your-deployment-url.com`
-
-### 테스트 계정
-- **아이디**: `test@example.com`
-- **비밀번호**: `password123`
-
-> 실제 배포 주소와 계정 정보로 수정하세요.
-
----
-
-## 8. 서비스 화면 캡처
-
-아래 이미지를 추가하면 README 완성도가 높아집니다.
-
-- 메인 화면
-- OCR 결과 확인 화면
-- 약 비교 결과 화면
-
-### 예시
-```md
 ![메인 화면](./images/main.png)
 ![OCR 결과 화면](./images/ocr-result.png)
 ![약 비교 결과 화면](./images/compare-result.png)
-```
+
+---
+
+## 8. 배포 URL 및 평가자 접속 방법
+
+- **URL**: https://your-deployment-url.com
+
+> 테스트 계정 정보는 보안상 별도로 전달드립니다.  
+> 게스트 모드로도 주요 기능을 체험할 수 있습니다.
 
 ---
 
@@ -173,7 +193,7 @@ npm run dev
 
 ## 11. 라이선스
 
-이 프로젝트의 라이선스는 추후 추가합니다.
+This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
