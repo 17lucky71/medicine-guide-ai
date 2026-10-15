@@ -663,9 +663,689 @@ body {
 
 ---
 
+---
+
+## 9. 한계점 및 개선 방향
+
+### 현재 한계점
+
+| 번호 | 한계점 | 원인 |
+|---|---|---|
+| 1 | 손글씨 약봉투 인식 불가 | Tesseract OCR 한계 |
+| 2 | 영어 약품명 인식률 낮음 | 한국어 학습 데이터 부족 |
+| 3 | 오프라인 환경 사용 불가 | GPT API 인터넷 필요 |
+| 4 | 약물 상호작용 정보 부족 | 공공 DB 연동 미완성 |
+| 5 | iOS 카메라 연동 미지원 | 웹 환경 제한 |
+
+---
+
+### 개선 방향
+
+#### 단기 개선 (1 ~ 3개월)
+
+```
+✅ 영어 약품명 인식률 향상
+   └── 영문 Tesseract 언어팩 추가 적용
+
+✅ 약물 상호작용 경고 기능 추가
+   └── 식품의약품안전처 공공 API 연동
+
+✅ 오프라인 모드 지원
+   └── 자주 쓰는 약 정보 로컬 캐싱 적용
+```
+
+#### 중기 개선 (3 ~ 6개월)
+
+```
+🔧 자체 OCR 모델 개발
+   └── 약봉투 전용 학습 데이터셋 구축
+   └── Fine-tuning 모델 적용
+
+🔧 모바일 앱 출시
+   └── React Native로 iOS / Android 앱 개발
+   └── 카메라 실시간 인식 기능 추가
+
+🔧 음성 안내 기능 추가
+   └── TTS(Text-to-Speech) 연동
+   └── 어르신 음성 복약 안내 제공
+```
+
+#### 장기 개선 (6개월 이상)
+
+```
+🚀 병원 · 약국 연동 시스템
+   └── 처방전 자동 연동
+   └── 복약 이력 의료진 공유
+
+🚀 AI 복약 패턴 분석
+   └── 복용 습관 분석 및 알림
+   └── 개인 맞춤형 복약 안내
+
+🚀 보호자 모니터링 앱
+   └── 가족이 실시간으로 복약 현황 확인
+   └── 미복용 시 알림 발송
+```
+
+---
+
+## 10. 팀원 회고
+
+### 최영진 (팀장 · 백엔드)
+
+> 💬 **"처음 FastAPI를 써봤는데 생각보다 훨씬 빠르고 편했습니다."**
+
+이번 프로젝트에서 백엔드 전체를 혼자 설계하면서 많이 성장했습니다.
+특히 OCR 인식률을 높이기 위해 이미지 전처리를 반복 실험했던 과정이
+가장 힘들었지만 가장 보람 있었습니다.
+
+팀장으로서 일정 관리와 팀원 소통이 쉽지 않았지만,
+팀원들이 잘 따라와줘서 무사히 마칠 수 있었습니다.
+
+**배운 점**
+- FastAPI 서버 설계 및 배포 경험
+- OpenCV 이미지 전처리 기술
+- 팀 리더십과 일정 관리 능력
+
+**아쉬운 점**
+- 테스트 코드를 더 꼼꼼히 작성하지 못한 것
+- 배포 자동화(CI/CD)를 더 일찍 적용했으면 좋았을 것
+
+---
+
+### 장보윤 (프론트엔드)
+
+> 💬 **"노인 친화 UI를 설계하면서 사용자 중심 개발의 중요성을 깨달았습니다."**
+
+처음에는 단순히 예쁜 UI를 만들려고 했는데,
+실제 어르신들이 테스트하는 모습을 보고 생각이 완전히 바뀌었습니다.
+글씨 크기, 버튼 크기, 색상 대비 하나하나가 얼마나 중요한지 알게 됐습니다.
+
+React를 더 깊이 공부하게 된 계기가 됐고,
+컴포넌트 설계와 상태 관리에 대해 많이 배웠습니다.
+
+**배운 점**
+- 사용자 중심(UX) 설계 방법론
+- React 컴포넌트 구조 설계
+- 반응형 웹 디자인 구현
+
+**아쉬운 점**
+- 애니메이션 효과를 더 다듬지 못한 것
+- 모바일 앱까지 개발하지 못한 것
+
+---
+
+### 이채리 (AI · 데이터)
+
+> 💬 **"프롬프트 엔지니어링이 이렇게 중요한 기술인지 처음 알았습니다."**
+
+GPT API를 처음 다뤄봤는데, 같은 질문도 어떻게 쓰느냐에 따라
+결과가 완전히 달라지는 게 신기하고 재미있었습니다.
+
+데이터 수집과 전처리 과정이 생각보다 훨씬 많은 시간을 차지해서
+데이터 엔지니어링의 중요성을 몸소 느꼈습니다.
+
+**배운 점**
+- 프롬프트 엔지니어링 기법
+- OpenAI API 활용 방법
+- 데이터 전처리 및 정제 방법
+
+**아쉬운 점**
+- 약물 상호작용 데이터를 더 많이 수집하지 못한 것
+- 자체 AI 모델을 학습시켜보지 못한 것
+
+---
+
+### 팀 전체 회고
+
+```
+👍 잘한 점
+   ├── 매주 정기 회의로 소통 유지
+   ├── GitHub으로 체계적인 버전 관리
+   ├── 역할 분담이 명확해 충돌 최소화
+   └── 실제 사용자(어르신) 테스트 진행
+
+😅 아쉬운 점
+   ├── 초반 기획이 너무 자주 바뀜
+   ├── 테스트 코드 작성이 후반부에 몰림
+   └── 문서화를 처음부터 했으면 좋았을 것
+
+🔥 다음에는
+   ├── 기획 단계를 더 꼼꼼히
+   ├── TDD(테스트 주도 개발) 적용
+   └── 배포 자동화 처음부터 적용
+```
+
+---
+
+## 11. 주의사항
+
+> ⚠️ **반드시 읽어주세요**
+
+### 의료 면책 조항
+
+```
+본 서비스는 참고용 정보 제공을 목적으로 합니다.
+
+❌ 본 서비스의 정보를 의학적 진단 또는 처방의 대체로
+   사용하지 마세요.
+
+❌ 약물 복용에 관한 최종 결정은 반드시
+   의사 또는 약사와 상담 후 결정하세요.
+
+❌ AI가 제공하는 정보는 오류가 있을 수 있습니다.
+   중요한 약물 정보는 반드시 전문가에게 확인하세요.
+
+✅ 응급 상황 시 즉시 119에 연락하세요.
+```
+
+---
+
+### API Key 보안
+
+```bash
+# ❌ 절대 하지 마세요
+# API Key를 코드에 직접 입력하지 마세요
+OPENAI_API_KEY = "sk-xxxxxxxxxxxxxxxxxxxx"  # 위험!
+
+# ✅ 올바른 방법
+# .env 파일에 저장하고 .gitignore에 추가하세요
+```
+
+```bash
+# .gitignore 에 반드시 추가
+.env
+*.env
+venv/
+__pycache__/
+*.pyc
+```
+
+---
+
+### 개인정보 보호
+
+```
+📌 업로드된 약봉투 이미지는 서버에 저장되지 않습니다.
+📌 OCR 처리 후 즉시 삭제됩니다.
+📌 복용 기록은 사용자 기기에만 저장됩니다.
+📌 개인 의료 정보를 외부에 공유하지 마세요.
+```
+
+---
+
+## 12. 라이선스
+
+```
+MIT License
+
+Copyright (c) 2025 medicine-guide-ai Team
+(최영진, 장보윤, 이채리)
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom
+the Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall
+be included in all copies or substantial portions of the
+Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+> 본 프로젝트는 **MIT 라이선스** 를 따릅니다.
+> 자유롭게 사용 · 수정 · 배포할 수 있으나
+> 반드시 원저작자를 표시해주세요.
+
+---
+
+## 13. 서비스 흐름도
+
+### 전체 흐름도
+
+```mermaid
+flowchart TD
+    A([👤 사용자]) --> B[📷 약봉투 사진 업로드]
+    B --> C[🖼️ 이미지 전처리\nOpenCV]
+    C --> D[📝 텍스트 추출\nTesseract OCR]
+    D --> E{텍스트\n인식 성공?}
+    E -- ❌ 실패 --> F[⚠️ 재촬영 안내]
+    F --> B
+    E -- ✅ 성공 --> G[🤖 GPT-4o 분석\n쉬운 말로 변환]
+    G --> H{응답\n파싱 성공?}
+    H -- ❌ 실패 --> I[🔄 기본 안내 메시지 반환]
+    H -- ✅ 성공 --> J[📋 복약 안내 결과 화면]
+    I --> J
+    J --> K{다음 행동 선택}
+    K --> L[📅 복용 기록 저장]
+    K --> M[📤 가족에게 공유]
+    K --> N[🏠 메인으로 돌아가기]
+    L --> O[(🗄️ SQLite DB)]
+    M --> P[💬 카카오톡 / 문자]
+```
+
+---
+
+### API 요청 흐름도
+
+```mermaid
+sequenceDiagram
+    actor 사용자
+    participant React as 🖥️ React Frontend
+    participant FastAPI as ⚙️ FastAPI Backend
+    participant OCR as 📝 Tesseract OCR
+    participant GPT as 🤖 OpenAI GPT-4o
+    participant DB as 🗄️ SQLite DB
+
+    사용자->>React: 약봉투 사진 업로드
+    React->>FastAPI: POST /api/ocr/upload
+    FastAPI->>OCR: 이미지 전처리 + 텍스트 추출
+    OCR-->>FastAPI: 추출된 텍스트 반환
+    FastAPI->>GPT: 프롬프트 + 텍스트 전송
+    GPT-->>FastAPI: JSON 형식 복약 안내 반환
+    FastAPI-->>React: 복약 안내 결과 반환
+    React-->>사용자: 결과 화면 표시
+
+    사용자->>React: 복용 기록 저장 클릭
+    React->>FastAPI: POST /api/record/save
+    FastAPI->>DB: 복용 기록 저장
+    DB-->>FastAPI: 저장 완료
+    FastAPI-->>React: 저장 성공 응답
+    React-->>사용자: 저장 완료 알림
+```
+
+---
+
+## 14. API 명세
+
+### 기본 정보
+
+| 항목 | 내용 |
+|---|---|
+| Base URL | `http://localhost:8000/api` |
+| 배포 URL | `https://medicine-guide-ai.onrender.com/api` |
+| 응답 형식 | JSON |
+| 인증 방식 | 없음 (추후 JWT 적용 예정) |
+
+---
+
+### OCR API
+
+#### POST /api/ocr/upload
+> 약봉투 이미지를 업로드하고 복약 안내를 반환합니다.
+
+**Request**
+```http
+POST /api/ocr/upload
+Content-Type: multipart/form-data
+
+file: (이미지 파일 .jpg / .png / .jpeg)
+```
+
+**Response 200 OK**
+```json
+{
+  "success": true,
+  "data": {
+    "name": "타이레놀 500mg",
+    "description": "열이 나거나 머리가 아플 때 먹는 약이에요.",
+    "how_to_take": "하루 3번, 식후 30분에 1알씩 드세요.",
+    "caution": "술과 함께 드시면 안돼요.",
+    "side_effects": "속이 쓰릴 수 있어요.",
+    "raw_text": "타이레놀정 500mg 1일 3회 식후 30분..."
+  }
+}
+```
+
+**Response 400 Bad Request**
+```json
+{
+  "success": false,
+  "error": "이미지에서 텍스트를 인식하지 못했습니다.",
+  "code": "OCR_FAILED"
+}
+```
+
+**Response 500 Internal Server Error**
+```json
+{
+  "success": false,
+  "error": "서버 오류가 발생했습니다.",
+  "code": "SERVER_ERROR"
+}
+```
+
+---
+
+### 복용 기록 API
+
+#### POST /api/record/save
+> 복용 기록을 저장합니다.
+
+**Request**
+```json
+{
+  "medicine_name": "타이레놀 500mg",
+  "taken_at": "2025-01-22T09:00:00",
+  "memo": "아침 식후 복용"
+}
+```
+
+**Response 201 Created**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "medicine_name": "타이레놀 500mg",
+    "taken_at": "2025-01-22T09:00:00",
+    "memo": "아침 식후 복용",
+    "created_at": "2025-01-22T09:05:00"
+  }
+}
+```
+
+---
+
+#### GET /api/record/list
+> 복용 기록 목록을 조회합니다.
+
+**Request**
+```http
+GET /api/record/list?start_date=2025-01-01&end_date=2025-01-31
+```
+
+**Response 200 OK**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "medicine_name": "타이레놀 500mg",
+      "taken_at": "2025-01-22T09:00:00",
+      "memo": "아침 식후 복용"
+    },
+    {
+      "id": 2,
+      "medicine_name": "타이레놀 500mg",
+      "taken_at": "2025-01-22T13:00:00",
+      "memo": "점심 식후 복용"
+    }
+  ],
+  "total": 2
+}
+```
+
+---
+
+#### DELETE /api/record/{id}
+> 복용 기록을 삭제합니다.
+
+**Response 200 OK**
+```json
+{
+  "success": true,
+  "message": "기록이 삭제되었습니다."
+}
+```
+
+---
+
+### 헬스체크 API
+
+#### GET /api/health
+> 서버 상태를 확인합니다.
+
+**Response 200 OK**
+```json
+{
+  "status": "ok",
+  "version": "1.0.0",
+  "timestamp": "2025-01-22T09:00:00"
+}
+```
+
+---
+
+## 15. 테스트 코드
+
+### OCR 테스트
+
+```python
+# tests/test_ocr.py
+
+import pytest
+from services.ocr_service import extract_text, preprocess_image
+
+class TestOCR:
+
+    def test_preprocess_image_success(self):
+        """이미지 전처리 성공 테스트"""
+        result = preprocess_image("tests/sample/sample_medicine.jpg")
+        assert result is not None
+
+    def test_extract_text_success(self):
+        """텍스트 추출 성공 테스트"""
+        result = extract_text("tests/sample/sample_medicine.jpg")
+        assert isinstance(result, str)
+        assert len(result) > 0
+
+    def test_extract_text_empty_image(self):
+        """빈 이미지 텍스트 추출 테스트"""
+        result = extract_text("tests/sample/empty.jpg")
+        assert result == "" or result is None
+
+    def test_preprocess_invalid_path(self):
+        """잘못된 경로 전처리 테스트"""
+        with pytest.raises(FileNotFoundError):
+            preprocess_image("invalid/path/image.jpg")
+```
+
+---
+
+### GPT 서비스 테스트
+
+```python
+# tests/test_gpt.py
+
+import pytest
+from unittest.mock import patch, MagicMock
+from services.gpt_service import get_medicine_info
+from utils.parser import parse_gpt_response
+
+class TestGPT:
+
+    def test_parse_valid_json(self):
+        """유효한 JSON 파싱 테스트"""
+        valid_json = '''
+        {
+            "name": "타이레놀 500mg",
+            "description": "열이 나거나 머리가 아플 때 먹는 약이에요.",
+            "how_to_take": "하루 3번, 식후 30분에 1알씩 드세요.",
+            "caution": "술과 함께 드시면 안돼요.",
+            "side_effects": "속이 쓰릴 수 있어요."
+        }
+        '''
+        result = parse_gpt_response(valid_json)
+        assert result["name"] == "타이레놀 500mg"
+        assert "description" in result
+        assert "how_to_take" in result
+
+    def test_parse_invalid_json_fallback(self):
+        """잘못된 JSON 파싱 시 기본값 반환 테스트"""
+        invalid_text = "이것은 JSON이 아닙니다."
+        result = parse_gpt_response(invalid_text)
+        assert result["name"] == "인식 불가"
+        assert "description" in result
+
+    @patch("services.gpt_service.openai.ChatCompletion.create")
+    def test_get_medicine_info_success(self, mock_openai):
+        """GPT API 호출 성공 테스트"""
+        mock_openai.return_value = MagicMock(
+            choices=[MagicMock(
+                message=MagicMock(
+                    content='{"name": "타이레놀", "description": "해열제",'
+                            '"how_to_take": "하루 3번", "caution": "없음",'
+                            '"side_effects": "없음"}'
+                )
+            )]
+        )
+        result = get_medicine_info("타이레놀정 500mg 1일 3회")
+        assert result["name"] == "타이레놀"
+```
+
+---
+
+### API 엔드포인트 테스트
+
+```python
+# tests/test_api.py
+
+import pytest
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
+
+class TestAPI:
+
+    def test_health_check(self):
+        """헬스체크 API 테스트"""
+        response = client.get("/api/health")
+        assert response.status_code == 200
+        assert response.json()["status"] == "ok"
+
+    def test_upload_valid_image(self):
+        """유효한 이미지 업로드 테스트"""
+        with open("tests/sample/sample_medicine.jpg", "rb") as f:
+            response = client.post(
+                "/api/ocr/upload",
+                files={"file": ("sample.jpg", f, "image/jpeg")}
+            )
+        assert response.status_code == 200
+        assert response.json()["success"] is True
+        assert "name" in response.json()["data"]
+
+    def test_upload_invalid_file(self):
+        """잘못된 파일 업로드 테스트"""
+        response = client.post(
+            "/api/ocr/upload",
+            files={"file": ("test.txt", b"not an image", "text/plain")}
+        )
+        assert response.status_code == 400
+
+    def test_save_record(self):
+        """복용 기록 저장 테스트"""
+        response = client.post(
+            "/api/record/save",
+            json={
+                "medicine_name": "타이레놀 500mg",
+                "taken_at": "2025-01-22T09:00:00",
+                "memo": "아침 식후 복용"
+            }
+        )
+        assert response.status_code == 201
+        assert response.json()["success"] is True
+
+    def test_get_record_list(self):
+        """복용 기록 조회 테스트"""
+        response = client.get(
+            "/api/record/list",
+            params={
+                "start_date": "2025-01-01",
+                "end_date": "2025-01-31"
+            }
+        )
+        assert response.status_code == 200
+        assert "data" in response.json()
+
+    def test_delete_record(self):
+        """복용 기록 삭제 테스트"""
+        response = client.delete("/api/record/1")
+        assert response.status_code == 200
+        assert response.json()["success"] is True
+```
+
+---
+
+### 테스트 실행 방법
+
+```bash
+# 전체 테스트 실행
+pytest tests/
+
+# 특정 파일 테스트
+pytest tests/test_api.py
+
+# 커버리지 포함 실행
+pytest tests/ --cov=. --cov-report=html
+
+# 결과 예시
+# ======================== test session starts ========================
+# tests/test_ocr.py ....                                      [ 30%]
+# tests/test_gpt.py ...                                       [ 60%]
+# tests/test_api.py ......                                    [100%]
+# ======================== 13 passed in 4.52s ========================
+```
+
+---
+
+## 16. 기여 방법
+
+```bash
+# 1. 저장소 Fork
+# GitHub에서 Fork 버튼 클릭
+
+# 2. 로컬에 Clone
+git clone https://github.com/본인계정/medicine-guide-ai.git
+cd medicine-guide-ai
+
+# 3. 브랜치 생성
+git checkout -b feature/기능이름
+# 예시
+git checkout -b feature/voice-guide
+
+# 4. 코드 작성 후 커밋
+git add .
+git commit -m "feat: 음성 안내 기능 추가"
+
+# 5. Push
+git push origin feature/기능이름
+
+# 6. Pull Request 생성
+# GitHub에서 Pull Request 버튼 클릭
+```
+
+### 커밋 메시지 규칙
+
+| 태그 | 설명 | 예시 |
+|---|---|---|
+| `feat` | 새 기능 추가 | `feat: 음성 안내 기능 추가` |
+| `fix` | 버그 수정 | `fix: OCR 인식 오류 수정` |
+| `docs` | 문서 수정 | `docs: README 업데이트` |
+| `style` | 코드 스타일 수정 | `style: 들여쓰기 정리` |
+| `refactor` | 코드 리팩토링 | `refactor: OCR 서비스 분리` |
+| `test
+
+
+
+---
+
 ## 🙏 마무리
 
-> 이 프로젝트는 **경남정보대학교 팀 프로젝트**의 일환으로 진행되었습니다.
+> 이 프로젝트는 **코디세이 팀 프로젝트**의 일환으로 진행되었습니다.
 > 부족한 점이 있더라도 따뜻한 시선으로 봐주시면 감사하겠습니다. 😊
 
 ---
@@ -716,8 +1396,6 @@ body {
 - **Tesseract OCR** - 오픈소스 OCR 엔진
 - **FastAPI** - 빠르고 강력한 Python 웹 프레임워크
 - **React** - 사용자 인터페이스 구축
-- **경남정보대학교** - 프로젝트 진행 기회 제공
-- **지도 교수님** - 방향 제시 및 피드백
 
 ---
 
