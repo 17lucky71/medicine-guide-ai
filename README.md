@@ -100,7 +100,7 @@
 
 | 이름 | 역할 | 담당 기능 | GitHub |
 |---|---|---|---|
-| 👨‍💻 최영진 | 팀장 · 백엔드 | FastAPI 서버 · OCR 연동 · 약물 비교 알고리즘 | [@youngjin](https://github.com/) |
+| 👨‍💻 최영진 | 백엔드 | FastAPI 서버 · OCR 연동 · 약물 비교 알고리즘 | [@youngjin](https://github.com/) |
 | 👩‍💻 장보윤 | 프론트엔드 | React UI · 노인 친화적 디자인 · 가족 공유 화면 | [@boyun](https://github.com/) |
 | 👩‍💻 이채리 | AI · 데이터 | OpenAI API 연동 · 이미지 전처리 · 데이터 수집 | [@chaeri](https://github.com/) |
 
