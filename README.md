@@ -109,6 +109,7 @@
 
 ## 5. 프로젝트 구조
 
+```
 medicine-guide-ai/
 ├── .github/
 │   └── workflows/
@@ -126,8 +127,7 @@ medicine-guide-ai/
 ├── .gitignore
 ├── README.md
 └── render.yaml
-
----
+```
 
 ## 6. 실행 방법
 
