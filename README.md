@@ -142,7 +142,6 @@ OPENAI_API_KEY=your_openai_api_key_here
 OCR_API_KEY=your_ocr_api_key_here
 DATABASE_URL=sqlite:///./medicine.db
 
-> ⚠️ .env 파일은 절대 GitHub에 올리지 마세요.
 
 ### 3) 백엔드 실행
 cd backend
