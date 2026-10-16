@@ -1649,6 +1649,6 @@ Made with ❤️ by **Team medicine-guide-ai**
 
 <br/>
 
-*© 2025 medicine-guide-ai. MIT License.*
+*© 2026 medicine-guide-ai. MIT License.*
 
 </div>
