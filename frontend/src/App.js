@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 2200);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -40,7 +40,7 @@ function App() {
       setTimeout(() => {
         setQuery('타이레놀정 500mg');
         setResult({
-          name: '타이레놀정 500mg (AI 비전 스마트 인식)',
+          name: '타이레놀정 500mg (AI 사진 분석 완료)',
           efficacy: '발열 및 통증, 두통, 신경통, 근육통 완화',
           dosage: '1일 3~4회, 필요시 공복을 피하여 1~2알 복용',
           warning: '매일 세 잔 이상 정기적으로 술을 마시는 사람이 복용할 경우 반드시 의사와 상의하세요.',
@@ -63,150 +63,182 @@ function App() {
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'ko-KR';
-    utterance.rate = 0.9;
+    utterance.rate = 0.85;
     window.speechSynthesis.speak(utterance);
   };
 
   return (
     <div style={{ 
       fontSize: fontSize, 
-      backgroundColor: '#f8fafc', 
+      backgroundColor: '#f1f5f9', 
       minHeight: '100vh', 
       margin: 0, 
-      padding: '60px 20px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif',
+      padding: '0 0 60px 0', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", sans-serif',
       color: '#0f172a',
       WebkitFontSmoothing: 'antialiased'
     }}>
       
-      {/* 🚀 시네마틱 인트로 스플래시 화면 */}
+      {/* 🚀 1. 시네마틱 한글 인트로 스플래시 */}
       {showIntro && (
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-          background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)',
+          background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999,
-          animation: 'fadeOut 0.6s ease 1.8s forwards'
+          animation: 'fadeOut 0.5s ease 1.6s forwards'
         }}>
           <div style={{ textAlign: 'center', color: '#ffffff' }}>
-            <div style={{ fontSize: '60px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)', width: '100px', height: '100px', margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '28px', border: '1px solid rgba(255,255,255,0.15)' }}>💊</div>
-            <h1 style={{ fontSize: '2.2em', fontWeight: '800', margin: '0 0 8px', letterSpacing: '-1px' }}>MediGuide AI</h1>
-            <p style={{ fontSize: '1em', color: '#94a3b8', margin: '0 0 32px', fontWeight: '500' }}>Professional Healthcare Intelligence</p>
-            <div style={{ width: '180px', height: '4px', background: 'rgba(255,255,255,0.15)', borderRadius: '10px', margin: '0 auto', overflow: 'hidden' }}>
-              <div style={{ width: '100%', height: '100%', background: '#ffffff', borderRadius: '10px', animation: 'loadBar 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards' }}></div>
+            <div style={{ fontSize: '56px', background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(12px)', width: '100px', height: '100px', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '28px', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>💊</div>
+            <h1 style={{ fontSize: '2.2em', fontWeight: '900', margin: '0 0 8px', letterSpacing: '-1px' }}>의약품 안내 AI</h1>
+            <p style={{ fontSize: '1.05em', color: '#bfdbfe', margin: '0 0 28px', fontWeight: '600' }}>어르신과 온 가족을 위한 쉽고 안전한 복약 비서</p>
+            <div style={{ width: '180px', height: '5px', background: 'rgba(255,255,255,0.2)', borderRadius: '10px', margin: '0 auto', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '100%', background: '#ffffff', borderRadius: '10px', animation: 'loadBar 1.4s ease forwards' }}></div>
             </div>
           </div>
         </div>
       )}
 
-      {/* 하이엔드 에이전시 레이아웃 (박스 가둠 없이 넓고 쾌적한 구조) */}
-      <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-        
-        {/* 네비게이션 바 */}
-        <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '48px' }}>
+      {/* 🏛️ 2. 최상단 풀와이드 공식 상단바 (에이전시/기업 서비스 느낌) */}
+      <header style={{ 
+        background: '#ffffff', 
+        borderBottom: '1px solid #e2e8f0', 
+        padding: '16px 24px', 
+        position: 'sticky', 
+        top: 0, 
+        zIndex: 100, 
+        boxShadow: '0 4px 20px rgba(0,0,0,0.03)' 
+      }}>
+        <div style={{ maxWidth: '960px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ fontSize: '20px', background: '#2563eb', color: '#ffffff', width: '40px', height: '40px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>💊</div>
-            <span style={{ fontSize: '1.1em', fontWeight: '800', color: '#0f172a', letterSpacing: '-0.5px' }}>MediGuide.ai</span>
-          </div>
-
-          {/* 미니멀 접근성 컨트롤 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '0.75em', color: '#64748b', fontWeight: '600' }}>글자크기</span>
-            <div style={{ display: 'flex', gap: '2px', background: '#ffffff', padding: '3px', borderRadius: '10px', border: '1px solid #e2e8f0', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' }}>
-              <button type="button" onClick={() => setFontSize('14px')} style={{ background: fontSize === '14px' ? '#f1f5f9' : 'transparent', border: 'none', borderRadius: '8px', padding: '4px 10px', fontSize: '0.75em', fontWeight: '700', cursor: 'pointer', color: fontSize === '14px' ? '#2563eb' : '#64748b' }}>일반</button>
-              <button type="button" onClick={() => setFontSize('16px')} style={{ background: fontSize === '16px' ? '#f1f5f9' : 'transparent', border: 'none', borderRadius: '8px', padding: '4px 10px', fontSize: '0.75em', fontWeight: '700', cursor: 'pointer', color: fontSize === '16px' ? '#2563eb' : '#64748b' }}>크게</button>
-              <button type="button" onClick={() => setFontSize('20px')} style={{ background: fontSize === '20px' ? '#f1f5f9' : 'transparent', border: 'none', borderRadius: '8px', padding: '4px 10px', fontSize: '0.75em', fontWeight: '700', cursor: 'pointer', color: fontSize === '20px' ? '#2563eb' : '#64748b' }}>특대</button>
+            <div style={{ background: 'linear-gradient(135deg, #2563eb, #1d4ed8)', color: '#ffffff', width: '38px', height: '38px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', boxShadow: '0 4px 10px rgba(37,99,235,0.3)' }}>💊</div>
+            <div>
+              <span style={{ fontSize: '1.2em', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.5px', display: 'block', lineHeight: 1.1 }}>의약품 안내 AI</span>
+              <span style={{ fontSize: '0.7em', color: '#2563eb', fontWeight: '800' }}>스마트 복약 케어 서비스</span>
             </div>
           </div>
-        </nav>
 
-        {/* 메인 히어로 섹션 (토스/애플 스타일 타이포그래피) */}
-        <section style={{ marginBottom: '40px', textAlign: 'left' }}>
-          <div style={{ display: 'inline-block', padding: '4px 12px', background: '#dbeafe', color: '#1e40af', borderRadius: '20px', fontSize: '0.75em', fontWeight: '700', marginBottom: '16px', letterSpacing: '0.5px' }}>
-            AI VISION OCR SYSTEM
+          {/* 어르신 친화 글자크기 스위처 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '0.8em', color: '#64748b', fontWeight: '700' }}>글자 크기</span>
+            <div style={{ display: 'flex', gap: '3px', background: '#f8fafc', padding: '3px', borderRadius: '12px', border: '1px solid #cbd5e1' }}>
+              <button type="button" onClick={() => setFontSize('14px')} style={{ background: fontSize === '14px' ? '#2563eb' : 'transparent', color: fontSize === '14px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer', transition: 'all 0.2s' }}>기본</button>
+              <button type="button" onClick={() => setFontSize('16px')} style={{ background: fontSize === '16px' ? '#2563eb' : 'transparent', color: fontSize === '16px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer', transition: 'all 0.2s' }}>크게</button>
+              <button type="button" onClick={() => setFontSize('20px')} style={{ background: fontSize === '20px' ? '#2563eb' : 'transparent', color: fontSize === '20px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer', transition: 'all 0.2s' }}>특대</button>
+            </div>
           </div>
-          <h1 style={{ fontSize: '2.2em', fontWeight: '800', color: '#0f172a', margin: '0 0 16px', lineHeight: '1.25', letterSpacing: '-1px' }}>
-            약봉투와 처방전을 올리면<br/><span style={{ color: '#2563eb' }}>가장 정확하게 분석</span>합니다.
+        </div>
+      </header>
+
+      {/* 🏛️ 3. 본문 레이아웃 (시원시원한 반응형 메인 센터 구역) */}
+      <main style={{ maxWidth: '880px', margin: '40px auto 0', padding: '0 20px' }}>
+        
+        {/* 히어로 헤더 섹션 */}
+        <section style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 16px', background: '#dbeafe', color: '#1e40af', borderRadius: '30px', fontSize: '0.85em', fontWeight: '800', marginBottom: '16px' }}>
+            <span>✨</span> 인공지능 자율 분석 시스템
+          </div>
+          <h1 style={{ fontSize: '2.4em', fontWeight: '900', color: '#0f172a', margin: '0 0 14px', lineHeight: 1.3, letterSpacing: '-1px' }}>
+            약봉투 사진 한 장으로<br/><span style={{ color: '#2563eb', textDecoration: 'underline', textUnderlineOffset: '6px' }}>복약 방법을 알기 쉽게</span> 확인하세요
           </h1>
-          <p style={{ fontSize: '1.05em', color: '#475569', margin: 0, lineHeight: '1.6' }}>어르신과 가족을 위한 맞춤형 복약 안내, AI가 알기 쉽게 설명해 드립니다.</p>
+          <p style={{ fontSize: '1.1em', color: '#475569', margin: 0, lineHeight: 1.6, fontWeight: '500' }}>복잡한 의학 용어와 작은 글씨도 AI가 어르신의 눈높이에 맞춰 친절하게 읽어드립니다.</p>
         </section>
 
-        {/* 프리미엄 파일 업로드 존 */}
-        <label htmlFor="ocr-file-input" style={{ display: 'block', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '36px', cursor: 'pointer', marginBottom: '24px', boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.04)', transition: 'all 0.2s ease' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <div style={{ fontSize: '32px', background: '#f8fafc', color: '#2563eb', width: '64px', height: '64px', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #e2e8f0' }}>📁</div>
-            <div>
-              <h3 style={{ fontSize: '1.15em', fontWeight: '700', color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.3px' }}>처방전 및 약봉투 사진 업로드</h3>
-              <p style={{ fontSize: '0.9em', color: '#64748b', margin: 0 }}>파일을 드래그하거나 클릭하여 사진을 첨부하세요</p>
+        {/* 📸 메인 기능 카드 1: 약봉투 사진 업로드 */}
+        <div style={{ background: '#ffffff', border: '2px dashed #93c5fd', borderRadius: '24px', padding: '36px', marginBottom: '28px', boxShadow: '0 12px 30px rgba(37,99,235,0.06)', transition: 'all 0.2s ease' }}>
+          <label htmlFor="ocr-file-input" style={{ display: 'flex', alignItems: 'center', gap: '24px', cursor: 'pointer' }}>
+            <div style={{ width: '72px', height: '72px', background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', color: '#2563eb', borderRadius: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0, boxShadow: '0 8px 20px rgba(37,99,235,0.15)' }}>📸</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <h3 style={{ fontSize: '1.25em', fontWeight: '800', color: '#0f172a', margin: 0 }}>약봉투 / 처방전 사진 촬영 및 업로드</h3>
+                <span style={{ background: '#2563eb', color: '#fff', fontSize: '0.7em', fontWeight: '800', padding: '2px 8px', borderRadius: '6px' }}>추천</span>
+              </div>
+              <p style={{ fontSize: '0.95em', color: '#64748b', margin: 0 }}>카메라로 사진을 찍거나 약봉투 이미지를 올려주시면 자동 분석됩니다.</p>
             </div>
-          </div>
+            <span style={{ background: '#2563eb', color: '#ffffff', padding: '12px 24px', borderRadius: '14px', fontWeight: '800', fontSize: '0.95em', boxShadow: '0 4px 12px rgba(37,99,235,0.25)' }}>사진 선택</span>
+          </label>
           <input id="ocr-file-input" type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
-        </label>
 
-        {selectedImage && (
-          <div style={{ marginBottom: '24px', background: '#ffffff', padding: '16px', borderRadius: '20px', border: '1px solid #e2e8f0', textAlign: 'center', boxShadow: '0 10px 25px rgba(0,0,0,0.02)' }}>
-            <img src={selectedImage} alt="미리보기" style={{ maxWidth: '100%', maxHeight: '180px', borderRadius: '12px', objectFit: 'contain' }} />
-            <div style={{ marginTop: '12px', fontSize: '0.85em', fontWeight: '700', color: '#2563eb' }}>✨ 이미지 분석 준비 완료</div>
-          </div>
-        )}
+          {selectedImage && (
+            <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #e2e8f0', textAlign: 'center' }}>
+              <img src={selectedImage} alt="선택한 약봉투" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '16px', border: '1px solid #cbd5e1' }} />
+              <p style={{ marginTop: '10px', fontSize: '0.95em', fontWeight: '800', color: '#2563eb' }}>✅ 약봉투 사진이 성공적으로 인식되었습니다!</p>
+            </div>
+          )}
+        </div>
 
-        {/* 검색 폼 바 */}
-        <form onSubmit={handleSearch} style={{ display: 'flex', gap: '10px', marginBottom: '40px' }}>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="궁금한 약 이름이나 증상을 입력하세요 (예: 타이레놀)"
-            style={{ flex: 1, padding: '18px 24px', border: '1px solid #e2e8f0', borderRadius: '16px', fontSize: '1em', outline: 'none', background: '#ffffff', color: '#0f172a', boxShadow: '0 2px 4px rgba(0,0,0,0.02)', transition: 'border-color 0.2s' }}
-          />
-          <button type="submit" style={{ padding: '0 28px', backgroundColor: '#0f172a', color: 'white', border: 'none', borderRadius: '16px', fontSize: '0.95em', fontWeight: '700', cursor: 'pointer', boxShadow: '0 4px 12px rgba(15, 23, 42, 0.1)' }}>검색</button>
-        </form>
+        {/* 🔍 메인 기능 카드 2: 직접 약 이름 검색 */}
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '32px', marginBottom: '32px', boxShadow: '0 10px 25px rgba(0,0,0,0.03)' }}>
+          <h3 style={{ fontSize: '1.1em', fontWeight: '800', color: '#0f172a', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>🔍</span> 약 이름이나 증상으로 찾아보기
+          </h3>
+          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '12px' }}>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="예: 타이레놀, 두통약, 감기약 복용법..."
+              style={{ flex: 1, padding: '18px 22px', border: '2px solid #cbd5e1', borderRadius: '16px', fontSize: '1em', outline: 'none', background: '#f8fafc', color: '#0f172a', fontWeight: '600' }}
+            />
+            <button type="submit" style={{ padding: '0 32px', backgroundColor: '#0f172a', color: '#ffffff', border: 'none', borderRadius: '16px', fontSize: '1em', fontWeight: '800', cursor: 'pointer', boxShadow: '0 4px 14px rgba(15,23,42,0.2)' }}>검색하기</button>
+          </form>
+        </div>
 
+        {/* ⏳ 분석 로딩 창 */}
         {loading && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '24px', color: '#2563eb', fontWeight: '600', fontSize: '0.95em', background: '#eff6ff', borderRadius: '16px', marginBottom: '32px' }}>
-            <div style={{ width: '18px', height: '18px', border: '2px solid rgba(37,99,235,0.2)', borderTopColor: '#2563eb', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></div>
-            <span>AI 비전 엔진이 약품 정보를 정밀 분석 중입니다...</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '36px', color: '#2563eb', fontWeight: '800', fontSize: '1.1em', background: '#ffffff', border: '2px solid #93c5fd', borderRadius: '24px', marginBottom: '32px', boxShadow: '0 10px 25px rgba(37,99,235,0.08)' }}>
+            <div style={{ width: '24px', height: '24px', border: '3px solid rgba(37,99,235,0.2)', borderTopColor: '#2563eb', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></div>
+            <span>인공지능이 복약 안내 정보를 정밀 분석하고 있습니다...</span>
           </div>
         )}
 
-        {/* 하이엔드 결과 카드 */}
+        {/* 📋 4. 분석 결과 마스터 리포트 카드 */}
         {result && !loading && (
-          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '36px', boxShadow: '0 20px 40px -15px rgba(15, 23, 42, 0.05)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <span style={{ fontSize: '0.75em', background: '#dcfce7', color: '#15803d', padding: '4px 12px', borderRadius: '20px', fontWeight: '700' }}>분석 완료</span>
-              <button type="button" onClick={handleSpeak} style={{ backgroundColor: '#2563eb', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '10px', fontSize: '0.85em', fontWeight: '700', cursor: 'pointer', boxShadow: '0 4px 12px rgba(37,99,235,0.2)' }}>🔊 음성 안내 듣기</button>
+          <article style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '28px', padding: '40px', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.07)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+              <span style={{ fontSize: '0.85em', background: '#dcfce7', color: '#15803d', padding: '6px 16px', borderRadius: '20px', fontWeight: '800', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <span>✅</span> AI 안전 검토 완료
+              </span>
+              <button type="button" onClick={handleSpeak} style={{ backgroundColor: '#2563eb', color: '#ffffff', border: 'none', padding: '10px 20px', borderRadius: '14px', fontSize: '0.95em', fontWeight: '800', cursor: 'pointer', boxShadow: '0 4px 14px rgba(37,99,235,0.3)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>🔊</span> 음성으로 크게 듣기
+              </button>
             </div>
             
-            <h3 style={{ fontSize: '1.5em', fontWeight: '800', color: '#0f172a', margin: '0 0 24px', paddingBottom: '16px', borderBottom: '1px solid #f1f5f9', letterSpacing: '-0.5px' }}>{result.name}</h3>
+            <h2 style={{ fontSize: '1.8em', fontWeight: '900', color: '#0f172a', margin: '0 0 28px', paddingBottom: '18px', borderBottom: '2px solid #f1f5f9', letterSpacing: '-0.5px' }}>{result.name}</h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', background: '#f8fafc', padding: '20px', borderRadius: '16px' }}>
-                <span style={{ fontSize: '1.2em' }}>✨</span>
+              
+              {/* 효능 정보 */}
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', background: '#f8fafc', padding: '22px', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '24px', background: '#ffffff', padding: '12px', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>✨</div>
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.75em', color: '#64748b', fontWeight: '700', marginBottom: '4px', textTransform: 'uppercase' }}>효능 및 효과</span>
-                  <p style={{ margin: 0, color: '#0f172a', fontSize: '1em', lineHeight: '1.6' }}>{result.efficacy}</p>
+                  <span style={{ display: 'block', fontSize: '0.85em', color: '#2563eb', fontWeight: '800', marginBottom: '4px' }}>약의 효능 및 효과</span>
+                  <p style={{ margin: 0, color: '#0f172a', fontSize: '1.05em', lineHeight: 1.6, fontWeight: '600' }}>{result.efficacy}</p>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', background: '#f8fafc', padding: '20px', borderRadius: '16px' }}>
-                <span style={{ fontSize: '1.2em' }}>⏰</span>
+              {/* 용법 용량 */}
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', background: '#f8fafc', padding: '22px', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '24px', background: '#ffffff', padding: '12px', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>⏰</div>
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.75em', color: '#64748b', fontWeight: '700', marginBottom: '4px', textTransform: 'uppercase' }}>용법 및 용량</span>
-                  <p style={{ margin: 0, color: '#0f172a', fontSize: '1em', lineHeight: '1.6' }}>{result.dosage}</p>
+                  <span style={{ display: 'block', fontSize: '0.85em', color: '#2563eb', fontWeight: '800', marginBottom: '4px' }}>올바른 복용 방법</span>
+                  <p style={{ margin: 0, color: '#0f172a', fontSize: '1.05em', lineHeight: 1.6, fontWeight: '600' }}>{result.dosage}</p>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', background: '#fff1f2', padding: '20px', borderRadius: '16px', border: '1px solid #fecdd3' }}>
-                <span style={{ fontSize: '1.2em' }}>⚠️</span>
+              {/* 주의사항 경고 */}
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', background: '#fff1f2', padding: '22px', borderRadius: '20px', border: '1px solid #fecdd3' }}>
+                <div style={{ fontSize: '24px', background: '#ffffff', padding: '12px', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>⚠️</div>
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.75em', color: '#be123c', fontWeight: '700', marginBottom: '4px', textTransform: 'uppercase' }}>주의사항 및 금기</span>
-                  <p style={{ margin: 0, color: '#881337', fontSize: '1em', lineHeight: '1.6', fontWeight: '600' }}>{result.warning}</p>
+                  <span style={{ display: 'block', fontSize: '0.85em', color: '#be123c', fontWeight: '800', marginBottom: '4px' }}>주의사항 및 금기사항</span>
+                  <p style={{ margin: 0, color: '#881337', fontSize: '1.05em', lineHeight: 1.6, fontWeight: '700' }}>{result.warning}</p>
                 </div>
               </div>
+
             </div>
-          </div>
+          </article>
         )}
 
-      </div>
+      </main>
     </div>
   );
 }
