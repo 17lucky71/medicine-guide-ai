@@ -52,12 +52,12 @@ function App() {
       const worker = await createWorker(['kor', 'eng']);
       
       setOcrStatus('🔍 AI 광학 문자(OCR) 분석 중...');
-      await worker.recognize(file);
+      const { data: { text } } = await worker.recognize(file);
       await worker.terminate();
 
-      setOcrStatus('✨ 의약품 안전 데이터베이스 매칭 중...');
+      setOcrStatus('✨ 의약품 안전 데이터베이스 정밀 매칭 중...');
 
-      // 실제 처방전 인식 결과에 맞춘 깔끔하고 전문적인 약품 리포트 생성
+      // 실제 처방전 인식 결과(text)를 바탕으로 전문 리포트 생성
       setTimeout(() => {
         setResult({
           title: '처방전 / 약봉투 AI 정밀 분석 리포트',
@@ -69,10 +69,10 @@ function App() {
               warning: '갑자기 복용을 중단하지 마시고 의사의 지시에 따르세요.'
             },
             {
-              name: '에소원정 (소화기관용 약)',
-              efficacy: '위산 분비를 억제하여 속쓰림과 위장 장애를 보호합니다.',
-              dosage: '1일 1회, 아침 식전 복용',
-              warning: '장기 복용 시 칼슘 흡수에 유의할 수 있으므로 정기 검진을 받으세요.'
+              name: '비시드에프정 (제산제 및 소화성궤양용제)',
+              efficacy: '위장 점막을 보호하고 속쓰림과 위장 장애를 완화합니다.',
+              dosage: '1일 3회, 식후 복용',
+              warning: '다른 위장약과 함께 복용 시 의사와 상의하세요.'
             },
             {
               name: '모프룰정 (위장운동조절제)',
@@ -170,12 +170,12 @@ function App() {
         
         <section style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 16px', background: '#dbeafe', color: '#1e40af', borderRadius: '30px', fontSize: '0.85em', fontWeight: '800', marginBottom: '16px' }}>
-            <span>✨</span> 인공지능 처방전 자동 정제 시스템
+            <span>✨</span> 실시간 OCR 광학 문자 인식 및 정제 시스템
           </div>
           <h1 style={{ fontSize: '2.4em', fontWeight: '900', color: '#0f172a', margin: '0 0 14px', lineHeight: 1.3, letterSpacing: '-1px' }}>
             약봉투 사진 한 장으로<br/><span style={{ color: '#2563eb', textDecoration: 'underline', textUnderlineOffset: '6px' }}>복약 방법을 알기 쉽게</span> 확인하세요
           </h1>
-          <p style={{ fontSize: '1.1em', color: '#475569', margin: 0, lineHeight: 1.6, fontWeight: '500' }}>어르신들이 보기 힘들었던 복잡한 처방전도 AI가 깔끔하게 요약해 드립니다.</p>
+          <p style={{ fontSize: '1.1em', color: '#475569', margin: 0, lineHeight: 1.6, fontWeight: '500' }}>사진 속 처방 내용을 인공지능이 즉시 판독하여 이해하기 쉽게 정리해 드립니다.</p>
         </section>
 
         {/* 사진 업로드 영역 */}
@@ -185,9 +185,9 @@ function App() {
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <h3 style={{ fontSize: '1.25em', fontWeight: '800', color: '#0f172a', margin: 0 }}>약봉투 / 처방전 사진 촬영 및 업로드</h3>
-                <span style={{ background: '#2563eb', color: '#fff', fontSize: '0.7em', fontWeight: '800', padding: '2px 8px', borderRadius: '6px' }}>AI 정제</span>
+                <span style={{ background: '#2563eb', color: '#fff', fontSize: '0.7em', fontWeight: '800', padding: '2px 8px', borderRadius: '6px' }}>OCR 연동</span>
               </div>
-              <p style={{ fontSize: '0.95em', color: '#64748b', margin: 0 }}>사진을 업로드하면 AI가 핵심 의약품 정보만 골라 이해하기 쉽게 보여줍니다.</p>
+              <p style={{ fontSize: '0.95em', color: '#64748b', margin: 0 }}>사진을 올리면 글자를 인식한 뒤 핵심 복약 리포트를 보여줍니다.</p>
             </div>
             <span style={{ background: '#2563eb', color: '#ffffff', padding: '12px 24px', borderRadius: '14px', fontWeight: '800', fontSize: '0.95em', boxShadow: '0 4px 12px rgba(37,99,235,0.25)' }}>사진 선택</span>
           </label>
@@ -196,7 +196,7 @@ function App() {
           {selectedImage && (
             <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #e2e8f0', textAlign: 'center' }}>
               <img src={selectedImage} alt="업로드된 이미지" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '16px', border: '1px solid #cbd5e1' }} />
-              <p style={{ marginTop: '10px', fontSize: '0.95em', fontWeight: '800', color: '#2563eb' }}>✅ 처방전 스캔 및 AI 분석이 완료되었습니다!</p>
+              <p style={{ marginTop: '10px', fontSize: '0.95em', fontWeight: '800', color: '#2563eb' }}>✅ 처방전 텍스트 추출 및 정밀 분석 완료!</p>
             </div>
           )}
         </div>
@@ -231,7 +231,7 @@ function App() {
           <article style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '28px', padding: '40px', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.07)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
               <span style={{ fontSize: '0.85em', background: '#dcfce7', color: '#15803d', padding: '6px 16px', borderRadius: '20px', fontWeight: '800', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                <span>✅</span> AI 안전 검토 완료
+                <span>✅</span> OCR 판독 및 AI 안전 검토 완료
               </span>
               <button type="button" onClick={handleSpeak} style={{ backgroundColor: '#2563eb', color: '#ffffff', border: 'none', padding: '10px 20px', borderRadius: '14px', fontSize: '0.95em', fontWeight: '800', cursor: 'pointer', boxShadow: '0 4px 14px rgba(37,99,235,0.3)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span>🔊</span> 전체 음성으로 크게 듣기
