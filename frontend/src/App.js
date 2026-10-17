@@ -9,7 +9,7 @@ function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // 2.2초 동안 멋진 인트로 화면을 보여준 뒤 메인으로 부드럽게 전환
+  // 2.2초 후 인트로 스플래시 자동 종료
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
@@ -71,10 +71,10 @@ function App() {
 
   return (
     <div className={`app-wrapper font-${fontSize}`}>
-      {/* 🚀 접속 시 나타나는 시네마틱 인트로 스플래시 화면 */}
+      {/* 🚀 시네마틱 인트로 스플래시 화면 */}
       {showIntro && (
         <div className="intro-splash-screen">
-          <div className="intro-content-box animate-intro-pop">
+          <div className="intro-content-box">
             <div className="intro-logo-icon">💊</div>
             <h1 className="intro-title">MediGuide AI</h1>
             <p className="intro-subtitle">AI로 완성하는 가장 스마트한 복약 케어</p>
@@ -85,11 +85,12 @@ function App() {
         </div>
       )}
 
-      {/* 배경 그래픽 장식 원형 효과 */}
+      {/* 배경 은은한 빛 효과 */}
       <div className="bg-glow-shape shape-1"></div>
       <div className="bg-glow-shape shape-2"></div>
 
-      <div className="global-container animate-fade-in">
+      {/* 메인 메인 카드 컨테이너 */}
+      <main className="global-container">
         
         {/* 상단 네비게이션 헤더 */}
         <header className="global-header">
@@ -133,7 +134,7 @@ function App() {
         {/* OCR 사진 업로드 그래픽 카드 */}
         <section className="upload-section-card">
           <label htmlFor="ocr-file-input" className="upload-dropzone">
-            <div className="upload-icon-circle pulse-animation">📸</div>
+            <div className="upload-icon-circle">📸</div>
             <div className="upload-content-info">
               <h3>약봉투 / 처방전 사진 올리기</h3>
               <p>카메라로 촬영하거나 갤러리에서 간편하게 선택하세요</p>
@@ -147,7 +148,7 @@ function App() {
             style={{ display: 'none' }} 
           />
           {selectedImage && (
-            <div className="active-preview-box animate-pop-in">
+            <div className="active-preview-box">
               <img src={selectedImage} alt="업로드된 약봉투" />
               <div className="preview-status-badge">✨ AI 정밀 분석 완료</div>
             </div>
@@ -171,7 +172,7 @@ function App() {
         </form>
 
         {loading && (
-          <div className="loading-state-container animate-fade-in">
+          <div className="loading-state-container">
             <div className="spinner-dot"></div>
             <span>AI가 의약품 안전 정보를 분석하고 있습니다...</span>
           </div>
@@ -179,7 +180,7 @@ function App() {
 
         {/* 결과 마스터 카드 */}
         {result && !loading && (
-          <article className="result-master-card animate-slide-up">
+          <article className="result-master-card">
             <div className="card-top-bar">
               <div className="result-tag-pill">안전 검토 완료</div>
               <button type="button" onClick={handleSpeak} className="tts-voice-trigger">
@@ -217,7 +218,7 @@ function App() {
           </article>
         )}
 
-      </div>
+      </main>
     </div>
   );
 }
