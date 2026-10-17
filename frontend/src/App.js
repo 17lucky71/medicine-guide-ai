@@ -4,25 +4,51 @@ import './App.css';
 function App() {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState(null);
-  const [fontSize, setFontSize] = useState('medium'); // 'small', 'medium', 'large'
+  const [fontSize, setFontSize] = useState('medium');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  // 텍스트 검색 처리
   const handleSearch = (e) => {
     e.preventDefault();
     if (!query.trim()) return;
 
-    setResult({
-      name: query,
-      efficacy: '통증 완화, 해열 및 소염 작용을 돕습니다.',
-      dosage: '1일 3회, 식후 30분 복용 (증상에 따라 조절)',
-      warning: '복용 중 음주는 피해주시고, 졸음이 올 수 있으니 운전 시 주의하세요.',
-    });
+    setLoading(true);
+    setTimeout(() => {
+      setResult({
+        name: query,
+        efficacy: '통증 완화, 해열 및 소염 작용을 돕습니다.',
+        dosage: '1일 3회, 식후 30분 복용 (증상에 따라 조절)',
+        warning: '복용 중 음주는 피해주시고, 졸음이 올 수 있으니 운전 시 주의하세요.',
+      });
+      setLoading(false);
+    }, 600);
+  };
+
+  // 이미지 파일 선택(업로드) 처리
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(URL.createObjectURL(file));
+      setLoading(true);
+
+      // OCR 분석 시뮬레이션 (나중에 백엔드 OCR API와 연동할 수 있습니다)
+      setTimeout(() => {
+        setQuery('타이레놀정 500mg (OCR 인식)');
+        setResult({
+          name: '타이레놀정 500mg (약봉투 인식 결과)',
+          efficacy: '발열 및 통증, 두통, 신경통, 근육통 완화',
+          dosage: '1일 3~4회, 필요시 공복을 피하여 복용',
+          warning: '매일 한 잔 이상 술을 마시는 사람이 이 약을 복용할 경우 간 손상이 유발될 수 있습니다.',
+        });
+        setLoading(false);
+      }, 1000);
+    }
   };
 
   // 음성 안내 (TTS) 기능
   const handleSpeak = () => {
     if (!result) return;
-
-    // 진행 중인 음성이 있다면 중지
     window.speechSynthesis.cancel();
 
     const textToSpeak = `
@@ -34,8 +60,7 @@ function App() {
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'ko-KR';
-    utterance.rate = 0.9; // 어르신들이 듣기 편하도록 살짝 천천히 읽기
-
+    utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
   };
 
@@ -44,7 +69,6 @@ function App() {
       <header className="header">
         <div className="top-controls">
           <div className="logo-badge">AI Health Guide</div>
-          {/* 폰트 크기 조절 버튼 */}
           <div className="font-resizer">
             <span>글자 크기:</span>
             <button 
@@ -62,9 +86,35 @@ function App() {
           </div>
         </div>
 
-        <h1>💊 의약품 안내 AI</h1>
-        <p>궁금한 약 이름이나 증상을 입력하시면 AI가 친절하게 안내해 드립니다.</p>
+        <h1>💊 약봉투 AI 안내 서비스</h1>
+        <p>약봉투 사진을 찍어 올리거나, 약 이름을 직접 입력해 주세요.</p>
       </header>
+
+      {/* OCR 사진 업로드 박스 */}
+      <div className="upload-section">
+        <label htmlFor="ocr-file-input" className="upload-box">
+          <div className="upload-icon">📷</div>
+          <div className="upload-text">
+            <strong>약봉투 사진 업로드하기</strong>
+            <span>카메라로 촬영하거나 갤러리에서 선택하세요</span>
+          </div>
+          <input 
+            id="ocr-file-input" 
+            type="file" 
+            accept="image/*" 
+            onChange={handleImageChange} 
+            style={{ display: 'none' }} 
+          />
+        </label>
+        {selectedImage && (
+          <div className="image-preview">
+            <img src={selectedImage} alt="약봉투 미리보기" />
+            <p>✅ 사진이 업로드되었습니다. OCR 분석 중...</p>
+          </div>
+        )}
+      </div>
+
+      <div className="divider"><span>또는 직접 검색</span></div>
 
       <form onSubmit={handleSearch} className="search-form">
         <input
@@ -77,13 +127,14 @@ function App() {
         <button type="submit" className="search-button">검색하기</button>
       </form>
 
-      {result && (
+      {loading && <div className="loading-message">⏳ AI가 약 정보를 분석하고 있습니다...</div>}
+
+      {result && !loading && (
         <div className="result-card">
           <div className="result-header">
-            <span className="badge">검색 결과</span>
+            <span className="badge">복약 안내 결과</span>
             <div className="result-title-row">
               <h2>{result.name}</h2>
-              {/* 음성 듣기 버튼 */}
               <button onClick={handleSpeak} className="tts-button" title="음성으로 듣기">
                 🔊 음성 안내 듣기
               </button>
