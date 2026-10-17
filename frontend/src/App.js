@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const [showIntro, setShowIntro] = useState(true);
   const [query, setQuery] = useState('');
   const [result, setResult] = useState(null);
   const [fontSize, setFontSize] = useState('medium');
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // 2.2초 동안 멋진 인트로 화면을 보여준 뒤 메인으로 부드럽게 전환
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -62,6 +71,20 @@ function App() {
 
   return (
     <div className={`app-wrapper font-${fontSize}`}>
+      {/* 🚀 접속 시 나타나는 시네마틱 인트로 스플래시 화면 */}
+      {showIntro && (
+        <div className="intro-splash-screen">
+          <div className="intro-content-box animate-intro-pop">
+            <div className="intro-logo-icon">💊</div>
+            <h1 className="intro-title">MediGuide AI</h1>
+            <p className="intro-subtitle">AI로 완성하는 가장 스마트한 복약 케어</p>
+            <div className="intro-loader-bar">
+              <div className="intro-loader-progress"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 배경 그래픽 장식 원형 효과 */}
       <div className="bg-glow-shape shape-1"></div>
       <div className="bg-glow-shape shape-2"></div>
