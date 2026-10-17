@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState(null);
-  const [fontSize, setFontSize] = useState('medium'); // 'small', 'medium', 'large'
+  const [fontSize, setFontSize] = useState('medium');
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +33,7 @@ function App() {
       setTimeout(() => {
         setQuery('타이레놀정 500mg');
         setResult({
-          name: '타이레놀정 500mg (AI 스마트 인식)',
+          name: '타이레놀정 500mg (AI 비전 스마트 인식)',
           efficacy: '발열 및 통증, 두통, 신경통, 근육통 완화',
           dosage: '1일 3~4회, 필요시 공복을 피하여 1~2알 복용',
           warning: '매일 세 잔 이상 정기적으로 술을 마시는 사람이 복용할 경우 반드시 의사와 상의하세요.',
@@ -62,12 +62,16 @@ function App() {
 
   return (
     <div className={`app-wrapper font-${fontSize}`}>
-      <div className="global-container">
+      {/* 배경 그래픽 장식 원형 효과 */}
+      <div className="bg-glow-shape shape-1"></div>
+      <div className="bg-glow-shape shape-2"></div>
+
+      <div className="global-container animate-fade-in">
         
         {/* 상단 네비게이션 헤더 */}
         <header className="global-header">
           <div className="brand-identity">
-            <div className="brand-icon">💊</div>
+            <div className="brand-icon-animated">💊</div>
             <div className="brand-text">
               <h1>MediGuide AI</h1>
               <span>스마트 복약 케어 솔루션</span>
@@ -75,7 +79,7 @@ function App() {
           </div>
 
           <div className="accessibility-panel">
-            <span className="panel-label">글자 크기</span>
+            <span className="panel-label">글자 크기 조절</span>
             <div className="size-buttons">
               <button 
                 type="button"
@@ -98,15 +102,15 @@ function App() {
 
         {/* 히어로 타이틀 섹션 */}
         <section className="hero-section">
-          <div className="hero-badge">✨ 최신 AI 비전 및 OCR 기술 적용</div>
+          <div className="hero-badge">✨ 최신 AI 비전 & OCR 기술 탑재</div>
           <h2>약봉투와 처방전을 촬영하면<br/><strong>AI가 알기 쉽게 분석</strong>해 드립니다</h2>
           <p>어르신과 온 가족의 건강한 복약 습관, 지금 바로 시작하세요.</p>
         </section>
 
-        {/* OCR 사진 업로드 인터랙티브 카드 */}
+        {/* OCR 사진 업로드 그래픽 카드 */}
         <section className="upload-section-card">
           <label htmlFor="ocr-file-input" className="upload-dropzone">
-            <div className="upload-icon-circle">📸</div>
+            <div className="upload-icon-circle pulse-animation">📸</div>
             <div className="upload-content-info">
               <h3>약봉투 / 처방전 사진 올리기</h3>
               <p>카메라로 촬영하거나 갤러리에서 간편하게 선택하세요</p>
@@ -120,7 +124,7 @@ function App() {
             style={{ display: 'none' }} 
           />
           {selectedImage && (
-            <div className="active-preview-box">
+            <div className="active-preview-box animate-pop-in">
               <img src={selectedImage} alt="업로드된 약봉투" />
               <div className="preview-status-badge">✨ AI 정밀 분석 완료</div>
             </div>
@@ -144,15 +148,15 @@ function App() {
         </form>
 
         {loading && (
-          <div className="loading-state-container">
+          <div className="loading-state-container animate-fade-in">
             <div className="spinner-dot"></div>
             <span>AI가 의약품 안전 정보를 분석하고 있습니다...</span>
           </div>
         )}
 
-        {/* 결과 카드 섹션 */}
+        {/* 결과 마스터 카드 */}
         {result && !loading && (
-          <article className="result-master-card">
+          <article className="result-master-card animate-slide-up">
             <div className="card-top-bar">
               <div className="result-tag-pill">안전 검토 완료</div>
               <button type="button" onClick={handleSpeak} className="tts-voice-trigger">
