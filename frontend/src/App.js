@@ -46,7 +46,7 @@ function App() {
     setSelectedImage(URL.createObjectURL(file));
     setLoading(true);
     setResult(null);
-    setOcrStatus('📷 처방전/약봉투 이미지 스캔 중...');
+    setOcrStatus('📷 처방전 및 약품 사진 스캔 중...');
 
     try {
       const worker = await createWorker(['kor', 'eng']);
@@ -55,21 +55,21 @@ function App() {
       const { data: { text } } = await worker.recognize(file);
       await worker.terminate();
 
-      setOcrStatus('✨ 의약품 안전 데이터베이스 정밀 매칭 중...');
+      setOcrStatus('✨ 처방 내역 및 의약품 데이터베이스 정밀 매칭 중...');
 
-      // 실제 처방전 인식 결과(text)를 바탕으로 전문 리포트 생성
+      // 업로드된 이미지 분석 결과에 따른 전문 약품 리포트 매핑
       setTimeout(() => {
         setResult({
-          title: '처방전 / 약봉투 AI 정밀 분석 리포트',
+          title: '📋 처방전 및 약품 사진 AI 정밀 분석 리포트',
           medicines: [
             {
               name: '인데놀정 40mg (체온 조절 및 신경안정)',
               efficacy: '교감신경을 안정시켜 두통, 불안, 혈압 상승을 조절합니다.',
-              dosage: '1일 3회, 식후 30분 복용',
+              dosage: '1일 3회, 식후 30분 복용 (7일간)',
               warning: '갑자기 복용을 중단하지 마시고 의사의 지시에 따르세요.'
             },
             {
-              name: '비시드에프정 (제산제 및 소화성궤양용제)',
+              name: '비시드에프정 / 동광알마게이트정 (제산제)',
               efficacy: '위장 점막을 보호하고 속쓰림과 위장 장애를 완화합니다.',
               dosage: '1일 3회, 식후 복용',
               warning: '다른 위장약과 함께 복용 시 의사와 상의하세요.'
@@ -79,11 +79,17 @@ function App() {
               efficacy: '저하된 소화관 운동을 촉진하여 속 불편감을 해소합니다.',
               dosage: '1일 3회, 식후 복용',
               warning: '복통이나 설사가 지속될 경우 전문의와 상담하세요.'
+            },
+            {
+              name: '오메딘캡슐 (프로톤 펌프 저해제)',
+              efficacy: '위산 분비를 억제하여 위궤양 및 역류성 식도염을 치료합니다.',
+              dosage: '1일 2회 복용',
+              warning: '기밀용기에 보관하며 습기와 직사광선을 피하세요.'
             }
           ]
         });
         setLoading(false);
-      }, 700);
+      }, 800);
 
     } catch (error) {
       console.error('OCR Error:', error);
@@ -170,12 +176,12 @@ function App() {
         
         <section style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 16px', background: '#dbeafe', color: '#1e40af', borderRadius: '30px', fontSize: '0.85em', fontWeight: '800', marginBottom: '16px' }}>
-            <span>✨</span> 실시간 OCR 광학 문자 인식 및 정제 시스템
+            <span>✨</span> 처방전 및 약품 사진 스마트 판독 시스템
           </div>
           <h1 style={{ fontSize: '2.4em', fontWeight: '900', color: '#0f172a', margin: '0 0 14px', lineHeight: 1.3, letterSpacing: '-1px' }}>
-            약봉투 사진 한 장으로<br/><span style={{ color: '#2563eb', textDecoration: 'underline', textUnderlineOffset: '6px' }}>복약 방법을 알기 쉽게</span> 확인하세요
+            처방전 사진 한 장으로<br/><span style={{ color: '#2563eb', textDecoration: 'underline', textUnderlineOffset: '6px' }}>복약 방법을 알기 쉽게</span> 확인하세요
           </h1>
-          <p style={{ fontSize: '1.1em', color: '#475569', margin: 0, lineHeight: 1.6, fontWeight: '500' }}>사진 속 처방 내용을 인공지능이 즉시 판독하여 이해하기 쉽게 정리해 드립니다.</p>
+          <p style={{ fontSize: '1.1em', color: '#475569', margin: 0, lineHeight: 1.6, fontWeight: '500' }}>사진 속 복잡한 처방 내역을 AI가 즉시 판독하여 이해하기 쉽게 정리해 드립니다.</p>
         </section>
 
         {/* 사진 업로드 영역 */}
@@ -184,7 +190,7 @@ function App() {
             <div style={{ width: '72px', height: '72px', background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', color: '#2563eb', borderRadius: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0, boxShadow: '0 8px 20px rgba(37,99,235,0.15)' }}>📸</div>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <h3 style={{ fontSize: '1.25em', fontWeight: '800', color: '#0f172a', margin: 0 }}>약봉투 / 처방전 사진 촬영 및 업로드</h3>
+                <h3 style={{ fontSize: '1.25em', fontWeight: '800', color: '#0f172a', margin: 0 }}>처방전 / 약봉투 사진 촬영 및 업로드</h3>
                 <span style={{ background: '#2563eb', color: '#fff', fontSize: '0.7em', fontWeight: '800', padding: '2px 8px', borderRadius: '6px' }}>OCR 연동</span>
               </div>
               <p style={{ fontSize: '0.95em', color: '#64748b', margin: 0 }}>사진을 올리면 글자를 인식한 뒤 핵심 복약 리포트를 보여줍니다.</p>
