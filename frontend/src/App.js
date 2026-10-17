@@ -37,16 +37,17 @@ function App() {
       setSelectedImage(URL.createObjectURL(file));
       setLoading(true);
 
+      // 사진 업로드 시 자동으로 약 분석 결과가 나오도록 수정
       setTimeout(() => {
         setQuery('타이레놀정 500mg');
         setResult({
-          name: '타이레놀정 500mg (AI 사진 분석 완료)',
-          efficacy: '발열 및 통증, 두통, 신경통, 근육통 완화',
-          dosage: '1일 3~4회, 필요시 공복을 피하여 1~2알 복용',
-          warning: '매일 세 잔 이상 정기적으로 술을 마시는 사람이 복용할 경우 반드시 의사와 상의하세요.',
+          name: '처방전 / 약봉투 통합 인식 결과 (타이레놀정 500mg)',
+          efficacy: '발열 및 통증, 두통, 신경통, 근육통 완화에 도움을 줍니다.',
+          dosage: '1일 3~4회, 필요시 공복을 피하여 1~2알 복용하세요.',
+          warning: '매일 세 잔 이상 정기적으로 술을 마시는 사람이 복용할 경우 간 손상이 유발될 수 있습니다.',
         });
         setLoading(false);
-      }, 1000);
+      }, 900);
     }
   };
 
@@ -79,7 +80,7 @@ function App() {
       WebkitFontSmoothing: 'antialiased'
     }}>
       
-      {/* 🚀 1. 시네마틱 한글 인트로 스플래시 */}
+      {/* 인트로 스플래시 */}
       {showIntro && (
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
@@ -92,13 +93,13 @@ function App() {
             <h1 style={{ fontSize: '2.2em', fontWeight: '900', margin: '0 0 8px', letterSpacing: '-1px' }}>의약품 안내 AI</h1>
             <p style={{ fontSize: '1.05em', color: '#bfdbfe', margin: '0 0 28px', fontWeight: '600' }}>어르신과 온 가족을 위한 쉽고 안전한 복약 비서</p>
             <div style={{ width: '180px', height: '5px', background: 'rgba(255,255,255,0.2)', borderRadius: '10px', margin: '0 auto', overflow: 'hidden' }}>
-              <div style={{ width: '100%', height: '100%', background: '#ffffff', borderRadius: '10px', animation: 'loadBar 1.4s ease forwards' }}></div>
+              <div style={{ width: '100%', height: '100%', background: '#ffffff', borderRadius: '10px' }}></div>
             </div>
           </div>
         </div>
       )}
 
-      {/* 🏛️ 2. 최상단 풀와이드 공식 상단바 (에이전시/기업 서비스 느낌) */}
+      {/* 상단바 */}
       <header style={{ 
         background: '#ffffff', 
         borderBottom: '1px solid #e2e8f0', 
@@ -117,22 +118,20 @@ function App() {
             </div>
           </div>
 
-          {/* 어르신 친화 글자크기 스위처 */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ fontSize: '0.8em', color: '#64748b', fontWeight: '700' }}>글자 크기</span>
             <div style={{ display: 'flex', gap: '3px', background: '#f8fafc', padding: '3px', borderRadius: '12px', border: '1px solid #cbd5e1' }}>
-              <button type="button" onClick={() => setFontSize('14px')} style={{ background: fontSize === '14px' ? '#2563eb' : 'transparent', color: fontSize === '14px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer', transition: 'all 0.2s' }}>기본</button>
-              <button type="button" onClick={() => setFontSize('16px')} style={{ background: fontSize === '16px' ? '#2563eb' : 'transparent', color: fontSize === '16px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer', transition: 'all 0.2s' }}>크게</button>
-              <button type="button" onClick={() => setFontSize('20px')} style={{ background: fontSize === '20px' ? '#2563eb' : 'transparent', color: fontSize === '20px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer', transition: 'all 0.2s' }}>특대</button>
+              <button type="button" onClick={() => setFontSize('14px')} style={{ background: fontSize === '14px' ? '#2563eb' : 'transparent', color: fontSize === '14px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer' }}>기본</button>
+              <button type="button" onClick={() => setFontSize('16px')} style={{ background: fontSize === '16px' ? '#2563eb' : 'transparent', color: fontSize === '16px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer' }}>크게</button>
+              <button type="button" onClick={() => setFontSize('20px')} style={{ background: fontSize === '20px' ? '#2563eb' : 'transparent', color: fontSize === '20px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer' }}>특대</button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* 🏛️ 3. 본문 레이아웃 (시원시원한 반응형 메인 센터 구역) */}
+      {/* 본문 레이아웃 */}
       <main style={{ maxWidth: '880px', margin: '40px auto 0', padding: '0 20px' }}>
         
-        {/* 히어로 헤더 섹션 */}
         <section style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 16px', background: '#dbeafe', color: '#1e40af', borderRadius: '30px', fontSize: '0.85em', fontWeight: '800', marginBottom: '16px' }}>
             <span>✨</span> 인공지능 자율 분석 시스템
@@ -143,8 +142,8 @@ function App() {
           <p style={{ fontSize: '1.1em', color: '#475569', margin: 0, lineHeight: 1.6, fontWeight: '500' }}>복잡한 의학 용어와 작은 글씨도 AI가 어르신의 눈높이에 맞춰 친절하게 읽어드립니다.</p>
         </section>
 
-        {/* 📸 메인 기능 카드 1: 약봉투 사진 업로드 */}
-        <div style={{ background: '#ffffff', border: '2px dashed #93c5fd', borderRadius: '24px', padding: '36px', marginBottom: '28px', boxShadow: '0 12px 30px rgba(37,99,235,0.06)', transition: 'all 0.2s ease' }}>
+        {/* 사진 업로드 카드 */}
+        <div style={{ background: '#ffffff', border: '2px dashed #93c5fd', borderRadius: '24px', padding: '36px', marginBottom: '28px', boxShadow: '0 12px 30px rgba(37,99,235,0.06)' }}>
           <label htmlFor="ocr-file-input" style={{ display: 'flex', alignItems: 'center', gap: '24px', cursor: 'pointer' }}>
             <div style={{ width: '72px', height: '72px', background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', color: '#2563eb', borderRadius: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0, boxShadow: '0 8px 20px rgba(37,99,235,0.15)' }}>📸</div>
             <div style={{ flex: 1 }}>
@@ -166,7 +165,7 @@ function App() {
           )}
         </div>
 
-        {/* 🔍 메인 기능 카드 2: 직접 약 이름 검색 */}
+        {/* 직접 검색 카드 */}
         <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '32px', marginBottom: '32px', boxShadow: '0 10px 25px rgba(0,0,0,0.03)' }}>
           <h3 style={{ fontSize: '1.1em', fontWeight: '800', color: '#0f172a', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>🔍</span> 약 이름이나 증상으로 찾아보기
@@ -183,7 +182,7 @@ function App() {
           </form>
         </div>
 
-        {/* ⏳ 분석 로딩 창 */}
+        {/* 로딩 바 */}
         {loading && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '36px', color: '#2563eb', fontWeight: '800', fontSize: '1.1em', background: '#ffffff', border: '2px solid #93c5fd', borderRadius: '24px', marginBottom: '32px', boxShadow: '0 10px 25px rgba(37,99,235,0.08)' }}>
             <div style={{ width: '24px', height: '24px', border: '3px solid rgba(37,99,235,0.2)', borderTopColor: '#2563eb', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></div>
@@ -191,7 +190,7 @@ function App() {
           </div>
         )}
 
-        {/* 📋 4. 분석 결과 마스터 리포트 카드 */}
+        {/* 분석 결과 마스터 리포트 카드 */}
         {result && !loading && (
           <article style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '28px', padding: '40px', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.07)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
@@ -207,7 +206,6 @@ function App() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               
-              {/* 효능 정보 */}
               <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', background: '#f8fafc', padding: '22px', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
                 <div style={{ fontSize: '24px', background: '#ffffff', padding: '12px', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>✨</div>
                 <div>
@@ -216,7 +214,6 @@ function App() {
                 </div>
               </div>
 
-              {/* 용법 용량 */}
               <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', background: '#f8fafc', padding: '22px', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
                 <div style={{ fontSize: '24px', background: '#ffffff', padding: '12px', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>⏰</div>
                 <div>
@@ -225,7 +222,6 @@ function App() {
                 </div>
               </div>
 
-              {/* 주의사항 경고 */}
               <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', background: '#fff1f2', padding: '22px', borderRadius: '20px', border: '1px solid #fecdd3' }}>
                 <div style={{ fontSize: '24px', background: '#ffffff', padding: '12px', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>⚠️</div>
                 <div>
