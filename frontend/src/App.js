@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          의약품 안내 AI 서비스
         </a>
       </header>
     </div>
