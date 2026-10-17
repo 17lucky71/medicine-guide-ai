@@ -8,6 +8,8 @@
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](./LICENSE)
 [![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
 
+📑 **[발표 자료 (PPT) 다운로드](./docs/medicine-guide-ai.pptx)**
+
 ---
 
 ## 목차
