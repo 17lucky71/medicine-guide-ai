@@ -44,7 +44,7 @@
 |---|---|
 | 프로젝트명 | medicine-guide-ai |
 | 개발 기간 | 2026.10.05 ~ 2026.10.26 |
-| 배포 주소 | 추후 추가 예정 |
+| 배포 주소 | [https://medicine-guide-ai.vercel.app](https://medicine-guide-ai.vercel.app) |
 | 개발 인원 | 3인 |
 | 주요 대상 | 약 복용법을 이해하기 어려운 어르신 및 보호자 |
 
