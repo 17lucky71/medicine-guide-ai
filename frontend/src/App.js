@@ -99,8 +99,15 @@ function App() {
     }, 2000);
   };
 
-  const handleSpeak = () => {
-    if (!result) return;
+  const handleGoHome = () => {
+    setQuery('');
+    setResult(null);
+    setSelectedImage(null);
+    setLoading(false);
+    setOcrStatus('');
+    window.scrollTo(0, 0);
+  };
+    const handleSpeak = () => {
     window.speechSynthesis.cancel();
 
     let textToSpeak = `${result.title}. `;
@@ -162,6 +169,22 @@ function App() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <button 
+            type="button" 
+            onClick={handleGoHome}
+            style={{ 
+              background: '#2563eb', 
+              color: '#ffffff', 
+              border: 'none', 
+              borderRadius: '12px', 
+              padding: '8px 16px', 
+              fontSize: '0.85em', 
+              fontWeight: '800', 
+              cursor: 'pointer'
+            }}
+          >
+            🏠 처음으로
+          </button>
             <span style={{ fontSize: '0.8em', color: '#64748b', fontWeight: '700' }}>글자 크기</span>
             <div style={{ display: 'flex', gap: '3px', background: '#f8fafc', padding: '3px', borderRadius: '12px', border: '1px solid #cbd5e1' }}>
               <button type="button" onClick={() => setFontSize('14px')} style={{ background: fontSize === '14px' ? '#2563eb' : 'transparent', color: fontSize === '14px' ? '#ffffff' : '#64748b', border: 'none', borderRadius: '9px', padding: '5px 12px', fontSize: '0.8em', fontWeight: '800', cursor: 'pointer' }}>기본</button>
