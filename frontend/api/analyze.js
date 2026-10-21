@@ -13,6 +13,13 @@ const SYSTEM = `당신은 어르신을 돕는 복약 안내 도우미입니다. 
 module.exports = async (req, res) => {
   if (req.method === 'GET') {
     // 점검용: 키 값은 절대 노출하지 않고, 변수 존재 여부와 길이만 알려준다.
+    if (req.query && req.query.models && process.env.GEMINI_API_KEY) {
+      try {
+        const mr = await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=100', { headers: { 'x-goog-api-key': process.env.GEMINI_API_KEY } });
+        const mj = await mr.json();
+        return res.status(200).json({ status: mr.status, models: (mj.models || []).filter((m) => (m.supportedGenerationMethods || []).includes('generateContent')).map((m) => m.name), error: mj.error ? mj.error.message : undefined });
+      } catch (e) { return res.status(200).json({ error: 'models 조회 실패' }); }
+    }
     const names = Object.keys(process.env).filter((n) => n.toUpperCase().includes('GEMINI'));
     return res.status(200).json({ hasKey: !!process.env.GEMINI_API_KEY, keyLength: (process.env.GEMINI_API_KEY || '').length, geminiLikeNames: names.map((n) => JSON.stringify(n)), vercelEnv: process.env.VERCEL_ENV || null });
   }
@@ -48,7 +55,11 @@ module.exports = async (req, res) => {
         generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
       })
     });
-    if (!r.ok) return res.status(502).json({ error: 'AI 서비스 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.' });
+    if (!r.ok) {
+      let detail = '';
+      try { const ej = await r.json(); detail = (ej.error && ej.error.message) || ''; } catch (e) { /* 무시 */ }
+      return res.status(502).json({ error: `AI 서비스 호출에 실패했습니다. (모델 ${model}, 상태 ${r.status}${detail ? ': ' + detail.slice(0, 160) : ''})` });
+    }
     const j = await r.json();
     const parsed = JSON.parse(j.candidates[0].content.parts[0].text);
     const medicines = Array.isArray(parsed.medicines) ? parsed.medicines : [];
