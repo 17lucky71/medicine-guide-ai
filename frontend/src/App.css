@@ -103,7 +103,9 @@ img { max-width: 100%; }
   .upload-label { flex-direction: column !important; text-align: center !important; gap: 14px !important; }
   .upload-label > div:nth-child(2) > div { justify-content: center !important; flex-wrap: wrap !important; }
   .search-form { flex-direction: column !important; }
-  .search-form button { padding: 16px !important; }
+  .search-form button { padding: 16px !important; width: 100% !important; }
+  .search-form input { width: 100% !important; box-sizing: border-box !important; }
+  .upload-label > div:nth-child(2) { width: 100% !important; }
   .result-card { padding: 18px !important; border-radius: 20px !important; }
   .notice-bar { font-size: 0.8em !important; text-align: left !important; }
 }

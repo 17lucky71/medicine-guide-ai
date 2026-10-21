@@ -11,18 +11,6 @@ const SYSTEM = `당신은 어르신을 돕는 복약 안내 도우미입니다. 
 - title은 "복약 안내" 같은 짧은 제목으로 씁니다.`;
 
 module.exports = async (req, res) => {
-  if (req.method === 'GET') {
-    // 점검용: 키 값은 절대 노출하지 않고, 변수 존재 여부와 길이만 알려준다.
-    if (req.query && req.query.models && process.env.GEMINI_API_KEY) {
-      try {
-        const mr = await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=100', { headers: { 'x-goog-api-key': process.env.GEMINI_API_KEY } });
-        const mj = await mr.json();
-        return res.status(200).json({ status: mr.status, models: (mj.models || []).filter((m) => (m.supportedGenerationMethods || []).includes('generateContent')).map((m) => m.name), error: mj.error ? mj.error.message : undefined });
-      } catch (e) { return res.status(200).json({ error: 'models 조회 실패' }); }
-    }
-    const names = Object.keys(process.env).filter((n) => n.toUpperCase().includes('GEMINI'));
-    return res.status(200).json({ hasKey: !!process.env.GEMINI_API_KEY, keyLength: (process.env.GEMINI_API_KEY || '').length, geminiLikeNames: names.map((n) => JSON.stringify(n)), vercelEnv: process.env.VERCEL_ENV || null });
-  }
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST만 지원합니다.' });
   const key = process.env.GEMINI_API_KEY;
   if (!key) return res.status(500).json({ error: '서버에 AI 키가 설정되지 않았습니다. 관리자에게 문의하세요.' });
