@@ -1,5 +1,5 @@
-// Vercel 서버리스 함수: 사진/텍스트를 이미지 입력이 가능한 AI 모델에 전달해 약 정보를 구조화해 돌려준다.
-// 필요 환경변수: OPENAI_API_KEY (Vercel 프로젝트 Settings > Environment Variables), 선택: OPENAI_MODEL
+// Vercel 서버리스 함수: 사진/텍스트를 Gemini(멀티모달) 모델에 전달해 약 정보를 구조화해 돌려준다.
+// 필요 환경변수: GEMINI_API_KEY (Vercel 프로젝트 Settings > Environment Variables), 선택: GEMINI_MODEL
 const SYSTEM = `당신은 어르신을 돕는 복약 안내 도우미입니다. 반드시 JSON만 출력합니다.
 형식: {"title": string, "comparison": string, "medicines": [{"name": string, "efficacy": string, "dosage": string, "warning": string}]}
 규칙:
@@ -12,41 +12,40 @@ const SYSTEM = `당신은 어르신을 돕는 복약 안내 도우미입니다. 
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST만 지원합니다.' });
-  const key = process.env.OPENAI_API_KEY;
+  const key = process.env.GEMINI_API_KEY;
   if (!key) return res.status(500).json({ error: '서버에 AI 키가 설정되지 않았습니다. 관리자에게 문의하세요.' });
 
   const { type, image, query, savedMeds } = req.body || {};
   const saved = Array.isArray(savedMeds) ? savedMeds.filter((x) => typeof x === 'string').slice(0, 30).map((x) => x.slice(0, 60)) : [];
   const savedText = saved.length ? `\n저장된 복용 중인 약: ${saved.join(', ')}` : '\n저장된 복용 중인 약: 없음';
-  let userContent;
+  let parts;
   if (type === 'image' && typeof image === 'string' && image.startsWith('data:image/')) {
-    userContent = [
-      { type: 'text', text: '이 약봉투/처방전 사진에서 약 정보를 정리해 주세요.' + savedText },
-      { type: 'image_url', image_url: { url: image } }
+    const m = image.match(/^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/);
+    if (!m) return res.status(400).json({ error: '이미지 형식이 올바르지 않습니다.' });
+    parts = [
+      { text: '이 약봉투/처방전 사진에서 약 정보를 정리해 주세요.' + savedText },
+      { inline_data: { mime_type: m[1], data: m[2] } }
     ];
   } else if (type === 'text' && typeof query === 'string' && query.trim()) {
-    userContent = `다음 약 이름 또는 증상에 대해 정리해 주세요: ${query.trim().slice(0, 100)}${savedText}`;
+    parts = [{ text: `다음 약 이름 또는 증상에 대해 정리해 주세요: ${query.trim().slice(0, 100)}${savedText}` }];
   } else {
     return res.status(400).json({ error: '요청 형식이 올바르지 않습니다.' });
   }
 
   try {
-    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+    const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
-        model: process.env.OPENAI_MODEL || 'gpt-4o',
-        response_format: { type: 'json_object' },
-        temperature: 0.2,
-        messages: [
-          { role: 'system', content: SYSTEM },
-          { role: 'user', content: userContent }
-        ]
+        systemInstruction: { parts: [{ text: SYSTEM }] },
+        contents: [{ role: 'user', parts }],
+        generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
       })
     });
     if (!r.ok) return res.status(502).json({ error: 'AI 서비스 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.' });
     const j = await r.json();
-    const parsed = JSON.parse(j.choices[0].message.content);
+    const parsed = JSON.parse(j.candidates[0].content.parts[0].text);
     const medicines = Array.isArray(parsed.medicines) ? parsed.medicines : [];
     if (medicines.length === 0) {
       return res.status(422).json({ error: '사진에서 약 이름을 읽지 못했습니다. 글자가 선명하게 보이도록 다시 찍어 주세요.' });
