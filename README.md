@@ -172,4 +172,6 @@ vercel dev
 
 ## 링크
 - 배포 URL: https://medicine-guide-ai.vercel.app
-- 발표 자료: (작성 예정)
+- 발표 자료: [docs/medicine-guide-ai.pptx](docs/medicine-guide-ai.pptx)
+- 기획서: [docs/01_기획서.md](docs/01_기획서.md) · 기능 요구 명세서: [docs/02_기능요구명세서.md](docs/02_기능요구명세서.md)
+- 협업 기록: [docs/04_협업기록.md](docs/04_협업기록.md) · 사용자 피드백: [docs/05_사용자피드백기록.md](docs/05_사용자피드백기록.md)
