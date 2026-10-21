@@ -16,87 +16,77 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!query.trim()) return;
 
-    setLoading(true);
-    setOcrStatus('의약품 정보를 조회 중입니다...');
-    setTimeout(() => {
-      setResult({
-        title: `'${query}' 맞춤 복약 안내`,
-        medicines: [
-          {
-            name: query,
-            efficacy: '해열, 진통, 소염 작용을 통해 증상을 안전하게 완화합니다.',
-            dosage: '1일 3회, 식후 30분 복용',
-            warning: '복용 중 음주는 절대 금하며, 이상 증상 발생 시 즉시 복용을 중단하세요.'
-          }
-        ]
-      });
-      setLoading(false);
-    }, 600);
+  const [agreed, setAgreed] = useState(false);
+  const [error, setError] = useState('');
+
+  const resizeImage = (file) => new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const max = 1400;
+      const s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * s);
+      c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/jpeg', 0.85));
+    };
+    img.onerror = () => reject(new Error('이미지를 읽을 수 없습니다. 다른 사진을 선택해 주세요.'));
+    img.src = url;
+  });
+
+  const callApi = async (payload) => {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || '분석 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+    return data;
   };
 
-  // 처방전 고속 정밀 인식 처리 (인식률 개선 버전)
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+    setLoading(true);
+    setError('');
+    setResult(null);
+    setOcrStatus('AI가 약 정보를 정리하고 있습니다...');
+    try {
+      const data = await callApi({ type: 'text', query: query.trim() });
+      setResult(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!agreed) {
+      setError('사진 분석 전에 아래 동의 항목을 먼저 체크해 주세요.');
+      return;
+    }
     setSelectedImage(URL.createObjectURL(file));
     setLoading(true);
+    setError('');
     setResult(null);
-
-    // 사용자 체감 속도와 신뢰도를 높인 정밀 스캔 단계 메시지
-    setOcrStatus('📷 처방전 고해상도 이미지 전처리 중...');
-    
-    setTimeout(() => {
-      setOcrStatus('🔍 AI 의료 OCR 엔진 - 처방 의약품명 추출 중...');
-    }, 700);
-
-    setTimeout(() => {
-      setOcrStatus('✨ 처방전 성분 분석 및 데이터베이스 정밀 매칭 완료!');
-    }, 1400);
-
-    // 업로드된 처방전 속 실제 약품 목록 완벽 매핑 출력
-    setTimeout(() => {
-      setResult({
-        title: '📋 처방전 AI 정밀 분석 리포트 (판독 완료)',
-        medicines: [
-          {
-            name: '노바스크정 5mg (혈압조절제)',
-            efficacy: '혈관을 확장하여 혈압을 낮추고 심장의 부담을 줄여줍니다.',
-            dosage: '1일 1회, 1정씩 복용 (30일분)',
-            warning: '갑자기 복용을 중단하지 마시고, 어지러움이 느껴질 경우 안정을 취하세요.'
-          },
-          {
-            name: '트라젠타듀오정 2.5/1mg (당뇨병용제)',
-            efficacy: '인슐린 분비를 돕고 혈당 수치를 안정적으로 조절합니다.',
-            dosage: '1일 2회, 1정씩 식후 복용 (30일분)',
-            warning: '저혈당 증세(식은땀, 현기증)가 나타날 수 있으므로 당분을 섭취하세요.'
-          },
-          {
-            name: '피오글리정 1정 (인슐린 저항성 개선제)',
-            efficacy: '체내 인슐린 감수성을 개선하여 포도당 이용을 원활하게 합니다.',
-            dosage: '1일 1회, 1정 복용 (30일분)',
-            warning: '체중 증가나 부종이 발생할 수 있으므로 이상 시 의사와 상담하세요.'
-          },
-          {
-            name: '아토렌정 10mg (고지혈증 치료제)',
-            efficacy: '혈중 콜레스테롤 수치를 낮추어 심혈관 질환을 예방합니다.',
-            dosage: '1일 1회, 1정 복용 (30일분)',
-            warning: '근육 통증이나 무력감이 지속되면 즉시 병원을 방문하세요.'
-          },
-          {
-            name: '티지페논정 (중성지방 조절제)',
-            efficacy: '혈액 내 중성지방을 효과적으로 낮춰줍니다.',
-            dosage: '1일 1회, 1정 복용 (30일분)',
-            warning: '식사와 함께 복용해야 흡수율이 높아집니다.'
-          }
-        ]
-      });
+    setOcrStatus('📷 사진을 AI가 읽고 있습니다. 잠시만 기다려 주세요...');
+    try {
+      const image = await resizeImage(file);
+      const data = await callApi({ type: 'image', image });
+      setResult(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   const handleGoHome = () => {
@@ -105,6 +95,7 @@ function App() {
     setSelectedImage(null);
     setLoading(false);
     setOcrStatus('');
+    setError('');
     window.scrollTo(0, 0);
   };
     const handleSpeak = () => {
@@ -136,7 +127,7 @@ function App() {
       {/* 인트로 스플래시 */}
       {showIntro && (
         <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
           background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999,
           animation: 'fadeOut 0.5s ease 1.6s forwards'
@@ -159,7 +150,7 @@ function App() {
         zIndex: 100, 
         boxShadow: '0 4px 20px rgba(0,0,0,0.03)' 
       }}>
-        <div style={{ maxWidth: '960px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="hdr-inner" style={{ maxWidth: '960px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ background: 'linear-gradient(135deg, #2563eb, #1d4ed8)', color: '#ffffff', width: '38px', height: '38px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', boxShadow: '0 4px 10px rgba(37,99,235,0.3)' }}>💊</div>
             <div>
@@ -168,7 +159,7 @@ function App() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div className="hdr-right" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <button 
             type="button" 
             onClick={handleGoHome}
@@ -195,22 +186,31 @@ function App() {
         </div>
       </header>
 
+      {/* 주의 문구 */}
+      <div className="notice-bar" style={{ background: '#fef3c7', borderBottom: '1px solid #fcd34d', color: '#78350f', padding: '10px 20px', fontSize: '0.85em', fontWeight: '700', textAlign: 'center', lineHeight: 1.5 }}>
+        ⚠️ 이 서비스의 안내는 AI가 생성한 참고용 정보이며 틀릴 수 있습니다. 복용 전 반드시 의사·약사와 상담하세요. 의사·약사의 상담을 대체하지 않습니다.
+      </div>
+
       {/* 메인 레이아웃 */}
-      <main style={{ maxWidth: '880px', margin: '40px auto 0', padding: '0 20px' }}>
+      <main className="main-pad" style={{ maxWidth: '880px', margin: '40px auto 0', padding: '0 20px' }}>
         
         <section style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 16px', background: '#dbeafe', color: '#1e40af', borderRadius: '30px', fontSize: '0.85em', fontWeight: '800', marginBottom: '16px' }}>
             <span>✨</span> 처방전 및 약품 사진 정밀 인식 시스템
           </div>
-          <h1 style={{ fontSize: '2.4em', fontWeight: '900', color: '#0f172a', margin: '0 0 14px', lineHeight: 1.3, letterSpacing: '-1px' }}>
+          <h1 className="hero-title" style={{ fontSize: '2.4em', fontWeight: '900', color: '#0f172a', margin: '0 0 14px', lineHeight: 1.3, letterSpacing: '-1px' }}>
             처방전 사진 한 장으로<br/><span style={{ color: '#2563eb', textDecoration: 'underline', textUnderlineOffset: '6px' }}>복약 방법을 알기 쉽게</span> 확인하세요
           </h1>
           <p style={{ fontSize: '1.1em', color: '#475569', margin: 0, lineHeight: 1.6, fontWeight: '500' }}>복잡한 처방전의 표와 글자를 AI가 즉시 판독하여 이해하기 쉽게 정리해 드립니다.</p>
         </section>
 
         {/* 사진 업로드 영역 */}
-        <div style={{ background: '#ffffff', border: '2px dashed #93c5fd', borderRadius: '24px', padding: '36px', marginBottom: '28px', boxShadow: '0 12px 30px rgba(37,99,235,0.06)' }}>
-          <label htmlFor="ocr-file-input" style={{ display: 'flex', alignItems: 'center', gap: '24px', cursor: 'pointer' }}>
+        <label className="consent-box" style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '16px 18px', marginBottom: '16px', fontSize: '0.9em', lineHeight: 1.6, color: '#334155', fontWeight: '600', cursor: 'pointer' }}>
+          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} style={{ width: '22px', height: '22px', marginTop: '2px', flexShrink: 0 }} />
+          <span>[동의] 올린 사진은 약 정보 분석을 위해 외부 AI 서비스로 전송됩니다. 사진은 서버에 저장하지 않습니다. 가능하면 이름·주민등록번호·전화번호 등 개인정보가 보이지 않게 가리고 올려 주세요.</span>
+        </label>
+        <div className="card-pad" style={{ background: '#ffffff', border: '2px dashed #93c5fd', borderRadius: '24px', padding: '36px', marginBottom: '28px', boxShadow: '0 12px 30px rgba(37,99,235,0.06)' }}>
+          <label className="upload-label" htmlFor="ocr-file-input" style={{ display: 'flex', alignItems: 'center', gap: '24px', cursor: 'pointer' }}>
             <div style={{ width: '72px', height: '72px', background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', color: '#2563eb', borderRadius: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0, boxShadow: '0 8px 20px rgba(37,99,235,0.15)' }}>📸</div>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -226,17 +226,17 @@ function App() {
           {selectedImage && (
             <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #e2e8f0', textAlign: 'center' }}>
               <img src={selectedImage} alt="업로드된 처방전" style={{ maxWidth: '100%', maxHeight: '220px', borderRadius: '16px', border: '1px solid #cbd5e1' }} />
-              <p style={{ marginTop: '10px', fontSize: '0.95em', fontWeight: '800', color: '#2563eb' }}>✅ 처방전 스캔 및 AI 분석 완료!</p>
+              {result && !loading && <p style={{ marginTop: '10px', fontSize: '0.95em', fontWeight: '800', color: '#2563eb' }}>✅ AI 분석이 끝났습니다. 아래 결과를 꼭 확인해 주세요.</p>}
             </div>
           )}
         </div>
 
         {/* 직접 검색 */}
-        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '32px', marginBottom: '32px', boxShadow: '0 10px 25px rgba(0,0,0,0.03)' }}>
+        <div className="card-pad" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '32px', marginBottom: '32px', boxShadow: '0 10px 25px rgba(0,0,0,0.03)' }}>
           <h3 style={{ fontSize: '1.1em', fontWeight: '800', color: '#0f172a', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>🔍</span> 약 이름이나 증상으로 직접 찾기
           </h3>
-          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '12px' }}>
+          <form className="search-form" onSubmit={handleSearch} style={{ display: 'flex', gap: '12px' }}>
             <input
               type="text"
               value={query}
@@ -248,6 +248,12 @@ function App() {
           </form>
         </div>
 
+        {error && (
+          <div role="alert" style={{ background: '#fff1f2', border: '1px solid #fecdd3', color: '#9f1239', borderRadius: '16px', padding: '16px 20px', marginBottom: '24px', fontWeight: '700', lineHeight: 1.5 }}>
+            ⚠️ {error}
+          </div>
+        )}
+
         {/* 로딩 바 및 상태 표시 */}
         {loading && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '36px', color: '#2563eb', fontWeight: '800', fontSize: '1.1em', background: '#ffffff', border: '2px solid #93c5fd', borderRadius: '24px', marginBottom: '32px', boxShadow: '0 10px 25px rgba(37,99,235,0.08)' }}>
@@ -258,7 +264,7 @@ function App() {
 
         {/* 분석 결과 마스터 카드 */}
         {result && !loading && (
-          <article style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '28px', padding: '40px', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.07)' }}>
+          <article className="result-card" style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '28px', padding: '40px', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.07)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
               <span style={{ fontSize: '0.85em', background: '#dcfce7', color: '#15803d', padding: '6px 16px', borderRadius: '20px', fontWeight: '800', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                 <span>✅</span> 처방전 판독 및 AI 안전 검토 완료
@@ -305,10 +311,17 @@ function App() {
                 </div>
               ))}
             </div>
+            <p style={{ margin: '24px 0 0', padding: '14px 16px', background: '#fef3c7', border: '1px solid #fcd34d', borderRadius: '14px', color: '#78350f', fontSize: '0.9em', fontWeight: '700', lineHeight: 1.6 }}>
+              ⚠️ 위 내용은 AI가 생성한 참고용 정보이며 사진 인식 결과가 틀릴 수 있습니다. 약 이름과 용법을 처방전·약봉투와 꼭 다시 확인하고, 복용 전 의사·약사와 상담하세요.
+            </p>
           </article>
         )}
 
       </main>
+
+      <footer style={{ maxWidth: '880px', margin: '32px auto 0', padding: '0 20px', textAlign: 'center', color: '#64748b', fontSize: '0.8em', lineHeight: 1.6 }}>
+        이 서비스는 AI가 생성한 참고용 정보를 제공하며 의사·약사의 상담을 대체하지 않습니다.
+      </footer>
     </div>
   );
 }
