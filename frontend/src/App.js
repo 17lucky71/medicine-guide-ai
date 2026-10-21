@@ -26,9 +26,20 @@ function App() {
     setSavedMeds(list);
     try { localStorage.setItem('myMeds', JSON.stringify(list)); } catch (e) { /* 저장 불가 환경 */ }
   };
+  const updateMed = (index, field, value) => {
+    setResult((r) => ({ ...r, medicines: r.medicines.map((m, i) => (i === index ? { ...m, [field]: value } : m)) }));
+    setSavedNotice('');
+  };
+  const removeMed = (index) => {
+    setResult((r) => ({ ...r, medicines: r.medicines.filter((_, i) => i !== index) }));
+    setSavedNotice('');
+  };
+  const [savedNotice, setSavedNotice] = useState('');
   const handleSaveMeds = () => {
     if (!result) return;
-    const names = result.medicines.map((m) => m.name);
+    const names = result.medicines.map((m) => (m.name || '').trim()).filter(Boolean);
+    if (names.length === 0) { setSavedNotice('저장할 약이 없습니다.'); return; }
+    setSavedNotice(`${names.length}개 약을 저장했습니다. 위의 "내가 복용 중인 약"에서 확인하세요.`);
     persistMeds(Array.from(new Set([...savedMeds, ...names])));
   };
   const handleRemoveMed = (name) => persistMeds(savedMeds.filter((n) => n !== name));
@@ -311,11 +322,16 @@ function App() {
             )}
             <h2 style={{ fontSize: '1.6em', fontWeight: '900', color: '#0f172a', margin: '0 0 28px', paddingBottom: '18px', borderBottom: '2px solid #f1f5f9', letterSpacing: '-0.5px' }}>{result.title}</h2>
 
+            <p style={{ margin: '0 0 16px', padding: '12px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', color: '#1e3a8a', fontWeight: 700, lineHeight: 1.6, fontSize: '0.92em' }}>
+              ✏️ 약 이름이 사진과 같은지 확인해 주세요. 틀렸으면 이름을 눌러 고치고, 잘못 들어온 약은 [이 약 삭제]를 눌러요. 확인한 뒤 아래 [저장]을 누르세요.
+            </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {result.medicines.map((med, index) => (
                 <div key={index} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px' }}>
                   <h3 style={{ fontSize: '1.2em', fontWeight: '900', color: '#2563eb', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span>💊</span> {med.name}
+                    <span>💊</span>
+                    <input aria-label="약 이름" value={med.name} onChange={(e) => updateMed(index, 'name', e.target.value)} style={{ flex: 1, minWidth: 0, font: 'inherit', fontWeight: 900, color: '#2563eb', border: '2px solid #bfdbfe', borderRadius: '10px', padding: '6px 10px', background: '#ffffff' }} />
+                    <button type="button" onClick={() => removeMed(index)} style={{ border: '1px solid #fecdd3', background: '#fff1f2', color: '#be123c', borderRadius: '10px', padding: '6px 10px', fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap' }}>이 약 삭제</button>
                   </h3>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -346,7 +362,8 @@ function App() {
                 </div>
               ))}
             </div>
-            <button type="button" onClick={handleSaveMeds} style={{ marginTop: '24px', width: '100%', padding: '16px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '14px', fontSize: '1em', fontWeight: '800', cursor: 'pointer' }}>복용 중인 약으로 저장 (인식이 틀렸다면 저장 전에 처방전과 꼭 확인하세요)</button>
+            <button type="button" onClick={handleSaveMeds} style={{ marginTop: '24px', width: '100%', padding: '16px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '14px', fontSize: '1em', fontWeight: '800', cursor: 'pointer' }}>확인한 약을 복용 중인 약으로 저장</button>
+            {savedNotice && <p role="status" style={{ margin: '12px 0 0', color: '#15803d', fontWeight: 800 }}>✅ {savedNotice}</p>}
             <p style={{ margin: '16px 0 0', padding: '14px 16px', background: '#fef3c7', border: '1px solid #fcd34d', borderRadius: '14px', color: '#78350f', fontSize: '0.9em', fontWeight: '700', lineHeight: 1.6 }}>
               ⚠️ 위 내용은 AI가 생성한 참고용 정보이며 사진 인식 결과가 틀릴 수 있습니다. 약 이름과 용법을 처방전·약봉투와 꼭 다시 확인하고, 복용 전 의사·약사와 상담하세요.
             </p>
