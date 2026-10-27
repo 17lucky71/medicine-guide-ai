@@ -137,14 +137,12 @@ function App() {
     <div className="app" style={{ fontSize }}>
       <header className="topbar">
         <div className="top-inner">
-          <button className="brand" type="button" onClick={handleGoHome} aria-label="의약품 안내 AI 처음으로">
+          <button className="brand" type="button" onClick={handleGoHome} aria-label="의약품 안내 AI 홈">
             <span className="brandmark" aria-hidden="true">✚</span>
             <span>의약품 안내 <strong>AI</strong><small>나와 가족을 위한 복약 안내</small></span>
           </button>
           <div className="top-actions">
-            <button type="button" className="plain-button" onClick={handleGoHome}>처음으로</button>
             <div className="font-picker">
-              <span>글자 크기</span>
               <div className="segmented" role="group" aria-label="글자 크기">
                 {[['16px', '기본'], ['18px', '크게'], ['20px', '특대']].map(([size, label]) => (
                   <button key={size} type="button" aria-pressed={fontSize === size} onClick={() => setFontSize(size)}>{label}</button>
