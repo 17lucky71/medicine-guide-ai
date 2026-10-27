@@ -208,17 +208,27 @@ function App() {
                       <svg className="paper-icon" viewBox="0 0 56 56" fill="none" aria-hidden="true"><rect x="12" y="6" width="32" height="44" rx="5" stroke="currentColor" strokeWidth="2"/><path d="M20 18h16M20 24h10M28 40V30m-5 5 5-5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       <h3>사진 한 장으로 시작하세요</h3>
                       <p>처방전 또는 약봉투 사진을 선택해 주세요.</p>
+                      <label className="consent">
+                        <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+                        <span><strong>사진의 외부 AI 전송에 동의합니다.</strong><span>약 정보 분석을 위해 사진을 외부 AI 서비스로 전송하며 서버에 저장하지 않습니다. 이름·주민등록번호·전화번호는 가리고 올려 주세요.</span></span>
+                      </label>
                       <label className={`button primary file-label ${!agreed || loading ? 'disabled' : ''}`}>
                         사진 선택하기 <span aria-hidden="true">↗</span>
                         <input type="file" accept="image/*" aria-label="처방전 또는 약봉투 사진 선택" disabled={!agreed || loading} onChange={handleImageChange} />
                       </label>
                       <small>{agreed ? '사진을 선택하면 분석이 시작됩니다.' : '사진 전송 동의 후 선택할 수 있어요.'}</small>
+                      {selectedImage && (
+                        <div className="image-preview visible" aria-live="polite">
+                          <img src={selectedImage} alt="선택한 처방전 또는 약봉투" />
+                          {loading ? (
+                            <div className="image-analysis-status" role="status">
+                              <span className="spinner" aria-hidden="true" />
+                              <div><strong>사진을 분석하고 있어요</strong><p>{ocrStatus}</p></div>
+                            </div>
+                          ) : result && <p>분석을 마쳤어요. 복약안내에서 결과를 확인해 주세요.</p>}
+                        </div>
+                      )}
                     </div>
-                    <label className="consent">
-                      <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-                      <span><strong>사진의 외부 AI 전송에 동의합니다.</strong><span>약 정보 분석을 위해 사진을 외부 AI 서비스로 전송하며 서버에 저장하지 않습니다. 이름·주민등록번호·전화번호는 가리고 올려 주세요.</span></span>
-                    </label>
-                    {selectedImage && <div className="image-preview"><img src={selectedImage} alt="선택한 처방전 또는 약봉투" />{result && !loading && <p>사진 분석이 끝났습니다. 아래 복약안내 메뉴에서 결과를 확인해 주세요.</p>}</div>}
                   </section>
 
                   <section className="panel search-panel" aria-labelledby="search-title">
@@ -233,7 +243,7 @@ function App() {
                 </div>
               </div>
               {error && <div className="notice error-notice" role="alert"><span className="notice-mark" aria-hidden="true">!</span><p>{error}</p></div>}
-              {loading && <div className="panel loading-panel" role="status"><span className="spinner" aria-hidden="true"/><div><strong>약 정보를 확인하고 있어요</strong><p>{ocrStatus}</p></div></div>}
+              {loading && !selectedImage && <div className="panel loading-panel" role="status"><span className="spinner" aria-hidden="true"/><div><strong>약 정보를 확인하고 있어요</strong><p>{ocrStatus}</p></div></div>}
             </section>
           )}
 
