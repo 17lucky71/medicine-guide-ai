@@ -137,16 +137,16 @@ function App() {
     <div className="app" style={{ fontSize }}>
       <header className="topbar">
         <div className="top-inner">
-          <button className="brand" type="button" onClick={handleGoHome} aria-label="??? ?? AI ????">
-            <span className="brandmark" aria-hidden="true">?</span>
-            <span>??? ?? <strong>AI</strong><small>?? ??? ?? ?? ??</small></span>
+          <button className="brand" type="button" onClick={handleGoHome} aria-label="의약품 안내 AI 처음으로">
+            <span className="brandmark" aria-hidden="true">✚</span>
+            <span>의약품 안내 <strong>AI</strong><small>나와 가족을 위한 복약 안내</small></span>
           </button>
           <div className="top-actions">
-            <button type="button" className="plain-button" onClick={handleGoHome}>????</button>
+            <button type="button" className="plain-button" onClick={handleGoHome}>처음으로</button>
             <div className="font-picker">
-              <span>?? ??</span>
-              <div className="segmented" role="group" aria-label="?? ??">
-                {[['16px', '??'], ['18px', '??'], ['20px', '??']].map(([size, label]) => (
+              <span>글자 크기</span>
+              <div className="segmented" role="group" aria-label="글자 크기">
+                {[['16px', '기본'], ['18px', '크게'], ['20px', '특대']].map(([size, label]) => (
                   <button key={size} type="button" aria-pressed={fontSize === size} onClick={() => setFontSize(size)}>{label}</button>
                 ))}
               </div>
@@ -157,102 +157,102 @@ function App() {
 
       <main className="container">
         <section className="hero">
-          <span className="eyebrow">?? ?? ?? ?? ? ??</span>
-          <h1>??? ?? ??,<br /><span>?? ?? ??.</span></h1>
-          <p>????? ??? ??? ?? ???.<br />? ???? ???, ?????? ??? ????.</p>
-          <ol className="steps" aria-label="?? ??">
-            <li><span className="step-num">1</span> ?? ???</li>
-            <li><span className="step-num">2</span> ? ?? ??</li>
-            <li><span className="step-num">3</span> ?? ? ??</li>
+          <span className="eyebrow">쉽게 읽는 우리 가족 약 정보</span>
+          <h1>복잡한 복약 안내,<br /><span>이제 알기 쉽게.</span></h1>
+          <p>처방전이나 약봉투 사진을 올려 주세요.<br />약 이름부터 복용법, 주의사항까지 정리해 드립니다.</p>
+          <ol className="steps" aria-label="이용 순서">
+            <li><span className="step-num">1</span> 사진 올리기</li>
+            <li><span className="step-num">2</span> 약 정보 확인</li>
+            <li><span className="step-num">3</span> 복용 약 저장</li>
           </ol>
         </section>
 
         <div className="notice safety-notice">
           <span className="notice-mark" aria-hidden="true">!</span>
-          <p><strong>?? ?, ??????? ? ?????.</strong> ? ??? AI? ??? ??? ???? ?? ? ????. ?????? ??? ???? ????.</p>
+          <p><strong>복용 전, 의사·약사에게 꼭 확인하세요.</strong> 이 안내는 AI가 생성한 참고용 정보이며 틀릴 수 있습니다. 의사·약사의 상담을 대체하지 않습니다.</p>
         </div>
 
         <div className="workspace">
           <div className="left-column">
             <section className="panel upload-panel" aria-labelledby="upload-title">
-              <div className="title-row"><div><span className="eyebrow">???? ????</span><h2 id="upload-title">??????? ??</h2></div><span className="tag">AI ??</span></div>
-              <p className="desc">??? ???? ??? ??? ??? ???.</p>
+              <div className="title-row"><div><span className="eyebrow">사진으로 알아보기</span><h2 id="upload-title">처방전·약봉투 분석</h2></div><span className="tag">AI 분석</span></div>
+              <p className="desc">글자가 선명하게 보이는 사진을 준비해 주세요.</p>
               <div className="dropzone">
                 <svg className="paper-icon" viewBox="0 0 56 56" fill="none" aria-hidden="true"><rect x="12" y="6" width="32" height="44" rx="5" stroke="currentColor" strokeWidth="2"/><path d="M20 18h16M20 24h10M28 40V30m-5 5 5-5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                <h3>?? ? ??? ?????</h3>
-                <p>??? ?? ??? ??? ??? ???.</p>
+                <h3>사진 한 장으로 시작하세요</h3>
+                <p>처방전 또는 약봉투 사진을 선택해 주세요.</p>
                 <label className={`button primary file-label ${!agreed || loading ? 'disabled' : ''}`}>
-                  ?? ???? <span aria-hidden="true">?</span>
-                  <input type="file" accept="image/*" aria-label="??? ?? ??? ?? ??" disabled={!agreed || loading} onChange={handleImageChange} />
+                  사진 선택하기 <span aria-hidden="true">↗</span>
+                  <input type="file" accept="image/*" aria-label="처방전 또는 약봉투 사진 선택" disabled={!agreed || loading} onChange={handleImageChange} />
                 </label>
-                <small>{agreed ? '??? ???? ??? ?????.' : '?? ?? ?? ? ??? ? ???.'}</small>
+                <small>{agreed ? '사진을 선택하면 분석이 시작됩니다.' : '사진 전송 동의 후 선택할 수 있어요.'}</small>
               </div>
               <label className="consent">
                 <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-                <span><strong>??? ?? AI ??? ?????.</strong><span>? ?? ??? ?? ??? ?? AI ???? ???? ??? ???? ????. ??????????????? ??? ?? ???.</span></span>
+                <span><strong>사진의 외부 AI 전송에 동의합니다.</strong><span>약 정보 분석을 위해 사진을 외부 AI 서비스로 전송하며 서버에 저장하지 않습니다. 이름·주민등록번호·전화번호는 가리고 올려 주세요.</span></span>
               </label>
-              {selectedImage && <div className="image-preview"><img src={selectedImage} alt="??? ??? ?? ???" />{result && !loading && <p>?? ??? ?????. ?? ? ??? ??? ???.</p>}</div>}
+              {selectedImage && <div className="image-preview"><img src={selectedImage} alt="선택한 처방전 또는 약봉투" />{result && !loading && <p>사진 분석이 끝났습니다. 아래 약 정보를 확인해 주세요.</p>}</div>}
             </section>
 
             <section className="panel search-panel" aria-labelledby="search-title">
-              <h2 className="panel-title" id="search-title">? ???? ?? ??</h2>
-              <p className="desc">??? ??? ? ???? ???? ??? ? ???.</p>
+              <h2 className="panel-title" id="search-title">약 이름으로 직접 찾기</h2>
+              <p className="desc">사진이 없어도 약 이름이나 증상으로 검색할 수 있어요.</p>
               <form className="search-form" onSubmit={handleSearch}>
-                <label className="sr-only" htmlFor="medicine-query">? ???? ??</label>
-                <input id="medicine-query" type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="?: ????, ???, ???" disabled={loading} />
-                <button className="button primary" type="submit" disabled={loading || !query.trim()}>????</button>
+                <label className="sr-only" htmlFor="medicine-query">약 이름이나 증상</label>
+                <input id="medicine-query" type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="예: 타이레놀, 혈압약, 감기약" disabled={loading} />
+                <button className="button primary" type="submit" disabled={loading || !query.trim()}>검색하기</button>
               </form>
             </section>
           </div>
 
           <aside className="panel saved-panel" aria-labelledby="saved-title">
-            <div className="title-row"><h2 id="saved-title">?? ?? ?? ?</h2><span className="count">{savedMeds.length}</span></div>
-            <p className="device-note">? ??? ??? ? ??</p>
+            <div className="title-row"><h2 id="saved-title">내가 복용 중인 약</h2><span className="count">{savedMeds.length}</span></div>
+            <p className="device-note">이 기기에 저장된 약 목록</p>
             {savedMeds.length === 0 ? (
-              <div className="empty-state"><span className="empty-icon" aria-hidden="true">?</span><h3>?? ??? ?? ???</h3><p>?? ??? ????<br />?? ?? ??? ??? ???.</p></div>
+              <div className="empty-state"><span className="empty-icon" aria-hidden="true">＋</span><h3>아직 저장한 약이 없어요</h3><p>분석 결과를 확인하고<br />복용 중인 약으로 저장해 보세요.</p></div>
             ) : (
-              <ul className="saved-list">{savedMeds.map((name) => <li key={name}><span>{name}</span><button className="remove-saved" type="button" aria-label={`${name} ??`} onClick={() => handleRemoveMed(name)}>?</button></li>)}</ul>
+              <ul className="saved-list">{savedMeds.map((name) => <li key={name}><span>{name}</span><button className="remove-saved" type="button" aria-label={`${name} 삭제`} onClick={() => handleRemoveMed(name)}>×</button></li>)}</ul>
             )}
-            <div className="helper"><strong>? ?? ??? ? ?? ????</strong><p>??? ?? ??? ?? ???? ?? ??? ?? ????? ?????.</p></div>
-            <p className="device-note storage-note">?? ??? ?????? ?? ? ? ???.</p>
+            <div className="helper"><strong>새 약을 확인할 때 함께 비교해요</strong><p>저장된 약이 있으면 다음 분석에서 함께 복용할 때의 주의사항을 안내합니다.</p></div>
+            <p className="device-note storage-note">같은 기기와 브라우저에서 다시 볼 수 있어요.</p>
           </aside>
         </div>
 
         {error && <div className="notice error-notice" role="alert"><span className="notice-mark" aria-hidden="true">!</span><p>{error}</p></div>}
-        {loading && <div className="panel loading-panel" role="status"><span className="spinner" aria-hidden="true"/><div><strong>? ??? ???? ???</strong><p>{ocrStatus}</p></div></div>}
+        {loading && <div className="panel loading-panel" role="status"><span className="spinner" aria-hidden="true"/><div><strong>약 정보를 확인하고 있어요</strong><p>{ocrStatus}</p></div></div>}
 
         {result && !loading && (
           <article className="panel result-panel" aria-labelledby="result-title">
             <div className="result-top">
-              <div><span className="eyebrow">AI ?? ?? ? ???</span><h2 id="result-title">{result.title}</h2></div>
-              <button className="button secondary" type="button" onClick={handleSpeak}>???? ??</button>
+              <div><span className="eyebrow">AI 분석 결과 · 참고용</span><h2 id="result-title">{result.title}</h2></div>
+              <button className="button secondary" type="button" onClick={handleSpeak}>음성으로 듣기</button>
             </div>
-            {result.comparison && <div className="notice comparison"><span className="notice-mark" aria-hidden="true">?</span><p><strong>??? ?? ??</strong>{result.comparison}</p></div>}
-            <div className="review"><strong>???? ?? ? ??? ??? ???.</strong><p>??? ??? ??? ????, ?? ??? ?? ??? ???.</p></div>
+            {result.comparison && <div className="notice comparison"><span className="notice-mark" aria-hidden="true">↔</span><p><strong>저장된 약과 비교</strong>{result.comparison}</p></div>}
+            <div className="review"><strong>저장하기 전에 약 이름을 확인해 주세요.</strong><p>사진과 다르면 이름을 수정하고, 잘못 들어온 약은 삭제해 주세요.</p></div>
             <div className="medicine-list">
               {result.medicines.map((med, index) => (
-                <section className="medicine-card" key={`${index}-${med.name}`} aria-label={`?? ${index + 1}`}>
+                <section className="medicine-card" key={`${index}-${med.name}`} aria-label={`약품 ${index + 1}`}>
                   <div className="medicine-heading">
                     <span className="medicine-number">{String(index + 1).padStart(2, '0')}</span>
-                    <input aria-label="? ??" value={med.name} onChange={(e) => updateMed(index, 'name', e.target.value)} />
-                    <button className="delete-med" type="button" onClick={() => removeMed(index)}>? ? ??</button>
+                    <input aria-label="약 이름" value={med.name} onChange={(e) => updateMed(index, 'name', e.target.value)} />
+                    <button className="delete-med" type="button" onClick={() => removeMed(index)}>이 약 삭제</button>
                   </div>
                   <dl className="details">
-                    <div className="detail"><dt>?? ? ??</dt><dd>{med.efficacy}</dd></div>
-                    <div className="detail"><dt>?? ? ??</dt><dd>{med.dosage}</dd></div>
-                    <div className="detail warning"><dt>????</dt><dd>{med.warning}</dd></div>
+                    <div className="detail"><dt>효능 및 효과</dt><dd>{med.efficacy}</dd></div>
+                    <div className="detail"><dt>용법 및 용량</dt><dd>{med.dosage}</dd></div>
+                    <div className="detail warning"><dt>주의사항</dt><dd>{med.warning}</dd></div>
                   </dl>
                 </section>
               ))}
             </div>
-            <button className="button primary save-button" type="button" onClick={handleSaveMeds}>??? ?? ?? ?? ??? ??</button>
+            <button className="button primary save-button" type="button" onClick={handleSaveMeds}>확인한 약을 복용 중인 약으로 저장</button>
             {savedNotice && <p className="save-status" role="status">{savedNotice}</p>}
-            <div className="notice result-caution"><span className="notice-mark" aria-hidden="true">!</span><p>? ??? AI? ??? ??? ???? ?? ?? ??? ?? ? ????. ? ??? ??? ???????? ?? ????, ?? ? ?????? ?????.</p></div>
+            <div className="notice result-caution"><span className="notice-mark" aria-hidden="true">!</span><p>위 내용은 AI가 생성한 참고용 정보이며 사진 인식 결과가 틀릴 수 있습니다. 약 이름과 용법을 처방전·약봉투와 다시 확인하고, 복용 전 의사·약사와 상담하세요.</p></div>
           </article>
         )}
       </main>
 
-      <footer className="site-footer"><strong>??? ?? AI</strong><p>? ???? AI? ??? ??? ??? ???? ?????? ??? ???? ????.</p></footer>
+      <footer className="site-footer"><strong>의약품 안내 AI</strong><p>이 서비스는 AI가 생성한 참고용 정보를 제공하며 의사·약사의 상담을 대체하지 않습니다.</p></footer>
     </div>
   );
 }
