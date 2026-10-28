@@ -96,6 +96,12 @@ vercel dev
 |---|---|---|
 | ![첫 화면](docs/screenshots/01_home.png) | ![비교 결과](docs/screenshots/02_result_compare.png) | ![약 목록](docs/screenshots/03_result_list.png) |
 
+## 자동화 테스트
+- 실행 위치: `frontend/`
+- 실행 명령: `npm test -- --watchAll=false --runInBand` (Windows PowerShell에서는 `npm.cmd test -- --watchAll=false --runInBand`)
+- 최근 실행 결과: 테스트 스위트 1개 통과, 테스트 13개 통과 (2026-10-28)
+- 실행 결과 캡처: ![자동화 테스트 결과](docs/evidence/npm-test-result.png)
+
 ## 환경 변수
 | 이름 | 필수 | 설명 |
 |---|---|---|
