@@ -1,0 +1,17 @@
+Health check deployment evidence — 2026-10-28
+
+PR: https://github.com/17lucky71/medicine-guide-ai/pull/16
+Vercel deployment status: Ready
+Preview URL: https://medicine-guide-ai-git-fix-consistent-content-width-11-92c9.vercel.app
+Health endpoint: GET /api/health
+
+Unauthenticated preview request:
+HTTP/1.1 302 Found
+Server: Vercel
+Location: https://vercel.com/sso-api (deployment protection)
+Body: Protected by Vercel Authentication
+
+The preview deployment completed, but Vercel access protection redirected this
+request before the health function could return its JSON response. The handler
+behavior is covered by frontend/src/health.test.js (GET 200 and POST 405). A
+public deployment response still needs to be captured after the PR is merged.
