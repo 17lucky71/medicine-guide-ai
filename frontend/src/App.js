@@ -313,7 +313,16 @@ function App() {
               </section>
             </section>
           )}
-          <footer className="site-footer"><strong>의약품 안내 AI</strong><p>이 서비스는 AI가 생성한 참고용 정보를 제공하며 의사·약사의 상담을 대체하지 않습니다.</p></footer>
+          <footer className="site-footer">
+            <strong>의약품 안내 AI</strong>
+            <p>이 서비스는 AI가 생성한 참고용 정보를 제공하며 의사·약사의 상담을 대체하지 않습니다.</p>
+            <div className="footer-feedback">
+              <span>서비스를 더 편하게 사용할 수 있도록 의견을 들려주세요.</span>
+              <a className="feedback-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfKYaRVm-Vt9YyEmv0wa2b-cw4jOZ37WSD4UymspIwK0cq0xA/viewform" target="_blank" rel="noopener noreferrer">
+                피드백 보내기 <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </footer>
         </main>
       </div>
       <div className="bottom-nav">{renderNav('bottom-nav-list')}</div>
