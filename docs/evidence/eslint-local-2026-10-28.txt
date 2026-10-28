@@ -1,0 +1,13 @@
+Local ESLint verification
+Date: 2026-10-28
+Working directory: frontend/
+Command: npm.cmd run lint
+Exit code: 0
+
+Output:
+> frontend@0.1.0 lint
+> eslint src api
+
+No errors or warnings were reported.
+
+The GitHub Actions workflow is configured to repeat this check on matching pull requests and pushes to main. Its first remote run is pending publication of the workflow branch.

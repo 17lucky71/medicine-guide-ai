@@ -1,0 +1,15 @@
+Repository author snapshot
+Captured: 2026-10-28
+Reference main commit: 264981d1ba0882e7912b7c936f59d5f928190958
+Command: git shortlog -sn --no-merges origin/main
+Commands: git rev-list --count origin/main; git rev-list --count --no-merges origin/main
+
+All commits: 122
+Non-merge commits: 120
+
+  57 17lucky71
+  44 최영진
+  17 tikita12
+   2 jangboyoon
+
+Counts are grouped by the author identity recorded in Git metadata. Aliases are not merged into a single person, so these raw counts should not be presented as confirmed individual contribution percentages.

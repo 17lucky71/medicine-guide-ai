@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { loadSavedMeds, storeSavedMeds } from './medicationStorage';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -13,12 +14,10 @@ function App() {
 
 
   const [agreed, setAgreed] = useState(false);
-  const [savedMeds, setSavedMeds] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('myMeds') || '[]'); } catch (e) { return []; }
-  });
+  const [savedMeds, setSavedMeds] = useState(loadSavedMeds);
   const persistMeds = (list) => {
     setSavedMeds(list);
-    try { localStorage.setItem('myMeds', JSON.stringify(list)); } catch (e) { /* 저장 불가 환경 */ }
+    storeSavedMeds(list);
   };
   const updateMed = (index, field, value) => {
     setResult((r) => ({ ...r, medicines: r.medicines.map((m, i) => (i === index ? { ...m, [field]: value } : m)) }));
@@ -162,7 +161,7 @@ function App() {
   };
 
   return (
-    <div className="app" style={{ fontSize }}>
+    <div className="app" data-testid="app-shell" style={{ fontSize }}>
       <header className="topbar">
         <div className="top-inner">
           <button className="brand" type="button" onClick={handleGoHome} aria-label="의약품 안내 AI 홈">
