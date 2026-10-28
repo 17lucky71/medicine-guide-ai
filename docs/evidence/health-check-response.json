@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-28T05:33:29.037Z",
+  "request": {
+    "method": "GET",
+    "url": "https://medicine-guide-ai.vercel.app/api/health"
+  },
+  "httpStatus": 200,
+  "headers": {
+    "cache-control": "no-store",
+    "content-type": "application/json; charset=utf-8",
+    "server": "Vercel",
+    "x-vercel-cache": "MISS"
+  },
+  "body": {
+    "status": "ok",
+    "service": "medicine-guide-ai",
+    "timestamp": "2026-10-28T05:33:29.037Z"
+  },
+  "sourceCommit": "c912ab17ceeda56e4c5a1d116ebe4c337b7676e7"
+}
