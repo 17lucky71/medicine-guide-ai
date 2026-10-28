@@ -13,5 +13,6 @@ Body: Protected by Vercel Authentication
 
 The preview deployment completed, but Vercel access protection redirected this
 request before the health function could return its JSON response. The handler
-behavior is covered by frontend/src/health.test.js (GET 200 and POST 405). A
-public deployment response still needs to be captured after the PR is merged.
+behavior is covered by frontend/src/health.test.js (GET 200 and POST 405). After
+PR #16 was merged, the public production response returned HTTP 200; see
+health-check-response.json and health-check-response.txt for the response.
