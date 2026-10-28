@@ -93,8 +93,8 @@ vercel dev
 
 ## API 명세와 운영 측정
 - API Base URL과 요청·응답 형식: [API 명세](docs/03_API명세.md) (`https://medicine-guide-ai.vercel.app/api`; 현재 `localhost:8000/api` 서버는 없음)
-- 프로덕션 헬스체크 응답 시간·상태 측정: [운영 측정 기록](docs/evidence/operations-measurement-2026-10-28.md) · [원본 CSV](docs/evidence/production-health-measurement-2026-10-28.csv)
-- 측정은 헬스체크 요청에 한정됩니다. AI 분석 시간·장시간 가용률·공식 SLA를 입증하지 않습니다.
+- 프로덕션 헬스체크와 Gemini 전체 분석 응답시간: [운영 측정 기록](docs/evidence/operations-measurement-2026-10-28.md) · [헬스체크 CSV](docs/evidence/production-health-measurement-2026-10-28.csv) · [분석 요청 CSV](docs/evidence/gemini-analysis-latency-2026-10-28.csv)
+- Gemini 사진 분석은 개인정보 없는 합성 약봉투로 측정했습니다. 표본과 초기 502가 있어 장시간 가용률·공식 SLA를 입증하지 않습니다.
 
 ## 평가자 사용 방법
 1. https://medicine-guide-ai.vercel.app 접속 (로그인 없음)
