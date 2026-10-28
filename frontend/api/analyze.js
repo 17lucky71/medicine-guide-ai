@@ -1,8 +1,11 @@
 // Vercel 서버리스 함수: 사진/텍스트를 Gemini(멀티모달) 모델에 전달해 약 정보를 구조화해 돌려준다.
 // 필요 환경변수: GEMINI_API_KEY (Vercel 프로젝트 Settings > Environment Variables), 선택: GEMINI_MODEL
 const SYSTEM = `당신은 어르신을 돕는 복약 안내 도우미입니다. 반드시 JSON만 출력합니다.
-형식: {"title": string, "comparison": string, "medicines": [{"name": string, "efficacy": string, "dosage": string, "warning": string}]}
+형식: {"title": string, "comparison": string, "prescription": {"hospitalName": string, "manufactureDate": string, "days": number|null}, "medicines": [{"name": string, "efficacy": string, "dosage": string, "warning": string}]}
 규칙:
+- 사진에 약봉투가 있으면 병원명, 제조일(또는 조제일), 총 복용 일수를 사진에서 읽어 prescription에 넣습니다. 제조일은 YYYY-MM-DD 형식으로 씁니다. 약마다 복용 기간이 다르거나 전체 일수를 알 수 없으면 days는 null로 둡니다.
+- 병원명이나 제조일이 보이지 않으면 빈 문자열, 총 복용 일수를 확인할 수 없으면 null로 둡니다. 추측하거나 임의 날짜를 만들지 않습니다.
+- 텍스트 검색 요청은 prescription을 {"hospitalName":"","manufactureDate":"","days":null}로 둡니다.
 - 사진에 실제로 보이는 약 이름만 적습니다. 읽을 수 없거나 약이 없으면 medicines를 빈 배열로 둡니다. 절대 추측해서 만들지 않습니다.
 - 사진에 복용법(1회 투약량/횟수/일수)이 있으면 그대로 dosage에 옮기고, 없으면 "사진에서 확인되지 않음, 약사에게 확인하세요"라고 적습니다.
 - efficacy와 warning은 일반적으로 알려진 내용을 어르신이 이해하기 쉬운 짧은 문장으로 씁니다. 확실하지 않으면 "약사에게 확인하세요"라고 적습니다.
@@ -52,10 +55,22 @@ module.exports = async (req, res) => {
     const j = await r.json();
     const parsed = JSON.parse(j.candidates[0].content.parts[0].text);
     const medicines = Array.isArray(parsed.medicines) ? parsed.medicines : [];
+    const rawPrescription = parsed.prescription && typeof parsed.prescription === 'object' ? parsed.prescription : {};
+    const prescription = type === 'image'
+      ? {
+          hospitalName: typeof rawPrescription.hospitalName === 'string' ? rawPrescription.hospitalName.trim().slice(0, 100) : '',
+          manufactureDate: typeof rawPrescription.manufactureDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(rawPrescription.manufactureDate.trim())
+            ? rawPrescription.manufactureDate.trim()
+            : '',
+          days: Number.isInteger(rawPrescription.days) && rawPrescription.days > 0 && rawPrescription.days <= 365
+            ? rawPrescription.days
+            : null
+        }
+      : { hospitalName: '', manufactureDate: '', days: null };
     if (medicines.length === 0) {
       return res.status(422).json({ error: '사진에서 약 이름을 읽지 못했습니다. 글자가 선명하게 보이도록 다시 찍어 주세요.' });
     }
-    return res.status(200).json({ title: parsed.title || '복약 안내', comparison: typeof parsed.comparison === 'string' ? parsed.comparison : '', medicines });
+    return res.status(200).json({ title: parsed.title || '복약 안내', comparison: typeof parsed.comparison === 'string' ? parsed.comparison : '', prescription, medicines });
   } catch (e) {
     return res.status(500).json({ error: '분석 중 오류가 발생했습니다. 다시 시도해 주세요.' });
   }

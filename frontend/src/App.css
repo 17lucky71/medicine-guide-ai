@@ -96,3 +96,13 @@
 .screen-analysis .upload-panel{padding:28px}
 .screen-analysis .dropzone{margin-top:21px}
 @media(max-width:780px){.screen-analysis .upload-panel{padding:19px}.screen-analysis .dropzone{margin-top:17px}}
+
+.saved-prescription{padding:15px 16px;margin:14px 0;border:1px solid var(--line);border-radius:10px;background:#fff}
+.saved-prescription-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.saved-prescription-heading h3{font-size:.9375em;color:#233b34}
+.bag-label{flex:none;padding:4px 8px;border-radius:7px;background:#eaf3ee;color:var(--green);font-size:.6875em}
+.prescription-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:#f7faf7}
+.prescription-meta dt{color:var(--muted);font-size:.6875em}
+.prescription-meta dd{margin:3px 0 0;font-size:.8125em;font-weight:650;overflow-wrap:anywhere}
+.saved-prescription .saved-list{margin-bottom:0}
+@media(max-width:520px){.prescription-meta{grid-template-columns:1fr 1fr}.prescription-meta>div:nth-child(2){grid-column:1/-1}}

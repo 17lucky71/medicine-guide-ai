@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import './App.css';
-import { loadSavedMeds, storeSavedMeds } from './medicationStorage';
+import { loadSavedMeds, storeSavedMeds, loadSavedPrescriptions, storeSavedPrescriptions } from './medicationStorage';
+
+const formatPrescriptionPeriod = (date, days) => {
+  if (!date || !Number.isInteger(days) || days < 1) return '확인되지 않음';
+  const start = new Date(`${date}T00:00:00`);
+  if (Number.isNaN(start.getTime())) return '확인되지 않음';
+  const end = new Date(start);
+  end.setDate(start.getDate() + days - 1);
+  const format = (value) => `${value.getFullYear()}.${String(value.getMonth() + 1).padStart(2, '0')}.${String(value.getDate()).padStart(2, '0')}`;
+  return `${format(start)} ~ ${format(end)}`;
+};
 
 function App() {
   const [query, setQuery] = useState('');
@@ -15,9 +25,14 @@ function App() {
 
   const [agreed, setAgreed] = useState(false);
   const [savedMeds, setSavedMeds] = useState(loadSavedMeds);
+  const [savedPrescriptions, setSavedPrescriptions] = useState(loadSavedPrescriptions);
   const persistMeds = (list) => {
     setSavedMeds(list);
     storeSavedMeds(list);
+  };
+  const persistPrescriptions = (list) => {
+    setSavedPrescriptions(list);
+    storeSavedPrescriptions(list);
   };
   const updateMed = (index, field, value) => {
     setResult((r) => ({ ...r, medicines: r.medicines.map((m, i) => (i === index ? { ...m, [field]: value } : m)) }));
@@ -32,10 +47,33 @@ function App() {
     if (!result) return;
     const names = result.medicines.map((m) => (m.name || '').trim()).filter(Boolean);
     if (names.length === 0) { setSavedNotice('저장할 약이 없습니다.'); return; }
-    setSavedNotice(`${names.length}개 약을 저장했습니다. 내 복용약 메뉴에서 확인하세요.`);
     persistMeds(Array.from(new Set([...savedMeds, ...names])));
+    if (selectedImage) {
+      const prescription = result.prescription || {};
+      persistPrescriptions([{
+        id: `prescription-${Date.now()}`,
+        hospitalName: prescription.hospitalName || '',
+        manufactureDate: prescription.manufactureDate || '',
+        days: Number.isInteger(prescription.days) ? prescription.days : null,
+        medicines: names,
+      }, ...savedPrescriptions]);
+      setSavedNotice('약봉투별 복용약을 저장했습니다.');
+      setActiveView('meds');
+      return;
+    }
+    setSavedNotice(`${names.length}개 약을 저장했습니다. 내 복용약 메뉴에서 확인하세요.`);
   };
   const handleRemoveMed = (name) => persistMeds(savedMeds.filter((n) => n !== name));
+  const handleRemovePrescriptionMed = (prescriptionId, name) => {
+    const nextPrescriptions = savedPrescriptions.map((prescription) => (
+      prescription.id === prescriptionId
+        ? { ...prescription, medicines: prescription.medicines.filter((medicine) => medicine !== name) }
+        : prescription
+    ));
+    const stillGrouped = nextPrescriptions.some((prescription) => prescription.medicines.includes(name));
+    if (!stillGrouped) persistMeds(savedMeds.filter((medicine) => medicine !== name));
+    persistPrescriptions(nextPrescriptions);
+  };
   const [error, setError] = useState('');
   const navItems = [
     { id: 'analysis', label: '처방전 분석', icon: '▤' },
@@ -164,6 +202,9 @@ function App() {
     window.speechSynthesis.speak(utterance);
   };
 
+  const groupedMedicationNames = new Set(savedPrescriptions.flatMap((prescription) => prescription.medicines || []));
+  const ungroupedMeds = savedMeds.filter((name) => !groupedMedicationNames.has(name));
+
   return (
     <div className="app" data-testid="app-shell" style={{ fontSize }}>
       <header className="topbar">
@@ -249,10 +290,26 @@ function App() {
               <aside className="panel saved-panel" aria-labelledby="saved-title">
                 <div className="title-row"><h2 id="saved-title">내가 복용 중인 약</h2><span className="count">{savedMeds.length}</span></div>
                 <p className="device-note">이 기기에 저장된 약 목록</p>
-                {savedMeds.length === 0 ? (
+                {savedMeds.length === 0 && savedPrescriptions.length === 0 ? (
                   <div className="empty-state"><span className="empty-icon" aria-hidden="true">＋</span><h3>아직 저장한 약이 없어요</h3><p>복약안내를 확인하고<br />복용 중인 약으로 저장해 보세요.</p><button className="button secondary" type="button" onClick={() => setActiveView('analysis')}>처방전 분석하기</button></div>
                 ) : (
-                  <ul className="saved-list">{savedMeds.map((name) => <li key={name}><span>{name}</span><button className="remove-saved" type="button" aria-label={`${name} 삭제`} onClick={() => handleRemoveMed(name)}>×</button></li>)}</ul>
+                  <>
+                    {savedPrescriptions.map((prescription, index) => (
+                      <section className="saved-prescription" key={prescription.id} aria-label={`약봉투 ${index + 1}`}>
+                        <div className="saved-prescription-heading">
+                          <h3>{prescription.hospitalName || '병원명 확인 필요'}</h3>
+                          <span className="bag-label">약봉투 {index + 1}</span>
+                        </div>
+                        <dl className="prescription-meta">
+                          <div><dt>제조일</dt><dd>{prescription.manufactureDate || '확인되지 않음'}</dd></div>
+                          <div><dt>복용 기간</dt><dd>{formatPrescriptionPeriod(prescription.manufactureDate, prescription.days)}</dd></div>
+                          <div><dt>복용 일수</dt><dd>{Number.isInteger(prescription.days) ? `${prescription.days}일` : '확인되지 않음'}</dd></div>
+                        </dl>
+                        <ul className="saved-list">{prescription.medicines.map((name) => <li key={name}><span>{name}</span><button className="remove-saved" type="button" aria-label={`${prescription.hospitalName || '약봉투'}의 ${name} 삭제`} onClick={() => handleRemovePrescriptionMed(prescription.id, name)}>×</button></li>)}</ul>
+                      </section>
+                    ))}
+                    {ungroupedMeds.length > 0 && <ul className="saved-list">{ungroupedMeds.map((name) => <li key={name}><span>{name}</span><button className="remove-saved" type="button" aria-label={`${name} 삭제`} onClick={() => handleRemoveMed(name)}>×</button></li>)}</ul>}
+                  </>
                 )}
                 <div className="helper"><strong>새 약을 확인할 때 함께 비교해요</strong><p>저장된 약이 있으면 다음 분석에서 함께 복용할 때의 주의사항을 안내합니다.</p></div>
                 <p className="device-note storage-note">같은 기기와 브라우저에서 다시 볼 수 있어요.</p>
@@ -270,7 +327,6 @@ function App() {
                     <div className="result-top-actions"><button className="button secondary" type="button" onClick={handleSpeak}>음성으로 듣기</button><button className="button secondary" type="button" onClick={handleStopSpeak}>정지</button></div>
                   </div>
                   {result.comparison && <div className="notice comparison"><span className="notice-mark" aria-hidden="true">↔</span><p><strong>저장된 약과 비교</strong>{result.comparison}</p></div>}
-                  <div className="review"><strong>저장하기 전에 약 이름을 확인해 주세요.</strong><p>사진과 다르면 이름을 수정하고, 잘못 들어온 약은 삭제해 주세요.</p></div>
                   <div className="medicine-list">
                     {result.medicines.map((med, index) => (
                       <section className="medicine-card" key={index} aria-label={`약품 ${index + 1}`}>
