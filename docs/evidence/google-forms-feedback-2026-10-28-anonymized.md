@@ -3,7 +3,7 @@
 - Source: the one-page Google Forms response-summary PDF supplied for this project, dated 2026-10-28.
 - Responses: 5.
 - The form did not collect email addresses. The summary contains no names, contact details, ages, or respondent IDs.
-- The PDF's feature-use chart reports "아직 사용해 보지 않음" at 100%. Treat these answers as anonymous feedback about the service, not as evidence that five people completed hands-on testing.
+- The supplied chart image shows 5 responses and 100% for "처방전·약봉투 사진 분석"; "아직 사용해 보지 않음" has no responses. This records that all five selected photo analysis as a feature they had tried. The aggregate chart does not show each person's task flow or whether analysis succeeded.
 - The original PDF footer contains a private form-edit URL. That URL is omitted here; no respondent identity is present in the transcribed answers.
 - Google Forms presents answers by question, so comments below are not linked across questions to individual people.
 

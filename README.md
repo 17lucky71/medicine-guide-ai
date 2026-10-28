@@ -87,6 +87,8 @@ vercel dev
 - 정상 응답: HTTP `200`, JSON의 `status`가 `ok`
 - 이 검사는 Vercel 서버리스 함수의 응답 여부를 확인하며 Gemini API 가용성까지 보장하지 않습니다.
 - 2026-10-28 프로덕션에서 HTTP `200` 응답을 확인했습니다: [응답 스냅샷](docs/evidence/health-check-response.json) · [요청 로그](docs/evidence/health-check-response.txt)
+- 2026-10-28 06:12 UTC에 프로덕션 엔드포인트를 다시 호출한 실제 응답: [헬스체크 원본 기록](docs/evidence/production-health-probe-2026-10-28.txt) (HTTP 200, Vercel 응답 헤더 포함; 단일 시점 확인)
+- 최종 평가 자료에는 Vercel 대시보드의 실제 서버리스 함수 운영 로그 캡처를 추가해야 합니다. 현재 저장된 헬스체크 요청·응답 기록은 이를 대체하지 않습니다.
 - PR 프리뷰는 인증 보호로 리다이렉트되었으며, 확인 경위는 [health-check-preview.txt](docs/evidence/health-check-preview.txt)에 기록했습니다.
 
 ## 평가자 사용 방법
@@ -193,7 +195,8 @@ vercel dev
 
 ## 테스트 및 사용자 피드백
 - 팀원 테스트와 Google Forms 사용자 응답을 [개발자 테스트 및 사용자 피드백 기록](docs/05_사용자피드백기록.md) 한 곳에 정리했습니다.
-- Google Forms 5건의 익명화 응답 전사: [응답 자료](docs/evidence/google-forms-feedback-2026-10-28-anonymized.md) (응답자 이메일 미수집; 기능 사용 문항은 100% 미사용으로 표시)
+- Google Forms 5건의 익명화 응답 전사: [응답 자료](docs/evidence/google-forms-feedback-2026-10-28-anonymized.md) (응답자 이메일 미수집; 5명 모두 ‘처방전·약봉투 사진 분석’을 사용한 기능으로 선택)
+- 평가 보완 현황과 다음 증거 수집 항목: [평가 증거 보완 기록](docs/evidence/evaluation-followup.md)
 - 팀원 T1 테스트에서 확인된 5건 중 4건은 수정 반영했고, 줄 그어진 약이 분석에 포함되는 문제는 사용자가 삭제하도록 부분 보완했습니다.
 - 2026-10-28 사용자 5명은 약물 상호작용·주의사항·음성 읽기를 긍정적으로 평가했습니다. 화면 정보량, 동의 후 사진 선택 안내, 음성 중지, 약 모양 사진을 개선 의견으로 남겼습니다.
 - 재이용 의향: 예 1명(20%), 잘 모르겠어요 2명(40%), 아니요 2명(40%).
