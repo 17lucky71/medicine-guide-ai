@@ -193,20 +193,13 @@ function App() {
         <main className="container">
           {activeView === 'analysis' && (
             <section className="screen screen-analysis" aria-labelledby="analysis-title">
-              <div className="notice safety-notice">
-                <span className="notice-mark" aria-hidden="true">!</span>
-                <p><strong>복용 전, 의사·약사에게 꼭 확인하세요.</strong> 이 안내는 AI가 생성한 참고용 정보이며 틀릴 수 있습니다. 의사·약사의 상담을 대체하지 않습니다.</p>
-              </div>
               <div className="page-heading compact-heading">
-                <span className="eyebrow">PRESCRIPTION ANALYSIS</span>
-                <h1 id="analysis-title">처방전 분석</h1>
-                <p>처방전이나 약봉투 사진을 올리거나 약 이름으로 검색해 보세요.</p>
+                <h1 id="analysis-title">약봉투 분석</h1>
+                <p>글자가 선명하게 보이는 사진을 준비해 주세요.</p>
               </div>
               <div className="workspace">
                 <div className="left-column">
-                  <section className="panel upload-panel" aria-labelledby="upload-title">
-                    <div className="title-row"><div><span className="eyebrow">사진으로 알아보기</span><h2 id="upload-title">처방전·약봉투 분석</h2></div><span className="tag">AI 분석</span></div>
-                    <p className="desc">글자가 선명하게 보이는 사진을 준비해 주세요.</p>
+                  <section className="panel upload-panel" aria-label="약봉투 사진 분석">
                     <div className="dropzone">
                       <svg className="paper-icon" viewBox="0 0 56 56" fill="none" aria-hidden="true"><rect x="12" y="6" width="32" height="44" rx="5" stroke="currentColor" strokeWidth="2"/><path d="M20 18h16M20 24h10M28 40V30m-5 5 5-5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       <h3>사진 한 장으로 시작하세요</h3>

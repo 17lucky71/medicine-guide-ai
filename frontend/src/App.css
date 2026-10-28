@@ -41,7 +41,8 @@
 .page-heading p { color: var(--muted); font-size: .875em; }
 .compact-heading { padding: 14px 0 18px; }
 .screen-analysis .workspace { grid-template-columns: minmax(0, 1fr); margin-top: 0; }
-.screen-analysis .left-column, .screen-meds > .saved-panel, .screen-guidance > .result-panel { max-width: 860px; }
+.screen-analysis .left-column { max-width: 1010px; }
+.screen-meds > .saved-panel, .screen-guidance > .result-panel { max-width: 860px; }
 .screen-analysis .safety-notice { margin-bottom: 18px; }
 .guidance-empty { max-width: 860px; margin: 0 0 18px; padding: 38px 24px; border: 1px dashed #c9d9cd; border-radius: 13px; background: #f9fbf8; text-align: center; }
 .guidance-empty h2 { font-size: 1.1em; margin: 5px 0; }
@@ -90,3 +91,8 @@
 .feedback-link{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid #d7e4da;border-radius:999px;background:#f8faf7;color:var(--green);font-size:.75em;font-weight:700;text-decoration:none}
 .feedback-link:hover{background:#eaf3ec;border-color:#b8d0bd}
 @media(max-width:420px){.footer-feedback{flex-direction:column;gap:5px}}
+
+/* Match the photo-analysis heading and upload card to the approved mockup. */
+.screen-analysis .upload-panel{padding:28px}
+.screen-analysis .dropzone{margin-top:21px}
+@media(max-width:780px){.screen-analysis .upload-panel{padding:19px}.screen-analysis .dropzone{margin-top:17px}}
