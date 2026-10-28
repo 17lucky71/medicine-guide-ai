@@ -2,14 +2,8 @@ name: Frontend quality
 
 on:
   pull_request:
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/quality.yml'
   push:
     branches: [main]
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/quality.yml'
 
 permissions:
   contents: read

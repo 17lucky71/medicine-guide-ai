@@ -20,3 +20,7 @@
 | [#17](https://github.com/17lucky71/medicine-guide-ai/pull/17) | 헬스체크 배포 증거 문서화 |
 | [#18](https://github.com/17lucky71/medicine-guide-ai/pull/18) | 사용자 피드백 기록 보완 |
 | [#19](https://github.com/17lucky71/medicine-guide-ai/pull/19) | 피드백 차트 정정 및 운영 증거 보완 |
+
+## 진행 중 PR
+
+- [#20](https://github.com/17lucky71/medicine-guide-ai/pull/20) — 평가 증거, localStorage 리팩토링, ESLint CI (열림, Actions 통과)

@@ -9,7 +9,7 @@
 | 운영 모니터링·오류 로그 | [헬스체크 응답](production-health-measurement-2026-10-28.csv) 15회: 15회 모두 HTTP 200 | **미완료**: Vercel 내부 `/api/analyze` 함수 로그 원본과 지속 모니터링 기록을 추가해야 함 |
 | 기능 동작·사용자 피드백 | [설문 기능 사용 차트 캡처](google-forms-feature-use-chart.png), [익명 설문 전사](google-forms-feedback-2026-10-28-anonymized.md), 앱 화면 캡처 | 차트상 5건 모두 ‘처방전·약봉투 사진 분석’을 선택. 참여자별 작업 과정·성공 여부를 입증하는 분석 함수 로그는 아직 없음 |
 | API 명세·비기능 근거 | [API 명세](../03_API명세.md), [운영 측정](operations-measurement-2026-10-28.md), [Gemini 분석 원본 CSV](gemini-analysis-latency-2026-10-28.csv) | 헬스체크 15회와 Gemini 분석 성공 응답(사진 3건 평균 4.954초, 텍스트 3건 평균 5.774초)을 측정. 사진 경로 초기 502 3건도 함께 기록. 지속 가용률, SLA, 보안 침투 시험은 미측정 |
-| 코드 규칙·리팩토링 | [코드 품질 기록](code-quality.md), `frontend/package.json`, `.github/workflows/quality.yml` | 로컬 ESLint 통과, 저장 약 localStorage 분리 리팩토링 완료. GitHub Actions의 원격 실행 결과는 PR 푸시 후 확인 필요 |
+| 코드 규칙·리팩토링 | [코드 품질 기록](code-quality.md), [원격 ESLint 실행](eslint-ci-2026-10-28.md), `.github/workflows/quality.yml` | localStorage 분리 리팩토링, 로컬 ESLint와 PR #20 원격 `npm ci`·ESLint 모두 통과 |
 | 원격 브랜치·PR 이력 | [저장소·PR 이력](repository-history.md) | PR 링크와 병합 상태를 기록 |
 | 커밋 작성자 통계 | [Git shortlog 스냅샷](git-shortlog-2026-10-28.txt) | Git author 별칭을 통합하지 않은 raw count. 개인별 기여율은 계정 매핑 확인 전 산정하지 않음 |
 
@@ -30,6 +30,5 @@ Vercel 프로젝트의 배포 로그에서 `/api/analyze` 호출 사례를 확�
 ## 남은 제출 항목
 
 1. Vercel 대시보드의 실제 `/api/analyze` 운영 로그 캡처 또는 내보내기
-2. GitHub Actions ESLint 실행 성공 화면/링크
-3. 장시간 가용률·부하 용량·SLA를 주장하려면 별도 지속 측정과 부하 검증 자료 (현재 저표본 측정으로는 주장하지 않음)
-4. T3 개발자 테스트 기록 (마지막 순서)
+2. 장시간 가용률·부하 용량·SLA를 주장하려면 별도 지속 측정과 부하 검증 자료 (현재 저표본 측정으로는 주장하지 않음)
+3. T3 개발자 테스트 기록 (마지막 순서)

@@ -5,8 +5,9 @@
 - ESLint 설정은 `frontend/package.json`의 `react-app` 및 `react-app/jest` 규칙을 사용합니다.
 - 로컬 검사 명령: `cd frontend` 후 `npm run lint`.
 - 2026-10-28 로컬 실행 결과: ESLint 오류·경고 없이 종료 코드 0. [실행 기록](eslint-local-2026-10-28.txt)
-- GitHub Actions: `.github/workflows/quality.yml`이 프론트엔드 파일을 바꾸는 PR과 main 반영 시 Node 20, `npm ci`, `npm run lint`를 실행합니다.
-- 이 보완 브랜치에서는 GitHub Actions 실행 결과를 아직 받지 않았습니다. 원격에 푸시한 뒤 CI 실행 링크/상태를 추가해야 합니다.
+- GitHub Actions: `.github/workflows/quality.yml`이 모든 PR과 main 반영 시 Node 20, `npm ci`, `npm run lint`를 실행합니다.
+- CRA/Tailwind 하위 의존성의 선택적 peer와 `npm ci` 잠금이 맞도록 `yaml@2.9.1`을 개발 의존성으로 명시했습니다 (`c068c78`).
+- PR #20에서 GitHub Actions를 실제 실행해 `npm ci`와 ESLint가 통과했습니다. [원격 실행 기록](eslint-ci-2026-10-28.md)
 
 ## 코드 정리
 
