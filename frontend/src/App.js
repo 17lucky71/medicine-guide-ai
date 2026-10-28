@@ -276,7 +276,7 @@ function App() {
                   <div className="review"><strong>저장하기 전에 약 이름을 확인해 주세요.</strong><p>사진과 다르면 이름을 수정하고, 잘못 들어온 약은 삭제해 주세요.</p></div>
                   <div className="medicine-list">
                     {result.medicines.map((med, index) => (
-                      <section className="medicine-card" key={`${index}-${med.name}`} aria-label={`약품 ${index + 1}`}>
+                      <section className="medicine-card" key={index} aria-label={`약품 ${index + 1}`}>
                         <div className="medicine-heading"><span className="medicine-number">{String(index + 1).padStart(2, '0')}</span><input aria-label="약 이름" value={med.name} onChange={(e) => updateMed(index, 'name', e.target.value)} /><button className="delete-med" type="button" onClick={() => removeMed(index)}>이 약 삭제</button></div>
                         <dl className="details"><div className="detail"><dt>효능 및 효과</dt><dd>{med.efficacy}</dd></div><div className="detail"><dt>용법 및 용량</dt><dd>{med.dosage}</dd></div><div className="detail warning"><dt>주의사항</dt><dd>{med.warning}</dd></div></dl>
                       </section>
