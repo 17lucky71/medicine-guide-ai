@@ -86,7 +86,7 @@ vercel dev
 - 엔드포인트: `GET /api/health` (예: `https://medicine-guide-ai.vercel.app/api/health`)
 - 정상 응답: HTTP `200`, JSON의 `status`가 `ok`
 - 이 검사는 Vercel 서버리스 함수의 응답 여부를 확인하며 Gemini API 가용성까지 보장하지 않습니다.
-- 배포 응답 증거: [health-check-response.json](docs/evidence/health-check-response.json)
+- 프리뷰 배포 확인 기록: [health-check-preview.txt](docs/evidence/health-check-preview.txt)
 
 ## 평가자 사용 방법
 1. https://medicine-guide-ai.vercel.app 접속 (로그인 없음)
