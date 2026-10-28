@@ -146,6 +146,10 @@ function App() {
     setError('');
     window.scrollTo(0, 0);
   };
+  const handleStopSpeak = () => {
+    window.speechSynthesis.cancel();
+  };
+
   const handleSpeak = () => {
     window.speechSynthesis.cancel();
 
@@ -270,7 +274,7 @@ function App() {
                 <article className="panel result-panel" aria-labelledby="result-title">
                   <div className="result-top">
                     <div><span className="eyebrow">AI 분석 결과 · 참고용</span><h2 id="result-title">{result.title}</h2></div>
-                    <button className="button secondary" type="button" onClick={handleSpeak}>음성으로 듣기</button>
+                    <div className="result-top-actions"><button className="button secondary" type="button" onClick={handleSpeak}>음성으로 듣기</button><button className="button secondary" type="button" onClick={handleStopSpeak}>정지</button></div>
                   </div>
                   {result.comparison && <div className="notice comparison"><span className="notice-mark" aria-hidden="true">↔</span><p><strong>저장된 약과 비교</strong>{result.comparison}</p></div>}
                   <div className="review"><strong>저장하기 전에 약 이름을 확인해 주세요.</strong><p>사진과 다르면 이름을 수정하고, 잘못 들어온 약은 삭제해 주세요.</p></div>
