@@ -77,11 +77,11 @@ test('사용안내의 분석 시작 버튼을 누르면 처방전 분석 화면�
 });
 
 test('글자 크기 선택이 앱의 글자 크기를 바꾼다', () => {
-  const { container } = render(<App />);
+  render(<App />);
 
   fireEvent.click(screen.getByRole('button', { name: '특대' }));
 
-  expect(container.querySelector('.app')).toHaveStyle({ fontSize: '20px' });
+  expect(screen.getByTestId('app-shell')).toHaveStyle({ fontSize: '20px' });
 });
 
 test('약 이름을 입력하기 전에는 검색 버튼이 비활성화되어 있다', () => {
