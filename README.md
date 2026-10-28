@@ -82,6 +82,12 @@ vercel dev
 - Vercel에서 GitHub 저장소를 연결하고 Root Directory를 `frontend`로 설정
 - Environment Variables에 `GEMINI_API_KEY` 등록 후 Deploy
 
+## 배포 헬스체크
+- 엔드포인트: `GET /api/health` (예: `https://medicine-guide-ai.vercel.app/api/health`)
+- 정상 응답: HTTP `200`, JSON의 `status`가 `ok`
+- 이 검사는 Vercel 서버리스 함수의 응답 여부를 확인하며 Gemini API 가용성까지 보장하지 않습니다.
+- 배포 응답 증거: [health-check-response.json](docs/evidence/health-check-response.json)
+
 ## 평가자 사용 방법
 1. https://medicine-guide-ai.vercel.app 접속 (로그인 없음)
 2. 상단 동의 체크박스에 체크
@@ -99,7 +105,7 @@ vercel dev
 ## 자동화 테스트
 - 실행 위치: `frontend/`
 - 실행 명령: `npm test -- --watchAll=false --runInBand` (Windows PowerShell에서는 `npm.cmd test -- --watchAll=false --runInBand`)
-- 최근 실행 결과: 테스트 스위트 1개 통과, 테스트 13개 통과 (2026-10-28)
+- 최근 실행 결과: 테스트 스위트 2개 통과, 테스트 15개 통과 (2026-10-28)
 - 실행 결과 캡처: ![자동화 테스트 결과](docs/evidence/npm-test-result.png)
 
 ## 환경 변수
