@@ -91,6 +91,11 @@ vercel dev
 - 최종 평가 자료에는 Vercel 대시보드의 실제 서버리스 함수 운영 로그 캡처를 추가해야 합니다. 현재 저장된 헬스체크 요청·응답 기록은 이를 대체하지 않습니다.
 - PR 프리뷰는 인증 보호로 리다이렉트되었으며, 확인 경위는 [health-check-preview.txt](docs/evidence/health-check-preview.txt)에 기록했습니다.
 
+## API 명세와 운영 측정
+- API Base URL과 요청·응답 형식: [API 명세](docs/03_API명세.md) (`https://medicine-guide-ai.vercel.app/api`; 현재 `localhost:8000/api` 서버는 없음)
+- 프로덕션 헬스체크 응답 시간·상태 측정: [운영 측정 기록](docs/evidence/operations-measurement-2026-10-28.md) · [원본 CSV](docs/evidence/production-health-measurement-2026-10-28.csv)
+- 측정은 헬스체크 요청에 한정됩니다. AI 분석 시간·장시간 가용률·공식 SLA를 입증하지 않습니다.
+
 ## 평가자 사용 방법
 1. https://medicine-guide-ai.vercel.app 접속 (로그인 없음)
 2. 상단 동의 체크박스에 체크
@@ -181,6 +186,9 @@ vercel dev
 - `main`에 push하면 Vercel이 자동 배포
 - API 키는 저장소에 올리지 않고 Vercel 환경변수로 관리
 - 회의 기록은 `docs/progress/`에 날짜별로 보관
+- 실제 병합 PR과 브랜치 이력: [저장소·PR 이력](docs/evidence/repository-history.md)
+- Git author별 커밋 수: [shortlog 스냅샷](docs/evidence/git-shortlog-2026-10-28.txt) (작성자 별칭을 통합하지 않은 원본 통계)
+- 코드 규칙 자동검증·리팩토링: [코드 품질 기록](docs/evidence/code-quality.md), [GitHub Actions](.github/workflows/quality.yml)
 
 ## AI 윤리·개인정보
 - 모든 AI 결과 화면에 "AI가 생성한 참고용 정보이며 의사·약사 상담을 대체하지 않음" 문구 표시
@@ -196,6 +204,7 @@ vercel dev
 ## 테스트 및 사용자 피드백
 - 팀원 테스트와 Google Forms 사용자 응답을 [개발자 테스트 및 사용자 피드백 기록](docs/05_사용자피드백기록.md) 한 곳에 정리했습니다.
 - Google Forms 5건의 익명화 응답 전사: [응답 자료](docs/evidence/google-forms-feedback-2026-10-28-anonymized.md) (응답자 이메일 미수집; 5명 모두 ‘처방전·약봉투 사진 분석’을 사용한 기능으로 선택)
+- 기능 사용 응답 차트 원본 캡처: [Google Forms 차트](docs/evidence/google-forms-feature-use-chart.png)
 - 평가 보완 현황과 다음 증거 수집 항목: [평가 증거 보완 기록](docs/evidence/evaluation-followup.md)
 - 팀원 T1 테스트에서 확인된 5건 중 4건은 수정 반영했고, 줄 그어진 약이 분석에 포함되는 문제는 사용자가 삭제하도록 부분 보완했습니다.
 - 2026-10-28 사용자 5명은 약물 상호작용·주의사항·음성 읽기를 긍정적으로 평가했습니다. 화면 정보량, 동의 후 사진 선택 안내, 음성 중지, 약 모양 사진을 개선 의견으로 남겼습니다.
