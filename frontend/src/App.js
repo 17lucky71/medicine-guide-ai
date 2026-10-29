@@ -394,8 +394,13 @@ function App() {
               <div className="page-heading"><h1 id="meds-title">내 복용약</h1><p>이 기기에 저장된 약을 확인하고 관리할 수 있어요.</p></div>
               {savedNotice && <div className="complete-banner" role="status"><h2>복용 목록에 저장했어요</h2><p>{savedNotice}</p><button className="button primary" type="button" onClick={handleGoHome}>다른 약·영양제 추가하기</button></div>}
               <aside className="panel saved-panel" aria-labelledby="saved-title">
-                <div className="title-row"><h2 id="saved-title">내가 복용 중인 약·영양제</h2><span className="count">{savedMeds.length}</span></div>
-                <p className="device-note">이 기기에 저장된 약·영양제 목록</p><button className="button primary" type="button" onClick={handleGoHome}>약·영양제 추가하기</button>
+                <div className="title-row">
+                  <div className="saved-title-group">
+                    <h2 id="saved-title">내가 복용 중인 약·영양제</h2>
+                    <button className="add-icon" type="button" onClick={handleGoHome} aria-label="약·영양제 추가하기" title="약·영양제 추가하기"><span aria-hidden="true">+</span></button>
+                  </div>
+                  <span className="count">{savedMeds.length}</span>
+                </div>
                 {savedMeds.length === 0 && savedPrescriptions.length === 0 ? (
                   <div className="empty-state"><span className="empty-icon" aria-hidden="true">＋</span><h3>아직 저장한 약이 없어요</h3><p>복약안내를 확인하고<br />복용 중인 약으로 저장해 보세요.</p></div>
                 ) : (
