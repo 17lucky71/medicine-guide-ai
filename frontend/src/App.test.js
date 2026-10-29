@@ -110,12 +110,12 @@ test('검색 결과가 없으면 성분표 사진 입력으로 전환한다', as
   render(<App />); search('확인불가제품');
   fireEvent.click(await screen.findByRole('button', { name: '제품·성분표 사진으로 추가' }));
   expect(screen.getByRole('dialog', { name: '사진으로 추가' })).toBeInTheDocument();
-  expect(screen.getByRole('combobox')).toHaveValue('product');
   expect(screen.getByRole('checkbox')).not.toBeChecked();
 });
 test('제품 사진은 병원별 약봉투 대신 개별 목록에 저장한다', async () => {
-  render(<App />); openPhoto();
-  fireEvent.change(screen.getByRole('combobox'), { target: { value: 'product' } }); upload();
+   global.fetch.mockResolvedValueOnce(response({ ...analysisResult, medicines: [] }));
+  render(<App />); search('확인불가제품');
+  fireEvent.click(await screen.findByRole('button', { name: '제품·성분표 사진으로 추가' })); upload();
   await screen.findByRole('heading', { name: '복약 안내 결과' }); save();
   expect(localStorage.getItem('savedPrescriptions')).toBeNull();
   expect(screen.getByRole('heading', { name: '개별 추가한 약·영양제' })).toBeInTheDocument();
