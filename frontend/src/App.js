@@ -334,10 +334,6 @@ function App() {
             <MedicineEntryDialog method={entryMethod} onClose={closeEntry}>
               {entryMethod === 'photo' ? (
                 <section className="panel upload-panel" aria-label="약·영양제 사진 분석">
-                  <label className="desc" htmlFor="photo-kind">사진 종류 </label>
-                  <select id="photo-kind" value={photoKind} onChange={(event) => setPhotoKind(event.target.value)} disabled={loading}>
-                    <option value="bag">약봉투</option><option value="product">약·영양제 제품 / 성분표</option>
-                  </select>
                   <div className="dropzone">
                     {loading && selectedImage ? (
                       <div className="image-preview visible" role="status">
@@ -466,16 +462,7 @@ function App() {
                 <p>처방전이나 약봉투 사진을 올려 주세요.<br />약 이름부터 복용법, 주의사항까지 정리해 드립니다.</p>
                 <ol className="steps" aria-label="이용 순서"><li><span className="step-num">1</span> 사진 올리기</li><li><span className="step-num">2</span> 약 정보 확인</li><li><span className="step-num">3</span> 복용 약 저장</li></ol>
               </section>
-              <section className="panel usage-panel">
-                <span className="eyebrow">HOW TO USE</span><h2>쉽게 따라 하는 이용 순서</h2>
-                <ol className="usage-list">
-                  <li><span>01</span><div><strong>처방전·약봉투 사진 올리기</strong><p>개인정보가 보이지 않도록 가린 뒤 사진 전송에 동의하고 선택해 주세요.</p></div></li>
-                  <li><span>02</span><div><strong>약 이름과 복용 정보를 확인하기</strong><p>AI가 정리한 약 이름, 효능, 복용법, 주의사항을 처방전과 비교해 주세요.</p></div></li>
-                  <li><span>03</span><div><strong>복용 중인 약으로 저장하기</strong><p>확인한 약을 저장하면 다음 분석에서 새 약과 함께 볼 수 있습니다.</p></div></li>
-                </ol>
-                <div className="notice usage-notice"><span className="notice-mark" aria-hidden="true">!</span><p><strong>복용 전 의사·약사에게 확인하세요.</strong> AI 안내는 참고용이며 의료 전문가의 상담을 대신하지 않습니다.</p></div>
-                <button className="button primary usage-cta" type="button" onClick={() => setActiveView('analysis')}>약·영양제 추가 시작하기</button>
-              </section>
+              <button className="button primary usage-cta" type="button" onClick={() => setActiveView('analysis')}>약·영양제 추가 시작하기</button>
             </section>
           )}
           <footer className="site-footer">
