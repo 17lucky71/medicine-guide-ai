@@ -72,6 +72,7 @@
 }
 @media (max-width: 420px) {
   .app-layout { padding: 0 13px; }
+  .page-heading h1 { font-size: 1.375em; }
   .bottom-nav { padding-left: 5px; padding-right: 5px; }
   .bottom-nav .nav-button { font-size: .64em; }
   .bottom-nav .nav-icon { font-size: 17px; }
