@@ -3,6 +3,8 @@
 const SYSTEM = `당신은 어르신을 돕는 복약 안내 도우미입니다. 반드시 JSON만 출력합니다.
 형식: {"title": string, "comparison": string, "prescription": {"hospitalName": string, "manufactureDate": string, "days": number|null}, "medicines": [{"name": string, "efficacy": string, "dosage": string, "warning": string}]}
 규칙:
+- 약뿐 아니라 영양제 제품명과 성분표도 읽습니다. 제품명·성분·함량이 확인되지 않으면 추측하지 않습니다. 텍스트 검색은 입력된 제품 이름만 확인하며, 증상에 맞는 약을 추천하거나 가상의 제품을 만들지 않습니다. 제품을 특정할 수 없으면 medicines는 빈 배열로 둡니다.
+- 성분이나 함량이 확인되지 않은 제품의 중복·상호작용은 확정하지 않고 comparison에 "중복 확인 불가: 제품 성분·함량을 확인하고 약사에게 문의하세요"라고 명시합니다. 중복 성분이 확인되면 어떤 제품과 성분이 겹치는지 설명하며, 중복이 없다고 함께 복용해도 안전하다고 판단하지 않습니다.
 - 사진에 약봉투가 있으면 병원명, 제조일(또는 조제일), 총 복용 일수를 사진에서 읽어 prescription에 넣습니다. 제조일은 YYYY-MM-DD 형식으로 씁니다. 약마다 복용 기간이 다르거나 전체 일수를 알 수 없으면 days는 null로 둡니다.
 - 병원명이나 제조일이 보이지 않으면 빈 문자열, 총 복용 일수를 확인할 수 없으면 null로 둡니다. 추측하거나 임의 날짜를 만들지 않습니다.
 - 텍스트 검색 요청은 prescription을 {"hospitalName":"","manufactureDate":"","days":null}로 둡니다.
@@ -28,10 +30,10 @@ const callInstitutionApi = async ({ key, type, image, query, savedText }) => {
   const model = process.env.INSTITUTION_OPENAI_MODEL || 'gpt-5.4-mini';
   const userContent = type === 'image'
     ? [
-        { type: 'text', text: '이 약봉투/처방전 사진에서 약 정보와 약봉투 정보를 읽어 주세요.' + savedText },
+        { type: 'text', text: '이 약봉투/처방전 또는 약·영양제 제품/성분표 사진에서 제품 정보와 확인 가능한 약봉투 정보를 읽어 주세요.' + savedText },
         { type: 'image_url', image_url: { url: image } }
       ]
-    : `다음 약 이름 또는 증상에 대해 정리해 주세요: ${query.trim().slice(0, 100)}${savedText}`;
+    : `다음 약·영양제 제품 이름을 확인해 주세요: ${query.trim().slice(0, 100)}${savedText}`;
   const response = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
@@ -70,11 +72,11 @@ module.exports = async (req, res) => {
     const match = image.match(/^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/);
     if (!match) return res.status(400).json({ error: '이미지 형식이 올바르지 않습니다.' });
     parts = [
-      { text: '이 약봉투/처방전 사진에서 약 정보와 약봉투 정보를 읽어 주세요.' + savedText },
+      { text: '이 약봉투/처방전 또는 약·영양제 제품/성분표 사진에서 제품 정보와 확인 가능한 약봉투 정보를 읽어 주세요.' + savedText },
       { inline_data: { mime_type: match[1], data: match[2] } }
     ];
   } else if (type === 'text' && typeof query === 'string' && query.trim()) {
-    parts = [{ text: `다음 약 이름 또는 증상에 대해 정리해 주세요: ${query.trim().slice(0, 100)}${savedText}` }];
+    parts = [{ text: `다음 약·영양제 제품 이름을 확인해 주세요: ${query.trim().slice(0, 100)}${savedText}` }];
   } else {
     return res.status(400).json({ error: '요청 형식이 올바르지 않습니다.' });
   }
