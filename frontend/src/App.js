@@ -412,11 +412,10 @@ function App() {
                           <h3>{prescription.hospitalName || '병원명 확인 필요'}</h3>
                           <span className="bag-label">약봉투 {index + 1}</span>
                         </div>
-                        <dl className="prescription-meta">
-                          <div><dt>제조일</dt><dd>{prescription.manufactureDate || '확인되지 않음'}</dd></div>
-                          <div><dt>복용 기간</dt><dd>{formatPrescriptionPeriod(prescription.manufactureDate, prescription.days)}</dd></div>
-                          <div><dt>복용 일수</dt><dd>{Number.isInteger(prescription.days) ? `${prescription.days}일` : '확인되지 않음'}</dd></div>
-                        </dl>
+                        <p className="prescription-period">
+                          {formatPrescriptionPeriod(prescription.manufactureDate, prescription.days).replace(' ~ ', '~')}
+                          {' ('}{Number.isInteger(prescription.days) ? `${prescription.days}일` : '복용 일수 확인 필요'}{')'}
+                        </p>
                         <ul className="saved-list">{prescription.medicines.map((name) => <li key={name}><span>{name}</span><button className="remove-saved" type="button" aria-label={`${prescription.hospitalName || '약봉투'}의 ${name} 삭제`} onClick={() => handleRemovePrescriptionMed(prescription.id, name)}>×</button></li>)}</ul>
                       </section>
                     ))}
