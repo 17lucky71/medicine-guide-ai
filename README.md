@@ -44,6 +44,7 @@
 | 구분 | 사용 기술 | 선택 이유 |
 |---|---|---|
 | AI | Google Gemini 2.5 Flash (멀티모달) | 이미지+텍스트를 한 번에 처리, 한국어 문서 인식 가능, 무료 사용량으로 개발 가능 |
+| AI (대체) | OpenAI 호환 API (기관 제공) | Gemini 사용량이 소진되면 자동으로 대체 호출해 서비스 중단을 줄임 |
 | Frontend | React (Create React App) | 컴포넌트로 화면 구성이 간단 |
 | Backend | Vercel Serverless Function (`frontend/api/analyze.js`) | 별도 서버 없이 배포, API 키를 서버 환경변수로 숨김 |
 | 배포 | Vercel, GitHub (main 브랜치 push 시 자동 배포) | 외부에서 바로 접근 가능 |
@@ -59,6 +60,7 @@
 사용자가 확인·수정 → 저장 → localStorage(myMeds)
 ```
 - 이미지는 서버에 저장하지 않고 분석 요청에만 사용합니다.
+- Gemini 호출이 실패하거나 한도가 소진되면 서버리스 함수가 대체 AI(OpenAI 호환 API)로 다시 시도합니다. 이때도 사진은 서버에 저장하지 않습니다.
 - Gemini API 키는 서버 환경변수(`GEMINI_API_KEY`)로만 사용하며 저장소에 올리지 않습니다.
 
 ## 실행 방법
@@ -121,6 +123,9 @@ vercel dev
 |---|---|---|
 | `GEMINI_API_KEY` | 필수 | Google AI Studio에서 발급한 키. Vercel → Settings → Environment Variables에 등록 (서버 전용, 브라우저에 노출되지 않음) |
 | `GEMINI_MODEL` | 선택 | 사용할 모델 이름. 없으면 `gemini-2.5-flash` |
+| `INSTITUTION_OPENAI_API_KEY` | 선택 | Gemini 사용량이 소진됐을 때 쓰는 대체 AI(OpenAI 호환 API)의 키. 서버 전용 |
+| `INSTITUTION_OPENAI_BASE_URL` | 선택 | 대체 AI 주소. 없으면 `https://copa.codyssey.kr/v1` |
+| `INSTITUTION_OPENAI_MODEL` | 선택 | 대체 AI 모델. 없으면 `gpt-5.4-mini` |
 
 - 환경 변수는 등록한 뒤 **새로 배포(Redeploy)** 해야 적용됩니다.
 - 키는 저장소에 올리지 않습니다.
@@ -203,6 +208,7 @@ vercel dev
 
 ## 테스트 및 사용자 피드백
 - 팀원 테스트와 Google Forms 사용자 응답을 [개발자 테스트 및 사용자 피드백 기록](docs/05_사용자피드백기록.md) 한 곳에 정리했습니다.
+- 팀원 T2, T3 테스트(2026-10-26~27)에서 PC 화면 정렬, 음성 읽기 중지 버튼, OCR 오류 시 텍스트 수정 요청이 나와 반영했습니다. iPhone에서 입력 칸을 누르면 화면이 확대되는 문제는 입력 글자를 16px로 키워 해결했습니다.
 - Google Forms 5건의 익명화 응답 전사: [응답 자료](docs/evidence/google-forms-feedback-2026-10-28-anonymized.md) (응답자 이메일 미수집; 5명 모두 ‘처방전·약봉투 사진 분석’을 사용한 기능으로 선택)
 - 기능 사용 응답 차트 원본 캡처: [Google Forms 차트](docs/evidence/google-forms-feature-use-chart.png)
 - 평가 보완 현황과 다음 증거 수집 항목: [평가 증거 보완 기록](docs/evidence/evaluation-followup.md)
