@@ -36,6 +36,16 @@
 | 장보윤 | 기획 · 사용자 조사 · 프론트 UI 개선 | 타깃(노년층) 정의, "AI 인식 후 확인·저장" 흐름 제안, 참고 서비스 조사, 사용자 테스트, 프론트 UI 개선 |
 | 이채리 | 기획 · 문서 · 발표 · 피드백 수정 반영 | 큰 글자·가족 공유 기능 제안, 복용 중인 약 기초 데이터 저장 제안, 문서·발표 자료 정리, 사용자 피드백 수정 사항 반영 |
 
+### 팀원별 기여 근거 (G6)
+
+아래 커밋은 저장소에 기록된 작성자 기준의 대표 사례입니다. 커밋 수를 개인별 기여율로 해석하지 않습니다.
+
+| 팀원 | 대표 커밋·PR | 연결 문서·산출물 |
+|---|---|---|
+| 최영진 | [실제 AI 분석 연동·모바일 화면·주의 문구 추가](https://github.com/17lucky71/medicine-guide-ai/commit/c502b8b), [인식 결과 확인·수정 기능 추가](https://github.com/17lucky71/medicine-guide-ai/commit/4db2b27), [PR #30](https://github.com/17lucky71/medicine-guide-ai/pull/30) | [기획서](docs/01_기획서.md), [API 명세](docs/03_API명세.md), [발표 자료](docs/medicine-guide-ai.pptx) |
+| 장보윤 | [모바일 메뉴 제목 크기 보정](https://github.com/17lucky71/medicine-guide-ai/commit/6859b66), [검색 실패 오류 안내 수정](https://github.com/17lucky71/medicine-guide-ai/commit/56d44a5), [PR #30](https://github.com/17lucky71/medicine-guide-ai/pull/30) | [사용자 테스트·피드백 기록](docs/05_사용자피드백기록.md), [협업 기록](docs/04_협업기록.md) |
+| 이채리 | [음성 읽기 정지 버튼 생성](https://github.com/17lucky71/medicine-guide-ai/commit/40d1334), [약봉투 상세 정보 추가](https://github.com/17lucky71/medicine-guide-ai/commit/ed94937), [피드백 기록 보완](https://github.com/17lucky71/medicine-guide-ai/commit/8f1ea5c) | [사용자 테스트·피드백 기록](docs/05_사용자피드백기록.md), [협업 기록](docs/04_협업기록.md), [발표 자료](docs/medicine-guide-ai.pptx) |
+
 - GitHub 계정: 최영진은 `17lucky71`(저장소 소유)과 `shine2u4best-spec`(커밋 작성) 두 계정을 사용하며 모두 같은 사람입니다.
 - 협업 기록(회의 3회, PBL실 예약, 디스코드 논의): [docs/04_협업기록.md](docs/04_협업기록.md)
 - 회의록: [docs/progress](docs/progress) (2026-10-05, 10-06, 10-13)
