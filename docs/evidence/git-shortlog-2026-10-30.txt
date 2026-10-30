@@ -1,0 +1,17 @@
+Repository author snapshot
+Captured: 2026-10-30
+Reference main commit: 6fffbe96602cd61aed6d8d28109b7513717a7cd3
+Command: git shortlog -sn --no-merges origin/main
+Commands: git rev-list --count origin/main; git rev-list --count --no-merges origin/main
+
+All commits: 146
+Non-merge commits: 142
+
+  60 17lucky71
+  46 최영진
+  26 tikita12
+   4 CHERRY
+   3 cherry5525
+   3 jangboyoon
+
+Counts are grouped by the author identity recorded in Git metadata. Aliases are not merged into a single person, so these raw counts should not be presented as confirmed individual contribution percentages. CHERRY and cherry5525 are separate recorded identities; this snapshot does not establish whether they belong to the same person.
