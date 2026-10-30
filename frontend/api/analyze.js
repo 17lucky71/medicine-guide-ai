@@ -136,7 +136,10 @@ module.exports = async (req, res) => {
         }
       : { hospitalName: '', manufactureDate: '', days: null };
     if (medicines.length === 0) {
-      return res.status(422).json({ error: '사진에서 약 이름을 읽지 못했습니다. 글자가 선명하게 보이도록 다시 찍어 주세요.' });
+      const error = type === 'image'
+        ? '사진에서 약 이름을 읽지 못했습니다. 글자가 선명하게 보이도록 다시 찍어 주세요.'
+        : '입력한 이름으로 약·영양제 정보를 찾지 못했습니다. 제품명을 확인해 다시 검색해 주세요.';
+      return res.status(422).json({ error });
     }
     return res.status(200).json({ title: parsed.title || '복약 안내', comparison: typeof parsed.comparison === 'string' ? parsed.comparison : '', prescription, medicines });
   } catch (e) {
