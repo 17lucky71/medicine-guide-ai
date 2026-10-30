@@ -12,6 +12,8 @@
 | 코드 규칙·리팩토링 | [코드 품질 기록](code-quality.md), [원격 ESLint 실행](eslint-ci-2026-10-28.md), `.github/workflows/quality.yml` | localStorage 분리 리팩토링, 로컬 ESLint와 PR #20 원격 `npm ci`·ESLint 모두 통과 |
 | 원격 브랜치·PR 이력 | [저장소·PR 이력](repository-history.md) | PR 링크와 병합 상태를 기록 |
 | 커밋 작성자 통계 | [2026-10-30 Git shortlog 스냅샷](git-shortlog-2026-10-30.txt) | 최신 main `6fffbe9` 기준 raw count. `CHERRY`와 `cherry5525`는 Git에 별도 author identity로 기록되어 있어 임의로 합산하지 않음. 개인별 기여율은 계정 매핑 확인 전 산정하지 않음 |
+| G5 실사용자 피드백 | [익명 설문 요약](google-forms-feedback-2026-10-28-anonymized.md), [G5 증거 기록](g5-user-test-log.md) | 앱 하단 ‘피드백 보내기’로 접수한 응답 5건. 프로젝트 담당자가 팀원이 아닌 실제 앱 사용자라고 확인함. **충족**. 익명 집계라 개인별 수행 과정·성공 여부는 확인 범위에 포함하지 않음 |
+| G6 팀 기여 기록 | [README 팀원별 기여 근거](../../README.md#팀원별-기여-근거-g6), [저장소·PR 이력](repository-history.md) | 각 팀원 대표 커밋과 관련 문서를 연결해 정리. 커밋 수를 기여율로 주장하지 않음 |
 
 ## 다음으로 모을 운영 로그
 
