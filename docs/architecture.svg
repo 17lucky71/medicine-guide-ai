@@ -5,28 +5,28 @@
 
   <rect x="30" y="80" width="230" height="130" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
   <text x="145" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">브라우저 (React)</text>
-  <text x="145" y="135" text-anchor="middle" font-size="13" fill="#334155">동의 → 사진 선택(축소)</text>
+  <text x="145" y="135" text-anchor="middle" font-size="13" fill="#334155">동의 → 사진 축소 / 이름 입력</text>
   <text x="145" y="157" text-anchor="middle" font-size="13" fill="#334155">결과 확인·수정·삭제</text>
-  <text x="145" y="179" text-anchor="middle" font-size="13" fill="#334155">큰 글자 / 음성 읽기</text>
+  <text x="145" y="179" text-anchor="middle" font-size="13" fill="#334155">저장 약 이름은 localStorage</text>
 
   <rect x="335" y="80" width="230" height="130" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
   <text x="450" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">Vercel 서버리스 함수</text>
   <text x="450" y="135" text-anchor="middle" font-size="13" fill="#334155">/api/analyze</text>
-  <text x="450" y="157" text-anchor="middle" font-size="13" fill="#334155">시스템 지시문 + JSON 응답 검증</text>
-  <text x="450" y="179" text-anchor="middle" font-size="13" fill="#334155">GEMINI_API_KEY (환경변수)</text>
+  <text x="450" y="157" text-anchor="middle" font-size="13" fill="#334155">이미지 또는 검색어를 AI에 전달</text>
+  <text x="450" y="179" text-anchor="middle" font-size="13" fill="#334155">키는 서버 환경변수에서만 사용</text>
 
   <rect x="640" y="80" width="230" height="130" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
-  <text x="755" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="#7c2d12">Gemini 2.5 Flash</text>
-  <text x="755" y="135" text-anchor="middle" font-size="13" fill="#334155">멀티모달: 이미지 + 텍스트</text>
-  <text x="755" y="157" text-anchor="middle" font-size="13" fill="#334155">약 이름·효능·복용법·주의사항</text>
-  <text x="755" y="179" text-anchor="middle" font-size="13" fill="#334155">저장된 약과 비교 문구</text>
+  <text x="755" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="#7c2d12">Gemini 2.5 Flash (기본)</text>
+  <text x="755" y="135" text-anchor="middle" font-size="13" fill="#334155">이미지 자체를 멀티모달 분석</text>
+  <text x="755" y="157" text-anchor="middle" font-size="13" fill="#334155">텍스트 검색도 AI가 결과 생성</text>
+  <text x="755" y="179" text-anchor="middle" font-size="13" fill="#334155">한도 초과 시 기관 AI 대체 가능</text>
 
   <line x1="260" y1="130" x2="333" y2="130" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
-  <text x="297" y="120" text-anchor="middle" font-size="11" fill="#334155">사진+저장된 약</text>
+  <text x="297" y="120" text-anchor="middle" font-size="11" fill="#334155">요청</text>
   <line x1="565" y1="130" x2="638" y2="130" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
   <line x1="640" y1="170" x2="567" y2="170" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
   <line x1="335" y1="170" x2="262" y2="170" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
-  <text x="297" y="190" text-anchor="middle" font-size="11" fill="#334155">분석 결과(JSON)</text>
+  <text x="297" y="190" text-anchor="middle" font-size="11" fill="#334155">응답</text>
 
   <rect x="30" y="260" width="230" height="70" rx="12" fill="#faf5ff" stroke="#9333ea" stroke-width="2"/>
   <text x="145" y="288" text-anchor="middle" font-size="15" font-weight="700" fill="#581c87">localStorage (myMeds)</text>
@@ -34,5 +34,6 @@
   <line x1="145" y1="212" x2="145" y2="258" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
   <text x="200" y="240" font-size="11" fill="#334155">저장 / 불러오기</text>
 
-  <text x="450" y="300" text-anchor="middle" font-size="13" fill="#475569">이미지는 서버에 저장하지 않고 분석 요청에만 사용합니다.</text>
+  <text x="450" y="296" text-anchor="middle" font-size="12" fill="#475569">별도 OCR 전처리와 공공 의약품 DB 조회는 없습니다.</text>
+  <text x="450" y="317" text-anchor="middle" font-size="12" fill="#475569">이미지는 외부 AI 분석에 전송하며 앱 서버에는 저장하지 않습니다.</text>
 </svg>
