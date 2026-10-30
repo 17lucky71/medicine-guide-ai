@@ -206,7 +206,7 @@ vercel dev
 - API 키는 저장소에 올리지 않고 Vercel 환경변수로 관리
 - 회의 기록은 `docs/progress/`에 날짜별로 보관
 - 실제 병합 PR과 브랜치 이력: [저장소·PR 이력](docs/evidence/repository-history.md)
-- Git author별 커밋 수: [shortlog 스냅샷](docs/evidence/git-shortlog-2026-10-28.txt) (작성자 별칭을 통합하지 않은 원본 통계)
+- Git author별 커밋 수: [2026-10-30 shortlog 스냅샷](docs/evidence/git-shortlog-2026-10-30.txt) (작성자 별칭을 통합하지 않은 원본 통계)
 - 코드 규칙 자동검증·리팩토링: [코드 품질 기록](docs/evidence/code-quality.md), [GitHub Actions](.github/workflows/quality.yml)
 
 ## AI 윤리·개인정보

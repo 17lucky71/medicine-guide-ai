@@ -11,7 +11,7 @@
 | API 명세·비기능 근거 | [API 명세](../03_API명세.md), [운영 측정](operations-measurement-2026-10-28.md), [Gemini 분석 원본 CSV](gemini-analysis-latency-2026-10-28.csv) | 헬스체크 15회와 Gemini 분석 성공 응답(사진 3건 평균 4.954초, 텍스트 3건 평균 5.774초)을 측정. 사진 경로 초기 502 3건도 함께 기록. 지속 가용률, SLA, 보안 침투 시험은 미측정 |
 | 코드 규칙·리팩토링 | [코드 품질 기록](code-quality.md), [원격 ESLint 실행](eslint-ci-2026-10-28.md), `.github/workflows/quality.yml` | localStorage 분리 리팩토링, 로컬 ESLint와 PR #20 원격 `npm ci`·ESLint 모두 통과 |
 | 원격 브랜치·PR 이력 | [저장소·PR 이력](repository-history.md) | PR 링크와 병합 상태를 기록 |
-| 커밋 작성자 통계 | [Git shortlog 스냅샷](git-shortlog-2026-10-28.txt) | Git author 별칭을 통합하지 않은 raw count. 개인별 기여율은 계정 매핑 확인 전 산정하지 않음 |
+| 커밋 작성자 통계 | [2026-10-30 Git shortlog 스냅샷](git-shortlog-2026-10-30.txt) | 최신 main `6fffbe9` 기준 raw count. `CHERRY`와 `cherry5525`는 Git에 별도 author identity로 기록되어 있어 임의로 합산하지 않음. 개인별 기여율은 계정 매핑 확인 전 산정하지 않음 |
 
 ## 다음으로 모을 운영 로그
 
