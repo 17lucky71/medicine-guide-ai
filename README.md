@@ -1,7 +1,7 @@
 # 의약품 안내 AI (medicine-guide-ai)
 
 처방전·약봉투 사진 한 장으로 복약 정보를 쉽게 확인하는 **노년층 대상 AI 서비스**입니다.
-사진을 올리면 멀티모달 AI가 약 이름·효능·복용법·주의사항을 읽어 쉬운 말로 정리하고,
+사진을 올리면 멀티모달 AI가 이미지 자체를 분석해 약 이름·효능·복용법·주의사항을 쉬운 말로 정리하고,
 사용자가 확인·수정한 약을 저장해 두었다가 새 약과 비교해 줍니다.
 
 - 배포 주소: https://medicine-guide-ai.vercel.app
@@ -43,8 +43,7 @@
 ## 기술 스택
 | 구분 | 사용 기술 | 선택 이유 |
 |---|---|---|
-| AI | Google Gemini 2.5 Flash (멀티모달) | 이미지+텍스트를 한 번에 처리, 한국어 문서 인식 가능, 무료 사용량으로 개발 가능 |
-| AI (대체) | OpenAI 호환 API (기관 제공) | Gemini 사용량이 소진되면 자동으로 대체 호출해 서비스 중단을 줄임 |
+| AI | Google Gemini 2.5 Flash (기본), 기관 OpenAI 호환 API (선택 대체) | 사진 또는 약 이름을 입력받아 AI가 분석 결과를 생성 |
 | Frontend | React (Create React App) | 컴포넌트로 화면 구성이 간단 |
 | Backend | Vercel Serverless Function (`frontend/api/analyze.js`) | 별도 서버 없이 배포, API 키를 서버 환경변수로 숨김 |
 | 배포 | Vercel, GitHub (main 브랜치 push 시 자동 배포) | 외부에서 바로 접근 가능 |
@@ -54,19 +53,23 @@
 ![시스템 구조도](docs/architecture.svg)
 
 ```
-[브라우저(React)] --사진(축소) + 저장된 약 목록--> [Vercel 함수 /api/analyze] --> [Gemini 2.5 Flash]
-       ▲                                                                     │
-       └──────────── 약 정보 + 저장된 약과의 비교 문구(JSON) ─────────────────┘
-사용자가 확인·수정 → 저장 → localStorage(myMeds)
+[React 브라우저]
+   ├─ 사진을 최대 1400px로 축소 ─┐
+   └─ 약·영양제 이름 검색어 ──────┴→ [Vercel /api/analyze] → [Gemini 멀티모달/텍스트 AI]
+             ↑ 저장된 약 이름(localStorage)                         │
+             └──────── 분석 JSON·비교 안내 ←────────────────────────┘
 ```
-- 이미지는 서버에 저장하지 않고 분석 요청에만 사용합니다.
-- Gemini 호출이 실패하거나 한도가 소진되면 서버리스 함수가 대체 AI(OpenAI 호환 API)로 다시 시도합니다. 이때도 사진은 서버에 저장하지 않습니다.
-- Gemini API 키는 서버 환경변수(`GEMINI_API_KEY`)로만 사용하며 저장소에 올리지 않습니다.
+- 사진 분석은 별도 OCR 엔진이 문자열을 먼저 추출하는 단계 없이, 축소한 이미지 자체를 AI에 전달합니다. AI가 사진을 읽고 구조화된 결과를 생성합니다.
+- 이름 검색도 공공 의약품 데이터베이스를 조회하지 않습니다. 검색어를 AI에 전달해 제품 정보를 생성하도록 요청합니다.
+- Gemini가 기본 제공자입니다. `INSTITUTION_OPENAI_API_KEY`가 설정된 경우 Gemini 사용량 한도 초과 등 일부 상황에 기관 OpenAI 호환 API를 대체 경로로 사용할 수 있습니다.
+- 현재 식약처 등 공신력 있는 의약품 DB 연동과 결과 대조는 구현되어 있지 않습니다. 약 이름·효능·주의사항 결과는 AI가 생성한 참고 정보이며 실제 제품과 다를 수 있습니다.
+- 이미지는 분석 요청을 위해 외부 AI 서비스로 전송되며 앱 서버에는 저장하지 않습니다. 사용자가 저장한 약 이름은 브라우저 `localStorage`에 저장하고 비교 요청에 함께 보냅니다.
+- AI API 키는 서버 환경변수로만 사용하며 저장소나 브라우저 코드에 넣지 않습니다.
 
 ## 실행 방법
 ### 요구사항
 - Node.js 18+
-- Gemini API 키 ([Google AI Studio](https://aistudio.google.com)에서 발급)
+- Gemini API 키 또는 기관 OpenAI 호환 API 키
 
 ### 로컬 실행
 ```bash
@@ -108,27 +111,36 @@ vercel dev
 7. 약 이름을 직접 입력해 검색하는 기능도 사용 가능 (예: 타이레놀)
 
 ## 화면 캡처
-| 첫 화면 (동의·AI 안내 문구) | 분석 결과·저장된 약과 비교 | 여러 약 결과 |
+| 데스크톱: 약·영양제 추가 | 데스크톱: 이름으로 추가 | 데스크톱: 사진으로 추가 |
 |---|---|---|
-| ![첫 화면](docs/screenshots/01_home.png) | ![비교 결과](docs/screenshots/02_result_compare.png) | ![약 목록](docs/screenshots/03_result_list.png) |
+| ![데스크톱 추가 화면](docs/screenshots/01_home.png) | ![이름 검색 창](docs/screenshots/02_name_search.png) | ![사진 추가 창](docs/screenshots/03_photo_upload.png) |
+
+| 모바일: 약·영양제 추가 | 모바일: 이름 검색 창 |
+|---|---|
+| ![모바일 추가 화면](docs/screenshots/04_mobile_home.png) | ![모바일 이름 검색 창](docs/screenshots/05_name_search_mobile.png) |
+
+시스템 구조도: ![시스템 구조도](docs/architecture.svg)
+
+2026-10-30 프로덕션 배포 화면을 개인정보 없이 캡처했습니다. 모바일 캡처는 반응형 화면 크기 에뮬레이션으로 만들었습니다.
 
 ## 자동화 테스트
 - 실행 위치: `frontend/`
 - 실행 명령: `npm test -- --watchAll=false --runInBand` (Windows PowerShell에서는 `npm.cmd test -- --watchAll=false --runInBand`)
-- 최근 실행 결과: 테스트 스위트 2개 통과, 테스트 17개 통과 (2026-10-30)
+- 최근 실행 결과: 테스트 스위트 2개 통과, 테스트 15개 통과 (2026-10-28)
 - 실행 결과 캡처: ![자동화 테스트 결과](docs/evidence/npm-test-result.png)
 
 ## 환경 변수
 | 이름 | 필수 | 설명 |
 |---|---|---|
-| `GEMINI_API_KEY` | 필수 | Google AI Studio에서 발급한 키. Vercel → Settings → Environment Variables에 등록 (서버 전용, 브라우저에 노출되지 않음) |
+| `GEMINI_API_KEY` | 선택(기본 제공자) | Google AI Studio에서 발급한 키. 있으면 Gemini를 우선 사용합니다. Vercel 환경변수에 등록하며 서버에서만 읽습니다. |
 | `GEMINI_MODEL` | 선택 | 사용할 모델 이름. 없으면 `gemini-2.5-flash` |
-| `INSTITUTION_OPENAI_API_KEY` | 선택 | Gemini 사용량이 소진됐을 때 쓰는 대체 AI(OpenAI 호환 API)의 키. 서버 전용 |
-| `INSTITUTION_OPENAI_BASE_URL` | 선택 | 대체 AI 주소. 없으면 `https://copa.codyssey.kr/v1` |
-| `INSTITUTION_OPENAI_MODEL` | 선택 | 대체 AI 모델. 없으면 `gpt-5.4-mini` |
+| `INSTITUTION_OPENAI_API_KEY` | 선택(최소 하나 필요) | 기관에서 발급한 OpenAI 호환 API 키. 단독 제공자로 쓰거나 Gemini 한도 초과 시 대체 경로로 사용 |
+| `INSTITUTION_OPENAI_BASE_URL` | 선택 | 기관 API 주소. 기본값은 `https://copa.codyssey.kr/v1` |
+| `INSTITUTION_OPENAI_MODEL` | 선택 | 기관 API 모델 이름. 기본값은 `gpt-5.4-mini` |
 
 - 환경 변수는 등록한 뒤 **새로 배포(Redeploy)** 해야 적용됩니다.
 - 키는 저장소에 올리지 않습니다.
+- `GEMINI_API_KEY`와 `INSTITUTION_OPENAI_API_KEY` 중 하나 이상을 설정해야 분석 API가 동작합니다.
 
 ## 설계 결정과 이유
 | 결정 | 이유 |
@@ -136,7 +148,7 @@ vercel dev
 | 인식 결과를 바로 저장하지 않고 사용자가 확인·수정·삭제한 뒤 저장 | AI가 약 이름을 잘못 읽거나(예: 아목틴→아목시), 줄 그어진 약을 포함하는 경우가 실제 테스트에서 나왔고, 약 정보는 틀리면 위험하기 때문 |
 | 복용 약을 서버 DB가 아닌 브라우저 localStorage에 저장 | 건강 정보를 서버에 보관하지 않아 개인정보 부담을 줄이기 위해. 대신 기기를 바꾸면 보이지 않는 한계가 있음 |
 | AI 호출을 브라우저가 아닌 서버리스 함수에서 수행 | API 키를 서버에만 두기 위해 (브라우저에서 호출하면 키가 노출됨) |
-| 저장된 약 이름 목록을 AI 요청에 함께 전달해 비교 문구를 생성 | 별도 DB·검색 없이 Long-term Memory를 AI 응답에 반영하는 가장 단순한 방법 |
+| 저장된 약 이름 목록을 AI 요청에 함께 전달해 비교 문구를 생성 | 별도 사용자 계정·서버 DB 없이 Long-term Memory를 AI 응답에 반영 |
 | 업로드 전에 브라우저에서 사진 크기를 줄여 전송 | 전송 용량과 응답 시간을 줄이기 위해 |
 
 ## 오류 처리와 입력 검증
@@ -149,13 +161,14 @@ vercel dev
 | 서버에 AI 키 없음 | 500 | 서버에 AI 키가 설정되지 않았습니다. 관리자에게 문의하세요. |
 | AI 서비스 호출 실패 | 502 | AI 서비스 호출에 실패했습니다. (모델·상태 표시) |
 | 사진에서 약 이름을 못 읽음 | 422 | 사진에서 약 이름을 읽지 못했습니다. 글자가 선명하게 보이도록 다시 찍어 주세요. |
+| 이름 검색에서 제품을 확인하지 못함 | 422 | 입력한 이름으로 약·영양제 정보를 찾지 못했습니다. 제품명을 확인해 다시 검색해 주세요. |
 | 그 밖의 오류 | 500 | 분석 중 오류가 발생했습니다. 다시 시도해 주세요. |
 
 - 저장된 약 목록은 최대 30개, 한 이름은 60자, 검색어는 100자로 제한합니다.
 - 사진 업로드는 동의 체크박스를 체크해야 진행됩니다.
 
 ## AI 활용 방식과 검증
-- **서비스 안의 AI**: Gemini 2.5 Flash에 시스템 지시문을 주고 JSON 형식으로만 답하게 함 (`temperature` 0.2). 지시문 규칙: 사진에 보이는 약만 적기·추측 금지, 줄 그어진 약 제외, 개인정보 출력 금지, 불확실하면 "약사에게 확인하세요".
+- **서비스 안의 AI**: Gemini 2.5 Flash를 기본 제공자로 사용하고, 설정된 경우 사용량 한도 초과 시 기관 OpenAI 호환 API로 대체합니다. Gemini에는 시스템 지시문과 JSON 응답 형식을 지정합니다 (`temperature` 0.2). 지시문 규칙: 사진에 보이는 약만 적기·추측 금지, 줄 그어진 약 제외, 개인정보 출력 금지, 불확실하면 "약사에게 확인하세요".
 - **검증 방법**: 팀원이 실제 처방전·약봉투 사진으로 결과를 사진 속 글자와 직접 비교 → 틀린 부분(이름 오인식, 줄 그어진 약 포함)을 기록하고 지시문과 화면(수정·삭제 단계)을 고침. 기록: [docs/05_사용자피드백기록.md](docs/05_사용자피드백기록.md)
 - **개발 과정의 AI 도구**: 코드와 문서 작성에 AI 도구(Claude)를 사용했고, 결과는 팀원이 직접 실행·확인했음.
 - **한계**: AI의 약 효능·주의사항·비교 안내는 일반 지식에 기반하며 공공 의약품 DB로 검증하지 않음. 그래서 모든 화면에 "참고용, 의사·약사 상담 필요" 문구를 표시함.
@@ -208,7 +221,6 @@ vercel dev
 
 ## 테스트 및 사용자 피드백
 - 팀원 테스트와 Google Forms 사용자 응답을 [개발자 테스트 및 사용자 피드백 기록](docs/05_사용자피드백기록.md) 한 곳에 정리했습니다.
-- 팀원 T2, T3 테스트(2026-10-26~27)에서 PC 화면 정렬, 음성 읽기 중지 버튼, OCR 오류 시 텍스트 수정 요청이 나와 반영했습니다. iPhone에서 입력 칸을 누르면 화면이 확대되는 문제는 입력 글자를 16px로 키워 해결했습니다.
 - Google Forms 5건의 익명화 응답 전사: [응답 자료](docs/evidence/google-forms-feedback-2026-10-28-anonymized.md) (응답자 이메일 미수집; 5명 모두 ‘처방전·약봉투 사진 분석’을 사용한 기능으로 선택)
 - 기능 사용 응답 차트 원본 캡처: [Google Forms 차트](docs/evidence/google-forms-feature-use-chart.png)
 - 평가 보완 현황과 다음 증거 수집 항목: [평가 증거 보완 기록](docs/evidence/evaluation-followup.md)
